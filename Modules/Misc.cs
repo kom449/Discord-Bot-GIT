@@ -15,9 +15,22 @@ namespace NewTestBot.Modules
         public async Task Echo([Remainder]string message)
         {
             var embed = new EmbedBuilder();
-            embed.WithTitle("BAB OF DOOM");
-            embed.WithDescription(message + " Has been bab'd by " + Context.User.Username);
-            embed.WithColor(new Color(253, 246, 56));
+            {
+                embed.WithTitle("BABBER-BOT9000");
+                embed.WithDescription(message + " Has been bab'd by " + Context.User.Username);
+            };
+            embed.AddField("Your options are:",
+                "Go commit rope :thinking: \n BAB back :fist: ")
+                //.WithAuthor(Context.Client.CurrentUser)
+                .WithFooter(footer => footer.Text = "Babber xd")
+                .WithColor(new Color(253, 246, 56))
+                .WithTitle("BABBER-BOT9000")
+                .WithDescription(message + " Has been bab'd by " + Context.User.Username)
+                .WithCurrentTimestamp()
+                .Build();
+            
+                
+                
 
             await Context.Channel.SendMessageAsync("", false, embed);
         }
@@ -46,7 +59,7 @@ namespace NewTestBot.Modules
 
             await Context.Channel.SendMessageAsync("", false, embed);
         }
-        //---------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------
         [Command("kaffe")]
         public async Task Kaffe([Remainder]int x)
         {
@@ -70,6 +83,27 @@ namespace NewTestBot.Modules
 
             await Context.Channel.SendMessageAsync("", false, embed);
         }
-        
+//---------------------------------------------------------------------------------------------------------
+        [Command("birb")]
+        public async Task birb()
+        {
+            var url = "https://random.birb.pw/tweet/random";
+            var embed = new EmbedBuilder();
+            embed.AddField("Your daily dose of random birbs",
+                url)
+            .WithAuthor(Context.Client.CurrentUser)
+            .WithColor(new Color(253, 246, 56))
+            .WithTitle("Enjoy your Birb")
+            .WithFooter(footer => footer.Text = "Babber xd")
+            .WithCurrentTimestamp()
+            .Build();
+
+
+
+            await Context.Channel.SendMessageAsync("", false, embed);
+        }
+
+
+
     }
 }
