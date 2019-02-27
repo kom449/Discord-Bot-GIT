@@ -76,7 +76,6 @@ namespace NewTestBot.Modules
         public async Task Kaffe()
         {
             string fileText = File.ReadAllText("SystemLang/kaffe.json");
-
             dynamic results = JsonConvert.DeserializeObject<dynamic>(fileText);
             results.Coffee.Value++;
 
@@ -106,10 +105,7 @@ namespace NewTestBot.Modules
         {
 
             string fileText = File.ReadAllText("SystemLang/kaffe.json");
-
             dynamic results = JsonConvert.DeserializeObject<dynamic>(fileText);
-            results.Coffee.Value++;
-
             string text = "Der er blevet drukket i alt " + results.Coffee.ToString() + " Kopper Kaffe!";
 
             var embed = new EmbedBuilder();
