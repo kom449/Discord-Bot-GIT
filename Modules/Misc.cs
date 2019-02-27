@@ -49,22 +49,22 @@ namespace NewTestBot.Modules
             }
 
         }
-//---------------------------------------------------------------------------------------------------------
-//works as intended
+        //---------------------------------------------------------------------------------------------------------
+        //works as intended
 
         [Command("kick"), RequireUserPermission(GuildPermission.KickMembers)]
         [RequireBotPermission(Discord.GuildPermission.KickMembers)]
-        
+
         public async Task KickUser(IGuildUser user, string reason = "")
         {
             if (reason == "")
             {
                 var embed = new EmbedBuilder();
                 embed.WithTitle("Syntax Error");
-                embed.WithDescription("No reason was provided!");
+                embed.WithDescription("No reason was provided");
                 await Context.Channel.SendMessageAsync("", false, embed);
             }
-
+         
             else if (reason != "")
             {
                 await user.KickAsync();
@@ -87,6 +87,10 @@ namespace NewTestBot.Modules
             }
 
         }
+
+
+
+          
 //---------------------------------------------------------------------------------------------------------
 //annouce message not working
 //idk why
