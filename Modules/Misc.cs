@@ -76,7 +76,6 @@ namespace NewTestBot.Modules
         public async Task Kaffe()
         {
             string fileText = File.ReadAllText("SystemLang/kaffe.json");
-            Debug.WriteLine(fileText);
 
             dynamic results = JsonConvert.DeserializeObject<dynamic>(fileText);
             results.Coffee.Value++;
@@ -84,16 +83,51 @@ namespace NewTestBot.Modules
             string serialziedJson = JsonConvert.SerializeObject(results);
             File.WriteAllText("SystemLang/kaffe.json", serialziedJson);
 
+            string text = "Der er nu blevet drukket " + results.Coffee.ToString() + " Kopper Kaffe!";
 
             var embed = new EmbedBuilder();
-            embed.WithTitle("Hvor mange kopper kaffe er der blevet drukket?");
-            embed.WithDescription("Der er blevet drukket: " + results.Coffee.ToString() + " kopper kaffe!");
-            embed.WithColor(new Color(139, 69, 19));
+            embed.AddField("Hvor mange Kopper kaffe er der blevet drukket?",
+            text)
+            .WithColor(new Color(139, 69, 19))
+            .WithTitle("Kaffe Tracker")
+            .WithCurrentTimestamp()
+            .WithFooter(footer => { footer
+            .WithText("Birdie Zukira")
+            .WithIconUrl(IconURL);
+            })
+            .Build();
 
             await Context.Channel.SendMessageAsync("", false, embed);
         }
 //---------------------------------------------------------------------------------------------------------
-//Works as intended
+        
+        [Command("kaffetotal")]
+        public async Task kaffe()
+        {
+
+            string fileText = File.ReadAllText("SystemLang/kaffe.json");
+
+            dynamic results = JsonConvert.DeserializeObject<dynamic>(fileText);
+            results.Coffee.Value++;
+
+            string text = "Der er blevet drukket i alt " + results.Coffee.ToString() + " Kopper Kaffe!";
+
+            var embed = new EmbedBuilder();
+            embed.AddField("Hvor mange Kopper kaffe er der blevet drukket?",
+            text)
+            .WithColor(new Color(139, 69, 19))
+            .WithTitle("Kaffe Tracker")
+            .WithCurrentTimestamp()
+            .WithFooter(footer => { footer
+            .WithText("Birdie Zukira")
+            .WithIconUrl(IconURL);
+            })
+            .Build();
+
+            await Context.Channel.SendMessageAsync("", false, embed);
+        }
+//---------------------------------------------------------------------------------------------------------
+        //Works as intended
 
         [Command("birb")]
         public async Task birb()
