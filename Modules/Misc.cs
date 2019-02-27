@@ -70,25 +70,24 @@ namespace NewTestBot.Modules
             await Context.Channel.SendMessageAsync("", false, embed);
         }
 //---------------------------------------------------------------------------------------------------------
-//command still not working
-//counter has to be saved into a JSON file for it to read and write the number
+//works as intended
 
         [Command("kaffe")]
         public async Task Kaffe()
         {
-
-            // using (StreamReader file = File.OpenText("SystemLang/kaffe.json"))
-
             string fileText = File.ReadAllText("SystemLang/kaffe.json");
             Debug.WriteLine(fileText);
 
-            JObject o = JObject.Parse(fileText);
-            string coffe = (string)o.SelectToken("coffee");
+            dynamic results = JsonConvert.DeserializeObject<dynamic>(fileText);
+            results.Coffee.Value++;
+
+            string serialziedJson = JsonConvert.SerializeObject(results);
+            File.WriteAllText("SystemLang/kaffe.json", serialziedJson);
 
 
             var embed = new EmbedBuilder();
             embed.WithTitle("Hvor mange kopper kaffe er der blevet drukket?");
-            embed.WithDescription("Der er blevet drukket: " + coffe.ToString() + " kopper kaffe!");
+            embed.WithDescription("Der er blevet drukket: " + results.Coffee.ToString() + " kopper kaffe!");
             embed.WithColor(new Color(139, 69, 19));
 
             await Context.Channel.SendMessageAsync("", false, embed);
