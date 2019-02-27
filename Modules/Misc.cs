@@ -4,15 +4,21 @@ using Discord.Commands;
 using Discord.WebSocket;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.IO;
+using System.Net;
+using System.Diagnostics;
 
 namespace NewTestBot.Modules
 {
 
     public class Misc : ModuleBase<SocketCommandContext>
     {
-//---------------------------------------------------------------------------------------------------------
-//command works fine
+        //depencies
+        readonly string IconURL = "https://cdn.discordapp.com/avatars/467437867065540620/083828453afa6811a853008993c51a45.png";
+
+        //---------------------------------------------------------------------------------------------------------
+        //command works fine
 
         [Command("bab")]
         public async Task Bab([Remainder]string message)
@@ -26,7 +32,7 @@ namespace NewTestBot.Modules
                 .WithCurrentTimestamp()
                 .WithFooter(footer => {footer
                 .WithText("Birdie Zukira")
-                .WithIconUrl("https://cdn.discordapp.com/avatars/467437867065540620/4afd5b905bbcb1a186d7e55dff0c2e92.png");
+                .WithIconUrl(IconURL);
                 })
                 .Build();
                       
@@ -68,49 +74,53 @@ namespace NewTestBot.Modules
 //counter has to be saved into a JSON file for it to read and write the number
 
         [Command("kaffe")]
-        public async Task Kaffe([Remainder]int x)
+        public async Task Kaffe()
         {
-            
-            
-            
-            string json = File.ReadAllText("SystemLang/kaffe.json");
-            var data = JsonConvert.DeserializeObject<dynamic>(json);
-            x = data.ToObject<Dictionary<string, int>>();
-            
 
+            // using (StreamReader file = File.OpenText("SystemLang/kaffe.json"))
 
+            string fileText = File.ReadAllText("SystemLang/kaffe.json");
+            Debug.WriteLine(fileText);
 
-        
-            
+            JObject o = JObject.Parse(fileText);
+            string coffe = (string)o.SelectToken("coffee");
+
 
             var embed = new EmbedBuilder();
             embed.WithTitle("Hvor mange kopper kaffe er der blevet drukket?");
-            embed.WithDescription("Der er blevet drukket: " + x + " kopper kaffe!");
+            embed.WithDescription("Der er blevet drukket: " + coffe.ToString() + " kopper kaffe!");
             embed.WithColor(new Color(139, 69, 19));
 
             await Context.Channel.SendMessageAsync("", false, embed);
         }
 //---------------------------------------------------------------------------------------------------------
-//doesnt send the embeded image, just the link
+//Works as intended
 
         [Command("birb")]
         public async Task birb()
         {
-            var url = "https://random.birb.pw/tweet/random";
+            // get the JSON IMG file name
+            WebClient c = new WebClient();
+            var data = c.DownloadString("http://random.birb.pw/tweet.json/");
+            JObject o = JObject.Parse(data);
+
+            //Sets the string url to domain + file extension
+            var url = "https://random.birb.pw/img/"+o["file"];
+
+
             var embed = new EmbedBuilder();
             embed.AddField("Your daily dose of random birbs",
             url)
+            .WithImageUrl(url)
             .WithAuthor(Context.Client.CurrentUser)
             .WithColor(new Color(13, 255, 107))
             .WithTitle("Enjoy your Birb")
             .WithFooter(footer => {footer
             .WithText("Birdie Zukira")
-            .WithIconUrl("https://cdn.discordapp.com/avatars/467437867065540620/4afd5b905bbcb1a186d7e55dff0c2e92.png");
+            .WithIconUrl(IconURL);
             })
             .WithCurrentTimestamp()
             .Build();
-
-
 
             await Context.Channel.SendMessageAsync("", false, embed);
         }
