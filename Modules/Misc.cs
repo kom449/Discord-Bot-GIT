@@ -20,52 +20,71 @@ namespace NewTestBot.Modules
 //works as intended
 
         [Command("bab")]
-        public async Task Bab([Remainder]string message)
+        public async Task Bab([Remainder]string message = "")
         {
-            var embed = new EmbedBuilder();
+            if(message == "")
+            {
+                var embed = new EmbedBuilder();
+                embed.WithTitle("Syntax Error");
+                embed.WithDescription("I NEED A FUCKING TARGET YOU RETARD");
+                await Context.Channel.SendMessageAsync("", false, embed);
+            }
+
+            else if(message != "")
+            {
+                var embed = new EmbedBuilder();
                 embed.AddField("Your options are:",
                 "Go commit rope :thinking: \n BAB back :fist: \n Go cry in a corner :cry: ")
                 .WithColor(new Color(253, 246, 56))
                 .WithTitle("BABBER-BOT9000")
-                .WithDescription(message + " Has been bab'd by " +Context.User.Mention)
+                .WithDescription(message + " Has been bab'd by " + Context.User.Mention)
                 .WithCurrentTimestamp()
-                .WithFooter(footer => {footer
-                .WithText("Birdie Zukira")
+                .WithFooter(footer => { footer
+                .WithText("Need help? Contact Birdie Zukira#3950")
                 .WithIconUrl(IconURL);
                 })
                 .Build();
-                      
+
                 await Context.Channel.SendMessageAsync("", false, embed);
+            }
+
         }
-        //---------------------------------------------------------------------------------------------------------
-        //kinda works, it checks the user sending the command if he has permissions but doesnt kick the target
-        //console doesnt say anything when the command is issued correctly
+//---------------------------------------------------------------------------------------------------------
+//works, but there need to be a syntax error if no reason is provided
 
         [Command("kick"), RequireUserPermission(GuildPermission.KickMembers)]
         [RequireBotPermission(Discord.GuildPermission.KickMembers)]
         
-        public async Task KickUser(IGuildUser user, string reason)
+        public async Task KickUser(IGuildUser user, string reason = "")
         {
+            if (reason == "")
+            {
+                var embed = new EmbedBuilder();
+                embed.WithTitle("Syntax Error");
+                embed.WithDescription("No reason was provided!");
+                await Context.Channel.SendMessageAsync("", false, embed);
+            }
 
-
-            
+            else if (reason != "")
+            {
                 await user.KickAsync();
                 var embed = new EmbedBuilder();
                 embed.AddField("User kicked!",
                 user + " Has been kicked from the server!" + "\n \n Reason:" + "\n \n" + reason)
                 .WithColor(new Color(255, 0, 0))
-                .WithAuthor("Birdie Bot Nortification")
+                .WithAuthor(author => { author
+                .WithName("Birdie Bot Nortification")
+                .WithIconUrl(IconURL);
+                })
                 .WithCurrentTimestamp()
                 .WithFooter(footer => { footer
-                .WithText("Birdie Zukira")
+                .WithText("Need help? Contact Birdie Zukira#3950")
                 .WithIconUrl(IconURL);
                 })
                 .Build();
 
                 await Context.Channel.SendMessageAsync("", false, embed);
-            
-
-
+            }
 
         }
 //---------------------------------------------------------------------------------------------------------
@@ -113,7 +132,7 @@ namespace NewTestBot.Modules
             .WithTitle("Kaffe Tracker :coffee: ")
             .WithCurrentTimestamp()
             .WithFooter(footer => { footer
-            .WithText("Birdie Zukira")
+            .WithText("Need help? Contact Birdie Zukira#3950")
             .WithIconUrl(IconURL);
             })
             .Build();
@@ -138,7 +157,7 @@ namespace NewTestBot.Modules
             .WithTitle("Kaffe Tracker :coffee:")
             .WithCurrentTimestamp()
             .WithFooter(footer => { footer
-            .WithText("Birdie Zukira")
+            .WithText("Need help? Contact Birdie Zukira#3950")
             .WithIconUrl(IconURL);
             })
             .Build();
@@ -164,11 +183,14 @@ namespace NewTestBot.Modules
             embed.AddField("Your daily dose of random birbs",
             url)
             .WithImageUrl(url)
-            .WithAuthor("Birdie Bot")
+            .WithAuthor(author => { author
+            .WithName("Birdie Bot")
+            .WithIconUrl(IconURL);
+            })
             .WithColor(new Color(13, 255, 107))
             .WithTitle("Enjoy your Birb :bird:")
             .WithFooter(footer => { footer
-            .WithText("Birdie Zukira")
+            .WithText("Need help? Contact Birdie Zukira#3950")
             .WithIconUrl(IconURL);
             })
             .WithCurrentTimestamp()
@@ -177,7 +199,29 @@ namespace NewTestBot.Modules
             await Context.Channel.SendMessageAsync("", false, embed);
         }
 //---------------------------------------------------------------------------------------------------------
-        
+//works as intended
+     [Command("help")]
+     public async Task help()
+        {
+            var embed = new EmbedBuilder();
+            embed.AddField("Here is a list of my commands",
+            "!bab\n !kick (Requires permissions)\n !kaffe\n !kaffetotal\n !birb\n ")
+            .WithAuthor(author => { author
+            .WithName("Birdie Bot")
+            .WithIconUrl(IconURL);
+            })
+            .WithThumbnailUrl(IconURL)
+            .WithColor(new Color(255, 83, 13))
+            .WithTitle("Hello! my name is birdie bot and i'm here to have fun ^v^")
+            .WithFooter(footer => { footer
+            .WithText("Need help? Contact Birdie Zukira#3950")
+            .WithIconUrl(IconURL);
+            })
+            .WithCurrentTimestamp()
+            .Build();
+
+            await Context.Channel.SendMessageAsync("", false, embed);
+        }
 
 
 
