@@ -33,7 +33,9 @@ namespace NewTestBot
 
         }
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         private async Task Log(LogMessage msg)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             Console.WriteLine(msg.Message);
         }

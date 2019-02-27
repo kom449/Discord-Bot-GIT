@@ -11,6 +11,7 @@ namespace NewTestBot
     {
         DiscordSocketClient _client;
         CommandService _service;
+        
 
         public async Task InitializeAsync(DiscordSocketClient client)
         {
@@ -18,6 +19,7 @@ namespace NewTestBot
             _service = new CommandService();
             await _service.AddModulesAsync(Assembly.GetEntryAssembly());
             _client.MessageReceived += HandleCommandAsync;
+            
         }
 
         private async Task HandleCommandAsync(SocketMessage s)
