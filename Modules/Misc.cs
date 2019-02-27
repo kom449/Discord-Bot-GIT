@@ -50,7 +50,7 @@ namespace NewTestBot.Modules
 
         }
 //---------------------------------------------------------------------------------------------------------
-//works, but there need to be a syntax error if no reason is provided
+//works as intended
 
         [Command("kick"), RequireUserPermission(GuildPermission.KickMembers)]
         [RequireBotPermission(Discord.GuildPermission.KickMembers)]
@@ -200,12 +200,13 @@ namespace NewTestBot.Modules
         }
 //---------------------------------------------------------------------------------------------------------
 //works as intended
+
      [Command("help")]
-     public async Task help()
+     public async Task Help()
         {
             var embed = new EmbedBuilder();
             embed.AddField("Here is a list of my commands",
-            "!bab\n !kick (Requires permissions)\n !kaffe\n !kaffetotal\n !birb\n ")
+            "%bab\n %kick (Requires permissions)\n %kaffe\n %kaffetotal\n %birb\n ")
             .WithAuthor(author => { author
             .WithName("Birdie Bot")
             .WithIconUrl(IconURL);

@@ -4,11 +4,11 @@ using System.IO;
 
 namespace NewTestBot
 {
-    class utilities
+    class Utilities
     {
         private static Dictionary<string, string> alerts;
 
-        static utilities()
+        static Utilities()
         {
             string json = File.ReadAllText("SystemLang/alerts.json");
             var data = JsonConvert.DeserializeObject<dynamic>(json);
