@@ -2,7 +2,6 @@
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
-using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.IO;
@@ -14,11 +13,11 @@ namespace NewTestBot.Modules
 
     public class Misc : ModuleBase<SocketCommandContext>
     {
-        //depencies
+        //embed stuff
         readonly string IconURL = "https://cdn.discordapp.com/avatars/467437867065540620/083828453afa6811a853008993c51a45.png";
 
-        //---------------------------------------------------------------------------------------------------------
-        //command works fine
+//---------------------------------------------------------------------------------------------------------
+//works as intended
 
         [Command("bab")]
         public async Task Bab([Remainder]string message)
@@ -28,7 +27,7 @@ namespace NewTestBot.Modules
                 "Go commit rope :thinking: \n BAB back :fist: \n Go cry in a corner :cry: ")
                 .WithColor(new Color(253, 246, 56))
                 .WithTitle("BABBER-BOT9000")
-                .WithDescription(message + " Has been bab'd by " + Context.User.Username)
+                .WithDescription(message + " Has been bab'd by " +Context.User.Mention)
                 .WithCurrentTimestamp()
                 .WithFooter(footer => {footer
                 .WithText("Birdie Zukira")
@@ -38,27 +37,41 @@ namespace NewTestBot.Modules
                       
                 await Context.Channel.SendMessageAsync("", false, embed);
         }
-//---------------------------------------------------------------------------------------------------------
-//kinda works, it checks the user sending the command if he has permissions but doesnt kick the target
-//console doesnt say anything when the command is issued correctly
+        //---------------------------------------------------------------------------------------------------------
+        //kinda works, it checks the user sending the command if he has permissions but doesnt kick the target
+        //console doesnt say anything when the command is issued correctly
 
-        [Command("kick")]
+        [Command("kick"), RequireUserPermission(GuildPermission.KickMembers)]
         [RequireBotPermission(Discord.GuildPermission.KickMembers)]
-        [RequireUserPermission(Discord.GuildPermission.KickMembers)]
-        public async Task KickAsync(Discord.IGuildUser user, [Remainder] string reason)
+        
+        public async Task KickUser(IGuildUser user, string reason)
         {
-            if (user.GuildPermissions.KickMembers)
-            {
-                var b = new Discord.EmbedBuilder();
-                b.WithTitle("User Kicked");
-                b.WithDescription(user.Username + "was kicked.");
-                await Context.Channel.SendMessageAsync("", false, b);
+
+
+            
                 await user.KickAsync();
-            }
+                var embed = new EmbedBuilder();
+                embed.AddField("User kicked!",
+                user + " Has been kicked from the server!" + "\n \n Reason:" + "\n \n" + reason)
+                .WithColor(new Color(255, 0, 0))
+                .WithAuthor("Birdie Bot Nortification")
+                .WithCurrentTimestamp()
+                .WithFooter(footer => { footer
+                .WithText("Birdie Zukira")
+                .WithIconUrl(IconURL);
+                })
+                .Build();
+
+                await Context.Channel.SendMessageAsync("", false, embed);
+            
+
+
+
         }
 //---------------------------------------------------------------------------------------------------------
 //annouce message not working
 //idk why
+//might be something related to not detecting people joining
 
         public async Task AnnounceJoinedUser(SocketGuildUser user)
         {
@@ -91,7 +104,7 @@ namespace NewTestBot.Modules
             File.WriteAllText("SystemLang/kaffe.json", serialziedJson);
 
             //turning the result and some text into a string for the embed builder
-            string text = Context.User.Username + " har lige drukket en kop kaffe" + "\n Så der er nu blevet drukket " + results.Coffee.ToString() + " Kopper Kaffe!";
+            string text = Context.User.Mention + " har lige drukket en kop kaffe" + "\n Så der er nu blevet drukket " + results.Coffee.ToString() + " Kopper Kaffe!";
 
             var embed = new EmbedBuilder();
             embed.AddField("Hvor mange Kopper kaffe er der blevet drukket?",
@@ -108,14 +121,15 @@ namespace NewTestBot.Modules
             await Context.Channel.SendMessageAsync("", false, embed);
         }
 //---------------------------------------------------------------------------------------------------------
-//works as intended      
+//works as intended
+
         [Command("kaffetotal")]
-        public async Task kaffe()
+        public async Task Kaffetotal()
         {
 
             string fileText = File.ReadAllText("SystemLang/kaffe.json");
             dynamic results = JsonConvert.DeserializeObject<dynamic>(fileText);
-            string text = "Der er blevet drukket i alt " + results.Coffee.ToString() + " Kopper Kaffe " + Context.User.Username + "!";
+            string text = "Der er blevet drukket i alt " + results.Coffee.ToString() + " Kopper Kaffe " + Context.User.Mention + "!";
 
             var embed = new EmbedBuilder();
             embed.AddField("Hvor mange Kopper kaffe er der blevet drukket?",
@@ -132,10 +146,10 @@ namespace NewTestBot.Modules
             await Context.Channel.SendMessageAsync("", false, embed);
         }
 //---------------------------------------------------------------------------------------------------------
-        //Works as intended
+//Works as intended
 
         [Command("birb")]
-        public async Task birb()
+        public async Task Birb()
         {
             // get the JSON IMG file name
             WebClient c = new WebClient();
@@ -150,10 +164,10 @@ namespace NewTestBot.Modules
             embed.AddField("Your daily dose of random birbs",
             url)
             .WithImageUrl(url)
-            .WithAuthor(Context.Client.CurrentUser)
+            .WithAuthor("Birdie Bot")
             .WithColor(new Color(13, 255, 107))
-            .WithTitle("Enjoy your Birb")
-            .WithFooter(footer => {footer
+            .WithTitle("Enjoy your Birb :bird:")
+            .WithFooter(footer => { footer
             .WithText("Birdie Zukira")
             .WithIconUrl(IconURL);
             })
@@ -162,6 +176,8 @@ namespace NewTestBot.Modules
 
             await Context.Channel.SendMessageAsync("", false, embed);
         }
+//---------------------------------------------------------------------------------------------------------
+        
 
 
 
