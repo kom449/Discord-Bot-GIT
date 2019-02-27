@@ -75,20 +75,29 @@ namespace NewTestBot.Modules
         [Command("kaffe")]
         public async Task Kaffe()
         {
+            //creating a string called filetext with everything from the json file
             string fileText = File.ReadAllText("SystemLang/kaffe.json");
+
+            //dynamiclly Deserializes everything in the string to make it a readable object in c#
             dynamic results = JsonConvert.DeserializeObject<dynamic>(fileText);
+            
+            //adding 1 to the result
             results.Coffee.Value++;
 
+            //turning it back into json elements
             string serialziedJson = JsonConvert.SerializeObject(results);
+
+            //writing the result back into the json file with 1 added to it
             File.WriteAllText("SystemLang/kaffe.json", serialziedJson);
 
-            string text = "Der er nu blevet drukket " + results.Coffee.ToString() + " Kopper Kaffe!";
+            //turning the result and some text into a string for the embed builder
+            string text = Context.User.Username + " har lige drukket en kop kaffe" + "\n Så der er nu blevet drukket " + results.Coffee.ToString() + " Kopper Kaffe!";
 
             var embed = new EmbedBuilder();
             embed.AddField("Hvor mange Kopper kaffe er der blevet drukket?",
             text)
             .WithColor(new Color(139, 69, 19))
-            .WithTitle("Kaffe Tracker")
+            .WithTitle("Kaffe Tracker :coffee: ")
             .WithCurrentTimestamp()
             .WithFooter(footer => { footer
             .WithText("Birdie Zukira")
@@ -99,20 +108,20 @@ namespace NewTestBot.Modules
             await Context.Channel.SendMessageAsync("", false, embed);
         }
 //---------------------------------------------------------------------------------------------------------
-        
+//works as intended      
         [Command("kaffetotal")]
         public async Task kaffe()
         {
 
             string fileText = File.ReadAllText("SystemLang/kaffe.json");
             dynamic results = JsonConvert.DeserializeObject<dynamic>(fileText);
-            string text = "Der er blevet drukket i alt " + results.Coffee.ToString() + " Kopper Kaffe!";
+            string text = "Der er blevet drukket i alt " + results.Coffee.ToString() + " Kopper Kaffe " + Context.User.Username + "!";
 
             var embed = new EmbedBuilder();
             embed.AddField("Hvor mange Kopper kaffe er der blevet drukket?",
             text)
             .WithColor(new Color(139, 69, 19))
-            .WithTitle("Kaffe Tracker")
+            .WithTitle("Kaffe Tracker :coffee:")
             .WithCurrentTimestamp()
             .WithFooter(footer => { footer
             .WithText("Birdie Zukira")
