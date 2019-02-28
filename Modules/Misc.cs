@@ -111,23 +111,38 @@ namespace NewTestBot.Modules
         [Command("kaffe")]
         public async Task Kaffe()
         {
+            //get unique user id
+            string userId = Context.User.Id.ToString();
+
             //creating a string called filetext with everything from the json file
             string fileText = File.ReadAllText("SystemLang/kaffe.json");
 
-            //dynamiclly Deserializes everything in the string to make it a readable object in c#
-            dynamic results = JsonConvert.DeserializeObject<dynamic>(fileText);
-            
-            //adding 1 to the result
-            results.Coffee.Value++;
+            JObject o = JObject.Parse(fileText);
+
+            //increment total coffee
+            o["Coffee"] = (int)o["Coffee"] + 1;
+
+            //check if user exists in json
+            bool userExists = ((JObject)o["Users"]).ContainsKey(userId);
+
+            //if not then add the user
+            if (!userExists) {
+                o["Users"][userId] = o["UserTemplate"];
+            }
+
+            //increment user coffee
+            o["Users"][userId]["Coffee"] = (int)o["Users"][userId]["Coffee"] + 1;
 
             //turning it back into json elements
-            string serialziedJson = JsonConvert.SerializeObject(results);
+            string serialziedJson = o.ToString();
 
             //writing the result back into the json file with 1 added to it
             File.WriteAllText("SystemLang/kaffe.json", serialziedJson);
 
             //turning the result and some text into a string for the embed builder
-            string text = Context.User.Mention + " har lige drukket en kop kaffe" + "\n Så der er nu blevet drukket " + results.Coffee.ToString() + " Kopper Kaffe!";
+            string text = Context.User.Mention + " har lige drukket en kop kaffe";
+            text += "\nSå " + Context.User.Username + " har nu drukket " + o["Users"][userId]["Coffee"] + " kopper kaffe!";
+            text += "\n\n Der er i alt blevet drukket " + o["Coffee"] + " Kopper Kaffe!";
 
             var embed = new EmbedBuilder();
             embed.AddField("Hvor mange Kopper kaffe er der blevet drukket?",
@@ -227,7 +242,6 @@ namespace NewTestBot.Modules
 
             await Context.Channel.SendMessageAsync("", false, embed);
         }
-
 
 
     }
