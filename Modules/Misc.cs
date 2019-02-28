@@ -14,14 +14,17 @@ namespace NewTestBot.Modules
     {
         //embed stuff
         readonly string IconURL = "https://cdn.discordapp.com/avatars/467437867065540620/083828453afa6811a853008993c51a45.png";
+        readonly string thumbnailURL = "https://i.gyazo.com/f67d7843f1e9e918fb85816ab4a34181.png";
         private DiscordSocketClient _client;
 
-        //---------------------------------------------------------------------------------------------------------
-        //works as intended
+//---------------------------------------------------------------------------------------------------------
+//works as intended
 
         [Command("bab")]
-        public async Task Bab([Remainder]string message = "")
+        public async Task Bab(string message = "")
         {
+
+
             if(message == "")
             {
                 var embed = new EmbedBuilder();
@@ -51,8 +54,8 @@ namespace NewTestBot.Modules
             }
 
         }
-        //---------------------------------------------------------------------------------------------------------
-        //works as intended
+//---------------------------------------------------------------------------------------------------------
+//works as intended
 
         [Command("kick"), RequireUserPermission(GuildPermission.KickMembers)]
         [RequireBotPermission(Discord.GuildPermission.KickMembers)]
@@ -95,10 +98,10 @@ namespace NewTestBot.Modules
 
 
 
-        //---------------------------------------------------------------------------------------------------------
-        //annouce message not working
-        //idk why
-        //might be something related to not detecting people joining
+//---------------------------------------------------------------------------------------------------------
+//annouce message not working
+//idk why
+//might be something related to not detecting people joining
 
         public async Task AnnounceJoinedUser(SocketGuildUser user)
         {
@@ -195,10 +198,6 @@ namespace NewTestBot.Modules
             text += "\n " + Context.User.Username + " har drukket " + o["Users"][userId]["Coffee"] + " kopper kaffe!";
             text += "\n\n Der er i alt blevet drukket " + o["Coffee"] + " Kopper Kaffe!";
 
-            //string fileText = File.ReadAllText("SystemLang/kaffe.json");
-            //dynamic results = JsonConvert.DeserializeObject<dynamic>(fileText);
-            //string text = "Der er blevet drukket i alt " + results.Coffee.ToString() + " Kopper Kaffe " + Context.User.Mention + "!";
-
             var embed = new EmbedBuilder();
             embed.AddField("Hvor mange Kopper kaffe er der blevet drukket?",
             text)
@@ -260,7 +259,7 @@ namespace NewTestBot.Modules
             .WithName("Birdie Bot")
             .WithIconUrl(IconURL);
             })
-            .WithThumbnailUrl(IconURL)
+            .WithThumbnailUrl(thumbnailURL)
             .WithColor(new Color(255, 83, 13))
             .WithTitle("Hello! my name is birdie bot and i'm here to have fun ^v^")
             .WithFooter(footer => { footer
