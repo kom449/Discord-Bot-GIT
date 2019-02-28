@@ -10,14 +10,14 @@ using System.Diagnostics;
 
 namespace NewTestBot.Modules
 {
-
     public class Misc : ModuleBase<SocketCommandContext>
     {
         //embed stuff
         readonly string IconURL = "https://cdn.discordapp.com/avatars/467437867065540620/083828453afa6811a853008993c51a45.png";
+        private DiscordSocketClient _client;
 
-//---------------------------------------------------------------------------------------------------------
-//works as intended
+        //---------------------------------------------------------------------------------------------------------
+        //works as intended
 
         [Command("bab")]
         public async Task Bab([Remainder]string message = "")
@@ -27,6 +27,8 @@ namespace NewTestBot.Modules
                 var embed = new EmbedBuilder();
                 embed.WithTitle("Syntax Error");
                 embed.WithDescription("I NEED A FUCKING TARGET YOU RETARD");
+                embed.WithColor(new Color(0, 0, 0));
+
                 await Context.Channel.SendMessageAsync("", false, embed);
             }
 
@@ -62,6 +64,8 @@ namespace NewTestBot.Modules
                 var embed = new EmbedBuilder();
                 embed.WithTitle("Syntax Error");
                 embed.WithDescription("No reason was provided");
+                embed.WithColor(new Color(0, 0, 0));
+
                 await Context.Channel.SendMessageAsync("", false, embed);
             }
          
@@ -90,19 +94,20 @@ namespace NewTestBot.Modules
 
 
 
-          
-//---------------------------------------------------------------------------------------------------------
-//annouce message not working
-//idk why
-//might be something related to not detecting people joining
+
+        //---------------------------------------------------------------------------------------------------------
+        //annouce message not working
+        //idk why
+        //might be something related to not detecting people joining
 
         public async Task AnnounceJoinedUser(SocketGuildUser user)
         {
+            _client.UserJoined += AnnounceJoinedUser;
             var embed = new EmbedBuilder();
             embed.WithTitle("Welcome our newest member - " + user.Mention);
             embed.WithDescription("Remember to read our rules and have a nice stay, " + user.Mention);
             embed.WithColor(new Color(0, 0, 255));
-
+            
             await Context.Channel.SendMessageAsync("", false, embed);
         }
 //---------------------------------------------------------------------------------------------------------
@@ -142,7 +147,7 @@ namespace NewTestBot.Modules
             //turning the result and some text into a string for the embed builder
             string text = Context.User.Mention + " har lige drukket en kop kaffe";
             text += "\nSå " + Context.User.Username + " har nu drukket " + o["Users"][userId]["Coffee"] + " kopper kaffe!";
-            text += "\n\n Der er i alt blevet drukket " + o["Coffee"] + " Kopper Kaffe!";
+            
 
             var embed = new EmbedBuilder();
             embed.AddField("Hvor mange Kopper kaffe er der blevet drukket?",
@@ -165,9 +170,34 @@ namespace NewTestBot.Modules
         public async Task Kaffetotal()
         {
 
+            //get unique user id
+            string userId = Context.User.Id.ToString();
+
+            //creating a string called filetext with everything from the json file
             string fileText = File.ReadAllText("SystemLang/kaffe.json");
-            dynamic results = JsonConvert.DeserializeObject<dynamic>(fileText);
-            string text = "Der er blevet drukket i alt " + results.Coffee.ToString() + " Kopper Kaffe " + Context.User.Mention + "!";
+
+            JObject o = JObject.Parse(fileText);
+
+            //increment total coffee
+            o["Coffee"] = (int)o["Coffee"];
+
+            //check if user exists in json
+            bool userExists = ((JObject)o["Users"]).ContainsKey(userId);
+
+            //if not then add the user
+            if (!userExists)
+            {
+                o["Users"][userId] = o["UserTemplate"];
+            }
+
+            //turning the result and some text into a string for the embed builder
+            string text = Context.User.Mention + "Hvor mange kopper kaffe er der blevet drukket?";
+            text += "\n " + Context.User.Username + " har drukket " + o["Users"][userId]["Coffee"] + " kopper kaffe!";
+            text += "\n\n Der er i alt blevet drukket " + o["Coffee"] + " Kopper Kaffe!";
+
+            //string fileText = File.ReadAllText("SystemLang/kaffe.json");
+            //dynamic results = JsonConvert.DeserializeObject<dynamic>(fileText);
+            //string text = "Der er blevet drukket i alt " + results.Coffee.ToString() + " Kopper Kaffe " + Context.User.Mention + "!";
 
             var embed = new EmbedBuilder();
             embed.AddField("Hvor mange Kopper kaffe er der blevet drukket?",
@@ -225,7 +255,7 @@ namespace NewTestBot.Modules
         {
             var embed = new EmbedBuilder();
             embed.AddField("Here is a list of my commands",
-            "%bab\n %kick (Requires permissions)\n %kaffe\n %kaffetotal\n %birb\n ")
+            " %bab\n %kick (Requires permissions)\n %kaffe\n %kaffetotal\n %birb\n ")
             .WithAuthor(author => { author
             .WithName("Birdie Bot")
             .WithIconUrl(IconURL);
