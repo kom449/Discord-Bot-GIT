@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
+using System.Threading;
 using Discord;
+using Discord.Net;
 using Discord.Commands;
 using Discord.WebSocket;
 using Newtonsoft.Json;
@@ -280,22 +282,23 @@ namespace NewTestBot.Modules
          [Command ("prefix")]
          public async Task Prefix(string input)
          {
-            string prefix = File.ReadAllText("Resources/config.json");
-            JObject o = JObject.Parse(prefix);
+            try
+            {
+                string prefix = File.ReadAllText("Resources/config.json");
+                JObject o = JObject.Parse(prefix);
 
-            string visual = o["cmdPrefix"].ToString();
+                string visual = o["cmdPrefix"].ToString();
 
-            o["cmdPrefix"] = (string)o["cmdPrefix"];
-            o["cmdPrefix"] = input;
+                o["cmdPrefix"] = (string)o["cmdPrefix"];
+                o["cmdPrefix"] = input;
 
-            string xinput = o.ToString();
+                string xinput = o.ToString();
 
-
-            File.WriteAllText("Resources/config.json", xinput);
+                File.WriteAllText("Resources/config.json", xinput);
 
             var embed = new EmbedBuilder();
             embed.AddField("Current prefix is: " + visual,
-                "The prefix is now changed to: " + input)
+            "The prefix is now changed to: " + input)
             .WithAuthor(author => { author
             .WithName("Birdie Bot")
             .WithIconUrl(IconURL);
@@ -311,6 +314,14 @@ namespace NewTestBot.Modules
             .Build();
 
             await Context.Channel.SendMessageAsync("", false, embed);
+ 
+                Process.Start("NewTestBot.exe");
+                Process.GetCurrentProcess().Kill();
+            }
+            catch (System.Exception e)
+            {
+                Debug.WriteLine(e);
+            }
         }
 
     }
