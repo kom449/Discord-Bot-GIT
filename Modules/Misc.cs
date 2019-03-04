@@ -32,7 +32,7 @@ namespace NewTestBot.Modules
                 var embed = new EmbedBuilder();
                 embed.WithTitle("Syntax Error");
                 embed.WithDescription("I NEED A FUCKING TARGET YOU RETARD");
-                embed.WithColor(new Color(0, 0, 0));
+                embed.WithColor(new Color(255, 0, 0));
 
                 await Context.Channel.SendMessageAsync("", false, embed);
             }
@@ -59,7 +59,7 @@ namespace NewTestBot.Modules
 //---------------------------------------------------------------------------------------------------------
 //works as intended
 
-        [Command("kick"), RequireUserPermission(GuildPermission.KickMembers)]
+        [Command("kick"),RequireUserPermission(Discord.GuildPermission.KickMembers)]
         [RequireBotPermission(Discord.GuildPermission.KickMembers)]
 
         public async Task KickUser(IGuildUser user, string reason = "")
@@ -69,7 +69,7 @@ namespace NewTestBot.Modules
                 var embed = new EmbedBuilder();
                 embed.WithTitle("Syntax Error");
                 embed.WithDescription("No reason was provided");
-                embed.WithColor(new Color(0, 0, 0));
+                embed.WithColor(new Color(255, 0, 0));
 
                 await Context.Channel.SendMessageAsync("", false, embed);
             }
@@ -260,7 +260,7 @@ namespace NewTestBot.Modules
 
             var embed = new EmbedBuilder();
             embed.AddField("Here is a list of my commands",
-            p+"bab\n"+p+"kick+(Requires permissions)"+"\n"+p+"kaffe"+"\n"+p+"kaffetotal"+"\n"+p+"birb" )
+            p+"bab\n"+p+"kick+(Requires permissions)"+"\n"+p+"kaffe"+"\n"+p+"kaffetotal"+"\n"+p+"birb"+"\n"+p+"prefix")
             .WithAuthor(author => { author
             .WithName("Birdie Bot")
             .WithIconUrl(IconURL);
@@ -278,50 +278,64 @@ namespace NewTestBot.Modules
             await Context.Channel.SendMessageAsync("", false, embed);
         }
 //---------------------------------------------------------------------------------------------------------
-
+//kinda works as intended
+//it restarts the application when the prefix it changed
+//since when you update the prefix, the new one still dont work unless the whole bot is reloaded
          [Command ("prefix")]
-         public async Task Prefix(string input)
+         public async Task Prefix(string input = "")
          {
-            try
+            if (input == "")
             {
-                string prefix = File.ReadAllText("Resources/config.json");
-                JObject o = JObject.Parse(prefix);
+                var embed = new EmbedBuilder();
+                embed.WithTitle("Syntax Error");
+                embed.WithDescription("No new prefix was provided");
+                embed.WithColor(new Color(255, 0, 0));
+            }
+            else if (input != "")
+            {
+                 try
+                 {
+                    string prefix = File.ReadAllText("Resources/config.json");
+                    JObject o = JObject.Parse(prefix);
 
-                string visual = o["cmdPrefix"].ToString();
+                    string visual = o["cmdPrefix"].ToString();
 
-                o["cmdPrefix"] = (string)o["cmdPrefix"];
-                o["cmdPrefix"] = input;
+                    o["cmdPrefix"] = (string)o["cmdPrefix"];
+                    o["cmdPrefix"] = input;
 
-                string xinput = o.ToString();
+                    string xinput = o.ToString();
 
-                File.WriteAllText("Resources/config.json", xinput);
+                    File.WriteAllText("Resources/config.json", xinput);
 
-            var embed = new EmbedBuilder();
-            embed.AddField("Current prefix is: " + visual,
-            "The prefix is now changed to: " + input)
-            .WithAuthor(author => { author
-            .WithName("Birdie Bot")
-            .WithIconUrl(IconURL);
-            })
-            .WithThumbnailUrl(thumbnailURL)
-            .WithColor(new Color(255, 83, 13))
-            .WithTitle("Birdie Bot Nortification")
-            .WithFooter(footer => { footer
-            .WithText("Need help? Contact Birdie Zukira#3950")
-            .WithIconUrl(IconURL);
-            })
-            .WithCurrentTimestamp()
-            .Build();
+                    var embed = new EmbedBuilder();
+                    embed.AddField("Prefix has been changed to " + input,
+                    "The old prefix was: " + visual)
+                    .WithAuthor(author => { author
+                    .WithName("Birdie Bot")
+                    .WithIconUrl(IconURL);
+                    })
+                    .WithThumbnailUrl(thumbnailURL)
+                    .WithColor(new Color(255, 83, 13))
+                    .WithTitle("Birdie Bot Nortification")
 
-            await Context.Channel.SendMessageAsync("", false, embed);
+                    .WithFooter(footer => { footer
+                    .WithText("Need help? Contact Birdie Zukira#3950")
+                    .WithIconUrl(IconURL);
+                    })
+                    .WithCurrentTimestamp()
+                    .Build();
+
+                    await Context.Channel.SendMessageAsync("", false, embed);
  
-                Process.Start("NewTestBot.exe");
-                Process.GetCurrentProcess().Kill();
+                    Process.Start("NewTestBot.exe");
+                    Process.GetCurrentProcess().Kill();
+                 }
+                 catch (System.Exception e)
+                 {
+                    Debug.WriteLine(e);
+                 }
             }
-            catch (System.Exception e)
-            {
-                Debug.WriteLine(e);
-            }
+          
         }
 
     }
