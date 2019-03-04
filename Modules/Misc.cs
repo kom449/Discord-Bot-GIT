@@ -249,12 +249,16 @@ namespace NewTestBot.Modules
 //---------------------------------------------------------------------------------------------------------
 //works as intended
 
-     [Command("help")]
-     public async Task Help()
+        [Command("help")]
+        public async Task Help()
         {
+            string prefix = File.ReadAllText("Resources/config.json");
+            JObject o = JObject.Parse(prefix);
+            string p = o["cmdPrefix"].ToString();
+
             var embed = new EmbedBuilder();
             embed.AddField("Here is a list of my commands",
-            " %bab\n %kick (Requires permissions)\n %kaffe\n %kaffetotal\n %birb\n ")
+            p+"bab\n"+p+"kick+(Requires permissions)"+"\n"+p+"kaffe"+"\n"+p+"kaffetotal"+"\n"+p+"birb" )
             .WithAuthor(author => { author
             .WithName("Birdie Bot")
             .WithIconUrl(IconURL);
@@ -271,7 +275,43 @@ namespace NewTestBot.Modules
 
             await Context.Channel.SendMessageAsync("", false, embed);
         }
+//---------------------------------------------------------------------------------------------------------
 
+         [Command ("prefix")]
+         public async Task Prefix(string input)
+         {
+            string prefix = File.ReadAllText("Resources/config.json");
+            JObject o = JObject.Parse(prefix);
+
+            string visual = o["cmdPrefix"].ToString();
+
+            o["cmdPrefix"] = (string)o["cmdPrefix"];
+            o["cmdPrefix"] = input;
+
+            string xinput = o.ToString();
+
+
+            File.WriteAllText("Resources/config.json", xinput);
+
+            var embed = new EmbedBuilder();
+            embed.AddField("Current prefix is: " + visual,
+                "The prefix is now changed to: " + input)
+            .WithAuthor(author => { author
+            .WithName("Birdie Bot")
+            .WithIconUrl(IconURL);
+            })
+            .WithThumbnailUrl(thumbnailURL)
+            .WithColor(new Color(255, 83, 13))
+            .WithTitle("Birdie Bot Nortification")
+            .WithFooter(footer => { footer
+            .WithText("Need help? Contact Birdie Zukira#3950")
+            .WithIconUrl(IconURL);
+            })
+            .WithCurrentTimestamp()
+            .Build();
+
+            await Context.Channel.SendMessageAsync("", false, embed);
+        }
 
     }
 }
