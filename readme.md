@@ -1,13 +1,13 @@
 # Commands
-```sh
-{prefix}bab
-{prefix}kick
-{prefix}ban
-{prefix}kaffe
-{prefix}kaffetotal
-{prefix}birb
-{prefix}prefix
-```
+
+`{prefix}bab`
+`{prefix}kick`
+`{prefix}ban`
+`{prefix}kaffe`
+`{prefix}kaffetotal`
+`{prefix}birb`
+`{prefix}prefix`
+
 
 # To do list
  - Add commands to individual drinks
