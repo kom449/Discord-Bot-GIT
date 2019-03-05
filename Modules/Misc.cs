@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Threading;
 using Discord;
-using Discord.Net;
 using Discord.Commands;
 using Discord.WebSocket;
 using Newtonsoft.Json;
@@ -57,9 +56,9 @@ namespace NewTestBot.Modules
             }
 
         }
+
 //---------------------------------------------------------------------------------------------------------
 //works as intended
-        [RequireOwner]
         [Command("kick"),RequireUserPermission(Discord.GuildPermission.KickMembers)]
         [RequireBotPermission(Discord.GuildPermission.KickMembers)]
 
@@ -101,7 +100,50 @@ namespace NewTestBot.Modules
             }
 
         }
+//---------------------------------------------------------------------------------------------------------
+//Command override by bot owner - makes it possible for me to invoke through permissions
+        [RequireOwner]
+        [Command("kickoverride")]
+        [RequireBotPermission(Discord.GuildPermission.KickMembers)]
 
+        public async Task KickUserbyowner(IGuildUser user, string reason = "")
+        {
+            if (reason == "")
+            {
+                var embed = new EmbedBuilder();
+                embed.WithTitle("Syntax Error");
+                embed.WithDescription("No reason was provided");
+                embed.WithColor(new Color(255, 0, 0));
+
+                await Context.Channel.SendMessageAsync("", false, embed);
+            }
+         
+            else if (reason != "")
+            {
+                var invite = await Context.Guild.GetInvitesAsync();
+                await user.SendMessageAsync(invite.Select(x => x.Url).FirstOrDefault());
+                await user.KickAsync();
+
+
+                var embed = new EmbedBuilder();
+                embed.AddField("User kicked!",
+                user + " Has been kicked from the server!" + "\n \n Reason:" + "\n \n" + reason)
+                .WithColor(new Color(255, 0, 0))
+                .WithAuthor(author => { author
+                .WithName("Birdie Bot Nortification")
+                .WithIconUrl(IconURL);
+                })
+                .WithCurrentTimestamp()
+                .WithFooter(footer => { footer
+                .WithText("Need help? Contact Birdie Zukira#3950")
+                .WithIconUrl(IconURL);
+                })
+                .Build();
+
+                await Context.Channel.SendMessageAsync("", false, embed);
+            }
+
+        }
 
 //---------------------------------------------------------------------------------------------------------
 //not tested yet
@@ -147,11 +189,6 @@ namespace NewTestBot.Modules
 
         }
 
-
-
-
-
-
 //---------------------------------------------------------------------------------------------------------
 //annouce message not working
 //idk why
@@ -167,6 +204,7 @@ namespace NewTestBot.Modules
             
             await Context.Channel.SendMessageAsync("", false, embed);
         }
+
 //---------------------------------------------------------------------------------------------------------
 //works as intended
 
@@ -220,6 +258,7 @@ namespace NewTestBot.Modules
 
             await Context.Channel.SendMessageAsync("", false, embed);
         }
+
 //---------------------------------------------------------------------------------------------------------
 //works as intended
 
@@ -266,6 +305,7 @@ namespace NewTestBot.Modules
 
             await Context.Channel.SendMessageAsync("", false, embed);
         }
+
 //---------------------------------------------------------------------------------------------------------
 //Works as intended
 
@@ -300,6 +340,7 @@ namespace NewTestBot.Modules
 
             await Context.Channel.SendMessageAsync("", false, embed);
         }
+
 //---------------------------------------------------------------------------------------------------------
 //works as intended
 
@@ -312,7 +353,7 @@ namespace NewTestBot.Modules
 
             var embed = new EmbedBuilder();
             embed.AddField("Here is a list of my commands",
-            p+"bab\n"+p+"kick+(Requires permissions)"+"\n"+p+"kaffe"+"\n"+p+"kaffetotal"+"\n"+p+"birb"+"\n"+p+"prefix")
+            p+"bab\n"+p+"kick (Requires permissions)"+"\n"+p+"ban (Requires permissions)"+"\n"+p+"kaffe"+"\n"+p+"kaffetotal"+"\n"+p+"birb"+"\n"+p+"prefix")
             .WithAuthor(author => { author
             .WithName("Birdie Bot")
             .WithIconUrl(IconURL);
@@ -329,6 +370,7 @@ namespace NewTestBot.Modules
 
             await Context.Channel.SendMessageAsync("", false, embed);
         }
+
 //---------------------------------------------------------------------------------------------------------
 //kinda works as intended
 //it restarts the application when the prefix it changed
