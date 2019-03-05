@@ -17,10 +17,10 @@ namespace NewTestBot.Modules
         //embed stuff
         readonly string IconURL = "https://cdn.discordapp.com/avatars/467437867065540620/083828453afa6811a853008993c51a45.png";
         readonly string thumbnailURL = "https://i.gyazo.com/f67d7843f1e9e918fb85816ab4a34181.png";
-        private DiscordSocketClient _client;
+        //private DiscordSocketClient _client;
 
-//---------------------------------------------------------------------------------------------------------
-//works as intended
+        //---------------------------------------------------------------------------------------------------------
+        //works as intended
 
         [Command("bab")]
         public async Task Bab(string message = "")
@@ -83,7 +83,7 @@ namespace NewTestBot.Modules
 
                 var embed = new EmbedBuilder();
                 embed.AddField("User kicked!",
-                user + " Has been kicked from the server!" + "\n \n Reason:" + "\n \n" + reason)
+                user + " Has been kicked from the server!" + "\n \n Reason:" + "\n \n" + "**"+reason+"**")
                 .WithColor(new Color(255, 0, 0))
                 .WithAuthor(author => { author
                 .WithName("Birdie Bot Nortification")
@@ -100,6 +100,7 @@ namespace NewTestBot.Modules
             }
 
         }
+
 //---------------------------------------------------------------------------------------------------------
 //Command override by bot owner - makes it possible for me to invoke through permissions
         [RequireOwner]
@@ -196,7 +197,7 @@ namespace NewTestBot.Modules
 
         public async Task AnnounceJoinedUser(SocketGuildUser user)
         {
-            _client.UserJoined += AnnounceJoinedUser;
+            //_client.UserJoined += AnnounceJoinedUser;
             var embed = new EmbedBuilder();
             embed.WithTitle("Welcome our newest member - " + user.Mention);
             embed.WithDescription("Remember to read our rules and have a nice stay, " + user.Mention);
@@ -245,7 +246,7 @@ namespace NewTestBot.Modules
             
 
             var embed = new EmbedBuilder();
-            embed.AddField("Hvor mange Kopper kaffe er der blevet drukket?",
+            embed.AddField(Context.User.Username+" - the great kaffe bæller!",
             text)
             .WithColor(new Color(139, 69, 19))
             .WithTitle("Kaffe Tracker :coffee: ")
@@ -287,9 +288,9 @@ namespace NewTestBot.Modules
             }
 
             //turning the result and some text into a string for the embed builder
-            string text = Context.User.Mention + "Hvor mange kopper kaffe er der blevet drukket?";
-            text += "\n " + Context.User.Username + " har drukket " + o["Users"][userId]["Coffee"] + " kopper kaffe!";
-            text += "\n\n Der er i alt blevet drukket " + o["Coffee"] + " Kopper Kaffe!";
+            string text = Context.User.Mention + "Vil gerne vide hvor mange kopper kaffe er der blevet drukket.";
+            text += "\n " + Context.User.Mention + " har drukket " + o["Users"][userId]["Coffee"] + " kopper kaffe i alt!";
+            text += "\n\n til sammen er der blevet drukket " + o["Coffee"] + " Kopper Kaffe!";
 
             var embed = new EmbedBuilder();
             embed.AddField("Hvor mange Kopper kaffe er der blevet drukket?",
@@ -432,6 +433,57 @@ namespace NewTestBot.Modules
                  }
             }
           
+        }
+
+//---------------------------------------------------------------------------------------------------------
+        [Command("updateroles")]
+        public async Task Updateroles()
+        {
+
+            //getting the JSON file and turning it into a JSON object
+            string role = File.ReadAllText("SystemLang/users.json");
+            JObject o = JObject.Parse(role);
+
+            //string to save the userID and roleID
+            string userId = Context.User.Id.ToString();
+            string roleId = "";
+
+            //check if user exists in json
+            bool userExists = ((JObject)o["Users"]).ContainsKey(userId);
+
+            //if not then add the user
+            if (!userExists)
+            {
+                o["Users"][userId] = o["UserTemplate"];
+            }
+
+            //saving the roleID into the userID
+            o["Users"][userId]["role"] = (string)o["Users"][userId][roleId];
+
+            //writing all new stuff into the JSON file
+            string gatheredroles = o.ToString();
+            File.WriteAllText("SystemLang/users.json", gatheredroles);
+
+
+            var embed = new EmbedBuilder();
+                    embed.AddField("**"+"Role updater!"+"**",
+                    "Updating user roles and saving them to archive!")
+                    .WithAuthor(author => { author
+                    .WithName("Birdie Bot")
+                    .WithIconUrl(IconURL);
+                    })
+                    .WithThumbnailUrl(thumbnailURL)
+                    .WithColor(new Color(255, 83, 13))
+                    .WithTitle("Birdie Bot Nortification")
+
+                    .WithFooter(footer => { footer
+                    .WithText("Need help? Contact Birdie Zukira#3950")
+                    .WithIconUrl(IconURL);
+                    })
+                    .WithCurrentTimestamp()
+                    .Build();
+
+            await Context.Channel.SendMessageAsync("", false, embed);
         }
 
     }
