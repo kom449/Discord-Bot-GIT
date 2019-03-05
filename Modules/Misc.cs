@@ -17,7 +17,7 @@ namespace NewTestBot.Modules
         //embed stuff
         readonly string IconURL = "https://cdn.discordapp.com/avatars/467437867065540620/083828453afa6811a853008993c51a45.png";
         readonly string thumbnailURL = "https://i.gyazo.com/f67d7843f1e9e918fb85816ab4a34181.png";
-        //private DiscordSocketClient _client;
+        DiscordSocketClient _client;
 
         //---------------------------------------------------------------------------------------------------------
         //works as intended
@@ -86,7 +86,7 @@ namespace NewTestBot.Modules
                 user + " Has been kicked from the server!" + "\n \n Reason:" + "\n \n" + "**"+reason+"**")
                 .WithColor(new Color(255, 0, 0))
                 .WithAuthor(author => { author
-                .WithName("Birdie Bot Nortification")
+                .WithName("Birdie Bot nortification")
                 .WithIconUrl(IconURL);
                 })
                 .WithCurrentTimestamp()
@@ -131,7 +131,7 @@ namespace NewTestBot.Modules
                 user + " Has been kicked from the server!" + "\n \n Reason:" + "\n \n" + reason)
                 .WithColor(new Color(255, 0, 0))
                 .WithAuthor(author => { author
-                .WithName("Birdie Bot Nortification")
+                .WithName("Birdie Bot nortification")
                 .WithIconUrl(IconURL);
                 })
                 .WithCurrentTimestamp()
@@ -175,7 +175,7 @@ namespace NewTestBot.Modules
                 user + " Has been banned from the server!" + "\n \n Reason:" + "\n \n" + reason)
                 .WithColor(new Color(255, 0, 0))
                 .WithAuthor(author => { author
-                .WithName("Birdie Bot Nortification")
+                .WithName("Birdie Bot nortification")
                 .WithIconUrl(IconURL);
                 })
                 .WithCurrentTimestamp()
@@ -376,8 +376,8 @@ namespace NewTestBot.Modules
 //kinda works as intended
 //it restarts the application when the prefix it changed
 //since when you update the prefix, the new one still dont work unless the whole bot is reloaded
-         [RequireOwner]
-         [Command ("prefix")]
+         
+         [Command ("prefix"),RequireUserPermission(GuildPermission.Administrator),RequireOwner]
          public async Task Prefix(string input = "")
          {
             if (input == "")
@@ -413,7 +413,7 @@ namespace NewTestBot.Modules
                     })
                     .WithThumbnailUrl(thumbnailURL)
                     .WithColor(new Color(255, 83, 13))
-                    .WithTitle("Birdie Bot Nortification")
+                    .WithTitle("Birdie Bot nortification")
 
                     .WithFooter(footer => { footer
                     .WithText("Need help? Contact Birdie Zukira#3950")
@@ -436,6 +436,8 @@ namespace NewTestBot.Modules
         }
 
 //---------------------------------------------------------------------------------------------------------
+//working on it
+
         [Command("updateroles")]
         public async Task Updateroles()
         {
@@ -474,7 +476,7 @@ namespace NewTestBot.Modules
                     })
                     .WithThumbnailUrl(thumbnailURL)
                     .WithColor(new Color(255, 83, 13))
-                    .WithTitle("Birdie Bot Nortification")
+                    .WithTitle("Birdie Bot nortification")
 
                     .WithFooter(footer => { footer
                     .WithText("Need help? Contact Birdie Zukira#3950")
@@ -486,5 +488,49 @@ namespace NewTestBot.Modules
             await Context.Channel.SendMessageAsync("", false, embed);
         }
 
+//---------------------------------------------------------------------------------------------------------
+//bot owner command for changing the game status
+        [Command("status"),RequireOwner]
+        public async Task Changestatus(string input = "")
+        {
+            if (input == "")
+            {
+                var embed = new EmbedBuilder();
+                embed.WithTitle("Syntax Error");
+                embed.WithDescription("No game status written");
+                embed.WithColor(new Color(255, 0, 0));
+
+                await Context.Channel.SendMessageAsync("", false, embed);
+            }
+            else if (input != "")
+            {
+
+                await _client.SetGameAsync(input);
+                
+
+                var embed = new EmbedBuilder();
+                 embed.AddField("Game status has been changed!",
+                 "game status has been changed to"+input)
+                 .WithAuthor(author => { author
+                 .WithName("Birdie Bot")
+                 .WithIconUrl(IconURL);
+                 })
+                 .WithThumbnailUrl(thumbnailURL)
+                 .WithColor(new Color(255, 83, 13))
+                 .WithTitle("Birdie Bot nortification")
+                 .WithFooter(footer => { footer
+                 .WithText("Need help? Contact Birdie Zukira#3950")
+                 .WithIconUrl(IconURL);
+                 })
+                 .WithCurrentTimestamp()
+                 .Build();
+
+                 await Context.Channel.SendMessageAsync("", false, embed);
+            }
+
+           
+
+
+        }
     }
 }
