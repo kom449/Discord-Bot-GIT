@@ -9,6 +9,7 @@ using Newtonsoft.Json.Linq;
 using System.IO;
 using System.Net;
 using System.Diagnostics;
+using System.Linq;
 
 namespace NewTestBot.Modules
 {
@@ -58,7 +59,7 @@ namespace NewTestBot.Modules
         }
 //---------------------------------------------------------------------------------------------------------
 //works as intended
-
+        [RequireOwner]
         [Command("kick"),RequireUserPermission(Discord.GuildPermission.KickMembers)]
         [RequireBotPermission(Discord.GuildPermission.KickMembers)]
 
@@ -76,7 +77,11 @@ namespace NewTestBot.Modules
          
             else if (reason != "")
             {
+                var invite = await Context.Guild.GetInvitesAsync();
+                await user.SendMessageAsync(invite.Select(x => x.Url).FirstOrDefault());
                 await user.KickAsync();
+
+
                 var embed = new EmbedBuilder();
                 embed.AddField("User kicked!",
                 user + " Has been kicked from the server!" + "\n \n Reason:" + "\n \n" + reason)
@@ -96,6 +101,53 @@ namespace NewTestBot.Modules
             }
 
         }
+
+
+//---------------------------------------------------------------------------------------------------------
+//not tested yet
+//should be working though
+
+        [RequireOwner]
+        [Command("ban"),RequireUserPermission(Discord.GuildPermission.BanMembers)]
+        [RequireBotPermission(GuildPermission.BanMembers)]
+
+        public async Task Banuser(IGuildUser user, string reason = "")   
+        {
+            if (reason == "")
+            {
+                var embed = new EmbedBuilder();
+                embed.WithTitle("Syntax Error");
+                embed.WithDescription("No reason was provided");
+                embed.WithColor(new Color(255, 0, 0));
+
+                await Context.Channel.SendMessageAsync("", false, embed);
+            }
+         
+            else if (reason != "")
+            {
+                await Context.Guild.AddBanAsync(user,0,reason);
+
+                var embed = new EmbedBuilder();
+                embed.AddField("User banned!",
+                user + " Has been banned from the server!" + "\n \n Reason:" + "\n \n" + reason)
+                .WithColor(new Color(255, 0, 0))
+                .WithAuthor(author => { author
+                .WithName("Birdie Bot Nortification")
+                .WithIconUrl(IconURL);
+                })
+                .WithCurrentTimestamp()
+                .WithFooter(footer => { footer
+                .WithText("Need help? Contact Birdie Zukira#3950")
+                .WithIconUrl(IconURL);
+                })
+                .Build();
+
+                await Context.Channel.SendMessageAsync("", false, embed);
+            }
+
+        }
+
+
 
 
 
@@ -281,6 +333,7 @@ namespace NewTestBot.Modules
 //kinda works as intended
 //it restarts the application when the prefix it changed
 //since when you update the prefix, the new one still dont work unless the whole bot is reloaded
+         [RequireOwner]
          [Command ("prefix")]
          public async Task Prefix(string input = "")
          {
@@ -291,6 +344,7 @@ namespace NewTestBot.Modules
                 embed.WithDescription("No new prefix was provided");
                 embed.WithColor(new Color(255, 0, 0));
             }
+
             else if (input != "")
             {
                  try
@@ -308,7 +362,7 @@ namespace NewTestBot.Modules
                     File.WriteAllText("Resources/config.json", xinput);
 
                     var embed = new EmbedBuilder();
-                    embed.AddField("Prefix has been changed to " + input,
+                    embed.AddField("Prefix has been changed to: " + "**"+input+"**",
                     "The old prefix was: " + visual)
                     .WithAuthor(author => { author
                     .WithName("Birdie Bot")
