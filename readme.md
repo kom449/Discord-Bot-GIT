@@ -1,3 +1,14 @@
+# Commands
+```
+{prefix}bab
+{prefix}kick
+{prefix}ban
+{prefix}kaffe
+{prefix}kaffetotal
+{prefix}birb
+{prefix}prefix
+```
+
 # To do list
  - Add commands to individual drinks
  - Automatic assign roles to users that have been kicked and reinvited
