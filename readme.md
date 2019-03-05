@@ -35,6 +35,7 @@ usage:</br>
  - Add commands to individual drinks
  - Automatic assign roles to users that have been kicked and reinvited
  - Optimize commands and put each command into individual files 
+ - Add MYSQL support and store user information remotely
  
 # Known Issues
  - Users can DM the bot with the commands, which should not be possible
