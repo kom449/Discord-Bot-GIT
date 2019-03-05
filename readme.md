@@ -1,6 +1,6 @@
 # Commands
 
-`{prefix}bab`
+`{prefix}bab`</br>
 `{prefix}kick`
 `{prefix}ban`
 `{prefix}kaffe`
