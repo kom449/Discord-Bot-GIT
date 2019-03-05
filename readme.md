@@ -1,12 +1,19 @@
 # Commands
 
 `{prefix}bab`</br>
-`{prefix}kick`
-`{prefix}ban`
-`{prefix}kaffe`
-`{prefix}kaffetotal`
-`{prefix}birb`
-`{prefix}prefix`
+usage: `{prefix}bab @{user}`</br>
+`{prefix}kick`</br>
+usage: `{prefix}kick {@user} {reason}`</br>
+`{prefix}ban`</br>
+usage: `{prefix}ban @{user} {reason}`</br>
+`{prefix}kaffe`</br>
+usage: `{prefix}kaffe`</br>
+`{prefix}kaffetotal`</br>
+usage: `{prefix}kaffetotal`</br>
+`{prefix}birb`</br>
+usage: `{prefix}birb`</br>
+`{prefix}prefix`</br>
+usage: `{prefix}prefix {new prefix}`</br>
 
 
 # To do list
