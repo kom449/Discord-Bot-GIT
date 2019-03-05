@@ -1,5 +1,5 @@
 # Commands
-```
+```sh
 {prefix}bab
 {prefix}kick
 {prefix}ban
