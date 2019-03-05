@@ -1,5 +1,7 @@
 # Commands
-
+default prefix is : `%`
+</br>
+</br>
 `{prefix}bab`</br>
 usage:</br>
 `{prefix}bab @{user}`</br>
