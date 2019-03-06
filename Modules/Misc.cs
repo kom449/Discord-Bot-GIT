@@ -448,6 +448,7 @@ namespace NewTestBot.Modules
 
             //string to save the userID and roleID
             string userId = Context.User.Id.ToString();
+            
             string roleId = "";
 
             //check if user exists in json
