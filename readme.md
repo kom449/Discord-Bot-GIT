@@ -8,6 +8,7 @@
 |Kaffetotal|Shows the total amount of coffee|{prefix}kaffetotal|
 |Birb|gives you a random bird picture|{prefix}birb|
 |Prefix|changes the current prefix|{prefix}prefix {new prefix}|
+|purge|deletes x amount of messages in a channel|{prefix}purge {amount}|
 
 # To do list
  - Add commands to individual drinks
