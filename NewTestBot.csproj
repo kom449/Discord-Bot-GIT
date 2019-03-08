@@ -216,6 +216,7 @@
     <Compile Include="Modules\kick.cs" />
     <Compile Include="Modules\Misc.cs" />
     <Compile Include="Modules\prefix.cs" />
+    <Compile Include="Modules\purge.cs" />
     <Compile Include="Modules\status.cs" />
     <Compile Include="Modules\updateroles.cs" />
     <Compile Include="Program.cs" />
