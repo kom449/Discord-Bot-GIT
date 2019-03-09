@@ -6,7 +6,7 @@ using Discord.WebSocket;
 
 namespace NewTestBot.Modules
 {
-    class status : ModuleBase<SocketCommandContext>
+    public class status : ModuleBase<SocketCommandContext>
     {
         readonly string IconURL = "https://cdn.discordapp.com/avatars/467437867065540620/083828453afa6811a853008993c51a45.png";
         readonly string thumbnailURL = "https://i.gyazo.com/f67d7843f1e9e918fb85816ab4a34181.png";
@@ -26,8 +26,8 @@ namespace NewTestBot.Modules
             }
             else if (input != "")
             {
-
                 await _client.SetGameAsync(input);
+                
                 
 
                 var embed = new EmbedBuilder();
