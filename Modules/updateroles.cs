@@ -3,6 +3,7 @@ using Discord;
 using Discord.Commands;
 using Newtonsoft.Json.Linq;
 using System.IO;
+using System.Diagnostics;
 
 namespace NewTestBot.Modules
 {
@@ -11,37 +12,39 @@ namespace NewTestBot.Modules
         readonly string IconURL = "https://cdn.discordapp.com/avatars/467437867065540620/083828453afa6811a853008993c51a45.png";
         readonly string thumbnailURL = "https://i.gyazo.com/f67d7843f1e9e918fb85816ab4a34181.png";
 
-        [Command("updateroles")]
+        [Command("updateroles"),RequireOwner]
         public async Task Updateroles()
         {
-
-            //getting the JSON file and turning it into a JSON object
-            string role = File.ReadAllText("SystemLang/users.json");
-            JObject o = JObject.Parse(role);
-
-            //string to save the userID and roleID
-            string userId = Context.User.Id.ToString();
             
-            string roleId = "";
+                //getting the JSON file and turning it into a JSON object
+                string role = File.ReadAllText("SystemLang/users.json");
+                JObject o = JObject.Parse(role);
 
-            //check if user exists in json
-            bool userExists = ((JObject)o["Users"]).ContainsKey(userId);
-
-            //if not then add the user
-            if (!userExists)
-            {
-                o["Users"][userId] = o["UserTemplate"];
-            }
-
-            //saving the roleID into the userID
-            o["Users"][userId]["role"] = (string)o["Users"][userId][roleId];
-
-            //writing all new stuff into the JSON file
-            string gatheredroles = o.ToString();
-            File.WriteAllText("SystemLang/users.json", gatheredroles);
+                //string to save the userID and roleID
+                string userId = Context.User.Id.ToString();
+                Debug.WriteLine(userId);
 
 
-            var embed = new EmbedBuilder();
+                string roleId = "12xd34";
+
+                //check if user exists in json
+                bool userExists = ((JObject)o["Users"]).ContainsKey(userId);
+
+                //if not then add the user
+                if (!userExists)
+                {
+                    o["Users"][userId] = o["UserTemplate"];
+                }
+
+                //saving the roleID into the userID
+                o["Users"][userId]["role"] = (string)o["Users"][userId][roleId];
+
+                //writing all new stuff into the JSON file
+                string gatheredroles = o.ToString();
+                File.WriteAllText("SystemLang/users.json", gatheredroles);
+            
+
+                    var embed = new EmbedBuilder();
                     embed.AddField("**"+"Role updater!"+"**",
                     "Updating user roles and saving them to archive!")
                     .WithAuthor(author => { author

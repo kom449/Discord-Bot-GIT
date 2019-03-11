@@ -1,14 +1,9 @@
 ﻿using System.Threading.Tasks;
-using System.Threading;
 using Discord;
 using Discord.Commands;
-using Discord.WebSocket;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.IO;
 using System.Net;
-using System.Diagnostics;
-using System.Linq;
+
 
 namespace NewTestBot.Modules
 {

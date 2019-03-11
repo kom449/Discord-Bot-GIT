@@ -2,6 +2,9 @@
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
+using System;
+using System.Diagnostics;
+
 namespace NewTestBot.Modules
 {
     public class calc : ModuleBase<SocketCommandContext>
@@ -11,10 +14,9 @@ namespace NewTestBot.Modules
         [Command("calc")]
         public async Task calculator(string input)
         {
-
             var result = new DataTable().Compute(input, "") + "";
-
-
+            
+            
             var embed = new EmbedBuilder();
                 embed.AddField("Made for easy math on discord",
                 "Works with all operators!")
