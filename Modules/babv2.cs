@@ -40,7 +40,7 @@ namespace NewTestBot.Modules
                     embed.WithDescription("I NEED A FUCKING TARGET YOU RETARD");
                     embed.WithColor(new Color(255, 0, 0));
 
-                    //await Context.Channel.SendMessageAsync("", false, embed);
+                    await Context.Channel.SendMessageAsync("", false, embed);
                 }
             }
         }

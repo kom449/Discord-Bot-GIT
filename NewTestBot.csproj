@@ -212,6 +212,7 @@
     <Compile Include="Modules\babv2.cs" />
     <Compile Include="Modules\ban.cs" />
     <Compile Include="Modules\birb.cs" />
+    <Compile Include="Modules\calc.cs" />
     <Compile Include="Modules\help.cs" />
     <Compile Include="Modules\kaffe.cs" />
     <Compile Include="Modules\kick.cs" />
