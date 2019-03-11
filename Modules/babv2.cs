@@ -15,12 +15,6 @@ namespace NewTestBot.Modules
 
             foreach (SocketGuildUser user in Context.Guild.Users)
             {
-                if (Context.IsPrivate)
-                {
-                    await ReplyAsync("Cant call command from a direct message");
-                    return;
-                }
-
                 if (message == Context.User.ToString())
                 {
                     var embed = new EmbedBuilder();
@@ -37,7 +31,7 @@ namespace NewTestBot.Modules
                     })
                     .Build();
 
-                    // await Context.Channel.SendMessageAsync("", false, embed);
+                     //await Context.Channel.SendMessageAsync("", false, embed);
                 }
                 else if (message != Context.User.ToString())
                 {

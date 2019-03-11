@@ -19,10 +19,11 @@ namespace NewTestBot.Modules
             string prefix = File.ReadAllText("Resources/config.json");
             JObject o = JObject.Parse(prefix);
             string p = o["cmdPrefix"].ToString();
+            string version = o["version"].ToString();
 
             var embed = new EmbedBuilder();
             embed.AddField("Here is a list of my commands",
-            p+"bab\n"+p+"kick (Requires permissions)"+"\n"+p+"ban (Requires permissions)"+"\n"+p+"kaffe"+"\n"+p+"kaffetotal"+"\n"+p+"birb"+"\n"+p+"prefix")
+            p+"bab\n"+p+"kick (Requires permissions)"+"\n"+p+"ban (Requires permissions)"+"\n"+p+"kaffe"+"\n"+p+"kaffetotal"+"\n"+p+"birb"+"\n"+p+"prefix"+"\n"+p+"purge"+"\n"+"\n"+"Current version of Birdie bot is: "+"***"+version+"***")
             .WithAuthor(author => { author
             .WithName("Birdie Bot")
             .WithIconUrl(IconURL);
