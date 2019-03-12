@@ -1,14 +1,7 @@
 ﻿using System.Threading.Tasks;
-using System.Threading;
 using Discord;
 using Discord.Commands;
-using Discord.WebSocket;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.IO;
-using System.Net;
-using System.Diagnostics;
-using System.Linq;
+
 
 namespace NewTestBot.Modules
 {
@@ -16,9 +9,7 @@ namespace NewTestBot.Modules
     {
         readonly string IconURL = "https://cdn.discordapp.com/avatars/467437867065540620/083828453afa6811a853008993c51a45.png";
 
-
-        [RequireOwner]
-        [Command("ban"),RequireUserPermission(Discord.GuildPermission.BanMembers)]
+        [Command("ban"),RequireUserPermission(Discord.GuildPermission.BanMembers), RequireOwner]
         [RequireBotPermission(GuildPermission.BanMembers)]
 
         public async Task Banuser(IGuildUser user, string reason = "")   

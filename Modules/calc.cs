@@ -7,12 +7,12 @@ using System.Diagnostics;
 
 namespace NewTestBot.Modules
 {
-    public class calc : ModuleBase<SocketCommandContext>
+    public class Calc : ModuleBase<SocketCommandContext>
     {
         readonly string IconURL = "https://cdn.discordapp.com/avatars/467437867065540620/083828453afa6811a853008993c51a45.png";
 
         [Command("calc")]
-        public async Task calculator(string input)
+        public async Task Calculator(string input)
         {
             if (input.Contains("42"))
             {
