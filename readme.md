@@ -4,11 +4,14 @@
 |Bab|Bab a user|{prefix}bab {@name}|
 |Kick|Kicks a user from the server|{prefix}kick {@name} {reason}|
 |Ban|Bans a user from the server|{prefix}ban {@name} {reason}|
+|help|shows a list of all the commands|{prefix}help|
 |Kaffe|Drink a cup of coffee|{prefix}kaffe|
 |Kaffetotal|Shows the total amount of coffee|{prefix}kaffetotal|
 |Birb|gives you a random bird picture|{prefix}birb|
 |Prefix|changes the current prefix|{prefix}prefix {new prefix}|
 |purge|deletes x amount of messages in a channel|{prefix}purge {amount}|
+|calc|nifty little calculater|{prefix}calc {equation}|
+
 
 # To do list
  - Add commands to individual drinks
