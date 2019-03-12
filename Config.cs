@@ -36,5 +36,6 @@ namespace NewTestBot
     {
         public string token;
         public string cmdPrefix;
+        public string version;
     }
 }

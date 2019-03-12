@@ -3,7 +3,7 @@ using Discord.WebSocket;
 using System;
 using System.Threading.Tasks;
 using System.Reflection;
-
+using Discord;
 
 namespace NewTestBot
 {
@@ -32,7 +32,19 @@ namespace NewTestBot
             {
                 if (context.IsPrivate == true)
                 {
+                    string IconURL = "https://cdn.discordapp.com/avatars/467437867065540620/083828453afa6811a853008993c51a45.png";
+                    var embed = new EmbedBuilder();
+                    embed.WithTitle("Birdie Bot nortification");
+                    embed.WithDescription("I do not accept commands from Direct messages!");
+                    embed.WithFooter(footer => { footer
+                    .WithText("Need help? Contact Birdie Zukira#3950")
+                    .WithIconUrl(IconURL);
+                    });
+                    embed.WithCurrentTimestamp();
+                    embed.WithColor(new Color(255, 0, 0));
+                    await context.User.SendMessageAsync("", false, embed);
                     return;
+                   
                 }
                 else
                 {

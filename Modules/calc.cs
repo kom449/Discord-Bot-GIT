@@ -25,24 +25,36 @@ namespace NewTestBot.Modules
 
             else
             {
-                var result = new DataTable().Compute(input, "") + "";
-                
+                try
+                {
+                    var result = new DataTable().Compute(input, "") + "";
 
-                var embed = new EmbedBuilder();
-                embed.AddField("Made for easy math on discord",
-                "Works with all operators!")
-                .WithColor(new Color(253, 246, 56))
-                .WithTitle("Discord Calculator!")
-                .WithDescription("*" + result + "*")
-                .WithCurrentTimestamp()
-                .WithFooter(footer => {
-                    footer
-                .WithText("Need help? Contact Birdie Zukira#3950")
-                .WithIconUrl(IconURL);
-                })
-                .Build();
 
-                await Context.Channel.SendMessageAsync("", false, embed);
+                    var embed = new EmbedBuilder();
+                    embed.AddField("Made for easy math on discord",
+                    "now with :cookie:")
+                    .WithColor(new Color(0, 255, 0))
+                    .WithTitle("Discord Calculator!")
+                    .WithDescription("*" + result + "*")
+                    .WithCurrentTimestamp()
+                    .WithFooter(footer => {
+                        footer
+                    .WithText("Need help? Contact Birdie Zukira#3950")
+                    .WithIconUrl(IconURL);
+                    })
+                    .Build();
+
+                    await Context.Channel.SendMessageAsync("", false, embed);
+                }
+                catch(Exception)
+                {
+                    var embed = new EmbedBuilder();
+                    embed.WithTitle("Discord Calculator!");
+                    embed.WithDescription("invalid Operator was used!");
+                    embed.WithColor(new Color(255, 0, 0));
+                    await Context.Channel.SendMessageAsync("", false, embed);
+                }
+
             }
 
         }
