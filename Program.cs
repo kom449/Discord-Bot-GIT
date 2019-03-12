@@ -24,6 +24,7 @@ namespace NewTestBot
             _client.Log += Log;
             await _client.LoginAsync(TokenType.Bot, Config.bot.token);
             await _client.StartAsync();
+            
             await _client.SetGameAsync("Getting worked on ^v^");
             _handler = new CommandHandler();
             await _handler.InitializeAsync(_client);

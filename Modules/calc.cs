@@ -14,15 +14,26 @@ namespace NewTestBot.Modules
         [Command("calc")]
         public async Task calculator(string input)
         {
-            var result = new DataTable().Compute(input, "") + "";
-            
-            
-            var embed = new EmbedBuilder();
+            if (input == "0/42")
+            {
+                var embed = new EmbedBuilder();
+                embed.WithTitle("Discord Calculator!");
+                embed.WithDescription("I do not know the meaning of life.");
+                embed.WithColor(new Color(255, 0, 0));
+                await Context.Channel.SendMessageAsync("", false, embed);
+            }
+
+            else
+            {
+                var result = new DataTable().Compute(input, "") + "";
+                
+
+                var embed = new EmbedBuilder();
                 embed.AddField("Made for easy math on discord",
                 "Works with all operators!")
                 .WithColor(new Color(253, 246, 56))
                 .WithTitle("Discord Calculator!")
-                .WithDescription("*"+result+"*")
+                .WithDescription("*" + result + "*")
                 .WithCurrentTimestamp()
                 .WithFooter(footer => {
                     footer
@@ -32,6 +43,8 @@ namespace NewTestBot.Modules
                 .Build();
 
                 await Context.Channel.SendMessageAsync("", false, embed);
+            }
+
         }
     }
 }

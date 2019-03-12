@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
+using Discord.WebSocket;
 using Newtonsoft.Json.Linq;
 using System.IO;
 using System.Diagnostics;
@@ -25,10 +26,10 @@ namespace NewTestBot.Modules
                 Debug.WriteLine(userId);
 
 
-                string roleId = "12xd34";
+                string roleId = "xd";
 
-                //check if user exists in json
-                bool userExists = ((JObject)o["Users"]).ContainsKey(userId);
+            //check if user exists in json
+            bool userExists = ((JObject)o["Users"]).ContainsKey(userId);
 
                 //if not then add the user
                 if (!userExists)

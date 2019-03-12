@@ -10,12 +10,12 @@ namespace NewTestBot.Modules
         readonly string IconURL = "https://cdn.discordapp.com/avatars/467437867065540620/083828453afa6811a853008993c51a45.png";
 
         [Command("babv2")]
-        public async Task Bab(string message)
+        public async Task Bab(string user)
         {
 
-            foreach (SocketGuildUser user in Context.Guild.Users)
-            {
-                if (message == Context.User.ToString())
+            //foreach (SocketGuildUser user in Context.Guild.Users)
+            
+                if (user == Context.User.ToString())
                 {
                     var embed = new EmbedBuilder();
                     embed.AddField("Your options are:",
@@ -33,7 +33,7 @@ namespace NewTestBot.Modules
 
                      //await Context.Channel.SendMessageAsync("", false, embed);
                 }
-                else if (message != Context.User.ToString())
+                else if (user != Context.User.ToString())
                 {
                     var embed = new EmbedBuilder();
                     embed.WithTitle("Syntax Error");
@@ -42,7 +42,7 @@ namespace NewTestBot.Modules
 
                     await Context.Channel.SendMessageAsync("", false, embed);
                 }
-            }
+            
         }
     }
 }
