@@ -14,7 +14,7 @@ namespace NewTestBot.Modules
         [Command("calc")]
         public async Task calculator(string input)
         {
-            if (input == "0/42")
+            if (input.Contains("42"))
             {
                 var embed = new EmbedBuilder();
                 embed.WithTitle("Discord Calculator!");

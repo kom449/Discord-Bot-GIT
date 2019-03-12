@@ -5,7 +5,7 @@ using Discord.WebSocket;
 
 namespace NewTestBot.Modules
 {
-    public class babv2 : ModuleBase<SocketCommandContext>
+    public class Babv2 : ModuleBase<SocketCommandContext>
     {
         readonly string IconURL = "https://cdn.discordapp.com/avatars/467437867065540620/083828453afa6811a853008993c51a45.png";
 

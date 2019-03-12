@@ -5,16 +5,17 @@ using Discord.WebSocket;
 using Newtonsoft.Json.Linq;
 using System.IO;
 using System.Diagnostics;
+using System.Linq;
 
 namespace NewTestBot.Modules
 {
-    public class updateroles : ModuleBase<SocketCommandContext>
+    public class Updateroles : ModuleBase<SocketCommandContext>
     {
         readonly string IconURL = "https://cdn.discordapp.com/avatars/467437867065540620/083828453afa6811a853008993c51a45.png";
         readonly string thumbnailURL = "https://i.gyazo.com/f67d7843f1e9e918fb85816ab4a34181.png";
 
         [Command("updateroles"),RequireOwner]
-        public async Task Updateroles()
+        public async Task Updaterole()
         {
             
                 //getting the JSON file and turning it into a JSON object
@@ -24,9 +25,8 @@ namespace NewTestBot.Modules
                 //string to save the userID and roleID
                 string userId = Context.User.Id.ToString();
                 Debug.WriteLine(userId);
+                string roleId = "";
 
-
-                string roleId = "xd";
 
             //check if user exists in json
             bool userExists = ((JObject)o["Users"]).ContainsKey(userId);

@@ -21,7 +21,7 @@ namespace NewTestBot.Modules
             //_client.UserJoined += AnnounceJoinedUser;
             var embed = new EmbedBuilder();
             embed.WithTitle("Welcome our newest member - " + user.Mention);
-            embed.WithDescription("Remember to read our rules and have a nice stay, " + user.Mention);
+            embed.WithDescription("Remember to read our rules and have a nice stay!");
             embed.WithColor(new Color(0, 0, 255));
             
             await Context.Channel.SendMessageAsync("", false, embed);
