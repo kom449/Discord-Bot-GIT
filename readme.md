@@ -20,7 +20,6 @@
  - Add MYSQL support and store user information remotely
  
 # Known Issues
- - Users can DM the bot with the commands, which should not be possible
  - There is currently no way to get specific roles of users
  - Using more than 1 word in a reason will result in a "Using too many parameters" will be fixed soon
  
