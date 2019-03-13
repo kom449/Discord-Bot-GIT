@@ -246,6 +246,7 @@
     <None Include="SystemLang\alerts.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="SystemLang\drinks.json" />
     <None Include="SystemLang\kaffe.json" />
   </ItemGroup>
   <ItemGroup>

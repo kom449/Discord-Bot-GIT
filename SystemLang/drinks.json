@@ -1,0 +1,67 @@
+﻿{
+  "Drinks": {
+    "Coffee": {
+      "Name": "Kaffe",
+      "Units": "kopper",
+      "Emoji": ":coffee:",
+      "Total": 0
+    },
+    "Tea": {
+      "Name": "Te",
+      "Units": "kopper",
+      "Emoji": ":tea:",
+      "Total": 0
+    },
+    "Soda": {
+      "Name": "Sodavand",
+      "Units": "flasker",
+      "Emoji": ":tropical_drink:",
+      "Total": 0
+    },
+    "Water": {
+      "Name": "Vand",
+      "Units": "kopper",
+      "Emoji": ":potable_water:",
+      "Total": 0
+    },
+    "EnergyDrink": {
+      "Name": "Energidrik",
+      "Units": "dåser",
+      "Emoji": ":rocket:",
+      "Total": 0
+    },
+    "MountainDew": {
+      "Name": "Mountain Dew",
+      "Units": "liter",
+      "Emoji": ":tropical_drink:",
+      "Total": 0
+    }
+  },
+  "DrinkTemplate": {
+    "Name": "",
+    "Units": "",
+    "Emoji": "",
+    "Total": 0
+  },
+  "DrinkBinds": {
+    "Kaffe": "Coffee",
+    "Te": "Tea",
+    "The": "Tea",
+    "Sodavand": "Soda",
+    "Soda": "Soda",
+    "Vand": "Water",
+    "Energidrik": "EnergyDrink",
+    "Energi": "EnergyDrink",
+    "Mountaindew": "MountainDew",
+    "Mtndew": "MountainDew"
+  },
+  "Users": {
+  },
+  "UserTemplate": {
+    "Drinks": {
+      "Coffee": 0
+    },
+    "Mention": "",
+    "Username": ""
+  }
+}
