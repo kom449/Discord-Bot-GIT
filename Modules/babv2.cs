@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
-using Discord.WebSocket;
+using System.Diagnostics;
 
 namespace NewTestBot.Modules
 {
@@ -14,8 +14,11 @@ namespace NewTestBot.Modules
         {
 
             //foreach (SocketGuildUser user in Context.Guild.Users)
+            var users = Context.Guild.Users;
+            Debug.WriteLine(users);
+
             
-                if (user == Context.User.ToString())
+                if (user == users.ToString())
                 {
                     var embed = new EmbedBuilder();
                     embed.AddField("Your options are:",
@@ -31,7 +34,7 @@ namespace NewTestBot.Modules
                     })
                     .Build();
 
-                     //await Context.Channel.SendMessageAsync("", false, embed);
+                     await Context.Channel.SendMessageAsync("", false, embed);
                 }
                 else if (user != Context.User.ToString())
                 {

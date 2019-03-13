@@ -43,8 +43,7 @@ namespace NewTestBot
                     embed.WithCurrentTimestamp();
                     embed.WithColor(new Color(255, 0, 0));
                     await context.User.SendMessageAsync("", false, embed);
-                    return;
-                   
+                    return;                   
                 }
                 else
                 {
@@ -54,7 +53,6 @@ namespace NewTestBot
                         Console.WriteLine(result.ErrorReason);
                     }
                 }
-
             }
         }
     }

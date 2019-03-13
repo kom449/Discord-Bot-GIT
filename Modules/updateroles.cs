@@ -1,11 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
-using Discord.WebSocket;
 using Newtonsoft.Json.Linq;
 using System.IO;
 using System.Diagnostics;
-using System.Linq;
 
 namespace NewTestBot.Modules
 {
@@ -19,13 +17,14 @@ namespace NewTestBot.Modules
         {
             
                 //getting the JSON file and turning it into a JSON object
-                string role = File.ReadAllText("SystemLang/users.json");
-                JObject o = JObject.Parse(role);
+                string data = File.ReadAllText("SystemLang/users.json");
+                JObject o = JObject.Parse(data);
 
                 //string to save the userID and roleID
                 string userId = Context.User.Id.ToString();
                 Debug.WriteLine(userId);
                 string roleId = "";
+                
 
 
             //check if user exists in json
