@@ -24,7 +24,10 @@ namespace NewTestBot
         private async Task HandleCommandAsync(SocketMessage s)
         {          
             var msg = s as SocketUserMessage;
-            if (msg == null) return;
+            if (msg == null)
+            {
+                return;
+            }
             
             var context = new SocketCommandContext(_client, msg);
             int argPos = 0;
@@ -42,8 +45,7 @@ namespace NewTestBot
                     });
                     embed.WithCurrentTimestamp();
                     embed.WithColor(new Color(255, 0, 0));
-                    await context.User.SendMessageAsync("", false, embed);
-                    return;                   
+                    await context.User.SendMessageAsync("", false, embed);                 
                 }
                 else
                 {

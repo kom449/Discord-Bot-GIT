@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace NewTestBot
 {
-    class Config
+    public static class Config
     {
         private const string configFolder = "Resources";
         private const string configFile = "config.json";
