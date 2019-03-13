@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
@@ -10,7 +11,6 @@ namespace NewTestBot.Modules
     {
         readonly string IconURL = "https://cdn.discordapp.com/avatars/467437867065540620/083828453afa6811a853008993c51a45.png";
         readonly string thumbnailURL = "https://i.gyazo.com/f67d7843f1e9e918fb85816ab4a34181.png";
-        DiscordSocketClient _client;
 
         [Command("status"),RequireOwner]
         public async Task Changestatus(string input = "")
@@ -26,13 +26,15 @@ namespace NewTestBot.Modules
             }
             else if (input != "")
             {
-                await _client.SetGameAsync(input);
-                
-                
+                try
+                {
 
-                var embed = new EmbedBuilder();
+                    await Context.Client.SetGameAsync(input);
+                    await Task.CompletedTask;
+
+                 var embed = new EmbedBuilder();
                  embed.AddField("Game status has been changed!",
-                 "game status has been changed to"+input)
+                 "game status has been changed to: "+"**"+input+"**")
                  .WithAuthor(author => { author
                  .WithName("Birdie Bot")
                  .WithIconUrl(IconURL);
@@ -48,6 +50,12 @@ namespace NewTestBot.Modules
                  .Build();
 
                  await Context.Channel.SendMessageAsync("", false, embed);
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+                   
             }
         }
     }
