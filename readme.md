@@ -6,11 +6,14 @@
 |Kick|Kicks a user from the server|{prefix}kick {@name} {reason}|
 |Ban|Bans a user from the server|{prefix}ban {@name} {reason}|
 |help|shows a list of all the commands|{prefix}help|
-|Kaffe|Drink a cup of coffee|{prefix}kaffe|
-|Kaffetotal|Shows the total amount of coffee|{prefix}kaffetotal|
+|drink|drinks a beverage|{prefix}drink {beverage} {amount}|
+|drinktotal|Total amount of a beverage|{prefix}drinktotal {beverage}|
+|drinkleader|shows a leaderboard of the beverage|{prefix}drinkleader {beverage}|
+|drinklist|Shows the list of beverages|{prefix}drinklist|
 |Birb|gives you a random bird picture|{prefix}birb|
 |Prefix|changes the current prefix|{prefix}prefix {new prefix}|
 |purge|deletes x amount of messages in a channel|{prefix}purge {amount}|
+|status|changes the game status of the bot|{prefix}status {text}|
 |calc|nifty little calculater|{prefix}calc {equation}|
 
 
