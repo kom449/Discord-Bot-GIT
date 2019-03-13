@@ -27,8 +27,6 @@ namespace NewTestBot
                 string json = File.ReadAllText(configFolder + "/" + configFile);
                 bot = JsonConvert.DeserializeObject<BotConfig>(json);
             }
-
-
         }
     }
 
@@ -36,5 +34,6 @@ namespace NewTestBot
     {
         public string token;
         public string cmdPrefix;
+        public string version;
     }
 }

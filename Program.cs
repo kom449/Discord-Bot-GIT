@@ -1,7 +1,8 @@
 ﻿using Discord.WebSocket;
+using Discord;
 using System;
 using System.Threading.Tasks;
-using Discord;
+
 
 namespace NewTestBot
 {
