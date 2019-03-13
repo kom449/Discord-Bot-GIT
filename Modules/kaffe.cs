@@ -8,7 +8,7 @@ using System.IO;
 
 namespace NewTestBot.Modules
 {
-    public class kaffe : ModuleBase<SocketCommandContext>
+    class kaffe : ModuleBase<SocketCommandContext>
     {
         readonly string IconURL = "https://cdn.discordapp.com/avatars/467437867065540620/083828453afa6811a853008993c51a45.png";
 
