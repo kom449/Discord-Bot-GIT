@@ -1,4 +1,7 @@
 # Commands
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/1352553de9e841868c9320c316a8d9d7)](https://app.codacy.com/app/kom449/Discord-Bot-GIT?utm_source=github.com&utm_medium=referral&utm_content=kom449/Discord-Bot-GIT&utm_campaign=Badge_Grade_Settings)
+
 | Command | Description | Usage |
 | ------ | ------ | ------ |
 |Bab|Bab a user|{prefix}bab {@name}|
