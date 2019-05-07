@@ -10,8 +10,8 @@ namespace NewTestBot.Modules
     {
         readonly string IconURL = "https://cdn.discordapp.com/avatars/467437867065540620/083828453afa6811a853008993c51a45.png";
 
-        [Command("kick"),RequireUserPermission(Discord.GuildPermission.KickMembers)]
-        [RequireBotPermission(Discord.GuildPermission.KickMembers)]
+        [Command("kick"),RequireUserPermission(GuildPermission.KickMembers)]
+        [RequireBotPermission(GuildPermission.KickMembers)]
 
         public async Task KickUser(IGuildUser user, string reason = "")
         {
@@ -55,7 +55,7 @@ namespace NewTestBot.Modules
 
                [RequireOwner]
         [Command("kickoverride")]
-        [RequireBotPermission(Discord.GuildPermission.KickMembers)]
+        [RequireBotPermission(GuildPermission.KickMembers)]
 
         public async Task KickUserbyowner(IGuildUser user, string reason = "")
         {

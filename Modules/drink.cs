@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 using System.IO;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace NewTestBot.Modules
 {
@@ -13,10 +14,10 @@ namespace NewTestBot.Modules
         readonly string IconURL = "https://cdn.discordapp.com/avatars/467437867065540620/083828453afa6811a853008993c51a45.png";
 
         [Command("drink")]
-        public async Task drinks(string drikkelse, int amount)
+        public async Task Drinks(string drikkelse, float amount)
         {
             // change first letter to uppercase, and the rest of the letters to lower case.
-            drikkelse = System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(drikkelse.ToLower());
+            drikkelse = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(drikkelse.ToLower());
 
             try
             {
@@ -250,7 +251,7 @@ namespace NewTestBot.Modules
             }
 
             // change first letter to uppercase, and the rest of the letters to lower case.
-            drikkelse = System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(drikkelse.ToLower());
+            drikkelse = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(drikkelse.ToLower());
 
             //get unique user id
             string userId = Context.User.Id.ToString();

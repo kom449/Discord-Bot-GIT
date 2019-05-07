@@ -1,0 +1,147 @@
+﻿using System;
+using MySql.Data.MySqlClient;
+using Newtonsoft.Json.Linq;
+using System.IO;
+using Discord;
+using Discord.Commands;
+using System.Threading.Tasks;
+using System.Net;
+
+
+namespace NewTestBot.Modules
+{
+    public class DBConnect : ModuleBase<SocketCommandContext>
+    {
+        readonly string IconURL = "https://cdn.discordapp.com/avatars/467437867065540620/083828453afa6811a853008993c51a45.png";
+
+        [Command("Connect", RunMode = RunMode.Async)] [RequireOwner]
+        public async Task ConnectDB(string response)
+        {
+            //replacing space with "%20"
+            string account = response.Replace("_", "%20");
+            Console.WriteLine(account);
+
+            //reading db info and apikey from file
+            string data = File.ReadAllText("Resources/config.json");
+            
+            //using c for webclient connections
+            WebClient c = new WebClient();
+
+            //getting DB information
+            JObject o = JObject.Parse(data);
+            string apikey = (string)o["lolapi"]["apikey"];
+            string connect = string.Format("server={0};user={1};database={2};port={3};password={4}",
+            (string)o["database"]["dbhost"], (string)o["database"]["dbuser"], (string)o["database"]["dbname"], (string)o["database"]["dbport"], (string)o["database"]["dbpass"]);
+
+            //getting league account ID
+            //using "i" for id
+                string responsename = c.DownloadString("https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + account + "?api_key=" + apikey + "");
+                JObject i = JObject.Parse(responsename);
+                var id = i["id"];
+                var lolname = i["name"];
+                var icon = i["profileIconId"];
+                Console.WriteLine(id);
+
+            //getting league account icon
+                string findlatestlolversion = c.DownloadString("https://ddragon.leagueoflegends.com/api/versions.json");
+                JArray latestlolversion = JArray.Parse(findlatestlolversion);
+                var version = latestlolversion[0];
+                string thumbnailURL = "http://ddragon.leagueoflegends.com/cdn/" + version + "/img/profileicon/" + icon + ".png";
+
+
+
+
+            //getting league rank from ID
+            //using "r" for rank
+            //string responserank = c.DownloadString("https://euw1.api.riotgames.com/lol/league/v4/positions/by-summoner/" + id + "?api_key=" + apikey + "");
+            //JObject r = JObject.Parse(responserank);
+
+
+            string UserID = Context.User.Id.ToString();
+            string DiscordName = Context.User.Username;
+            string rank = "rank";
+            string Query = "INSERT INTO users_testing (Discord_Id,Discord_Name,League_Id,League_Name,SOLO_QUEUE,Icon_Id) VALUES ('" + UserID + "','" + DiscordName + "','" + id + "','" + lolname + "','" + rank+ "','" + icon + "');";
+            string Duplicate = "SELECT Discord_Id FROM users_testing WHERE Discord_Id like  '%" + UserID + "%'; ";
+            string Result;
+
+            try
+            {
+                    MySqlConnection myconn = new MySqlConnection(connect);
+                    MySqlCommand command = new MySqlCommand(Query, myconn);
+                    MySqlCommand DuplicateCommand = new MySqlCommand(Duplicate, myconn);
+                    MySqlDataReader myreader;
+                    myconn.Open();
+                    Result = (string)DuplicateCommand.ExecuteScalar();
+
+
+                myreader = DuplicateCommand.ExecuteReader();
+                if (myreader.Read())
+                {
+                    Result = myreader.GetString(myreader.GetOrdinal("Discord_Id"));
+                }
+
+                 while (myreader.Read())
+                 {
+                    Console.WriteLine("my result is: " + Result);
+                 }
+
+            myconn.Close();
+
+            if (Result == UserID)
+            {
+                    var embed = new EmbedBuilder();
+                    embed.AddField("Connecting you...",
+                    "Your League Discord account already exist in the Database!")
+                    .WithAuthor(author => { author
+                    .WithName("Birdie Bot")
+                    .WithIconUrl(IconURL);
+                    })
+                    .WithThumbnailUrl(thumbnailURL)
+                    .WithColor(new Color(255, 83, 13))
+                    .WithTitle("Birdie Bot nortification")
+
+                    .WithFooter(footer => { footer
+                    .WithText("Need help? Contact Birdie Zukira#3950")
+                    .WithIconUrl(IconURL);
+                    })
+                    .WithCurrentTimestamp()
+                    .Build();
+
+                    await Context.Channel.SendMessageAsync("", false, embed);
+            }
+            else
+            {
+                    myconn.Open();
+                    myreader = command.ExecuteReader();
+                    myconn.Close();
+
+                    var embed = new EmbedBuilder();
+                    embed.AddField("Connecting you...",
+                    "Your league account "+"`"+lolname+"`"+" has been added to the Database!")
+                    .WithAuthor(author => { author
+                    .WithName("Birdie Bot")
+                    .WithIconUrl(IconURL);
+                    })
+                    .WithThumbnailUrl(thumbnailURL)
+                    .WithColor(new Color(255, 83, 13))
+                    .WithTitle("Birdie Bot nortification")
+
+                    .WithFooter(footer => { footer
+                    .WithText("Need help? Contact Birdie Zukira#3950")
+                    .WithIconUrl(IconURL);
+                    })
+                    .WithCurrentTimestamp()
+                    .Build();
+
+                    await Context.Channel.SendMessageAsync("", false, embed);
+            }
+
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+        }
+    }
+}

@@ -14,6 +14,8 @@ namespace NewTestBot.Modules
 
         public async Task AnnounceJoinedUser(SocketGuildUser user)
         {
+  
+
             var embed = new EmbedBuilder();
             embed.WithTitle("Welcome our newest member - " + user.Mention);
             embed.WithDescription("Remember to read our rules and have a nice stay!");
