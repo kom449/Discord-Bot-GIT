@@ -53,19 +53,31 @@ namespace NewTestBot.Modules
 
             //getting league rank from ID
             //using "r" for rank
-            //string responserank = c.DownloadString("https://euw1.api.riotgames.com/lol/league/v4/positions/by-summoner/" + id + "?api_key=" + apikey + "");
-            //JObject r = JObject.Parse(responserank);
-
+                string responserank = c.DownloadString("https://euw1.api.riotgames.com/lol/league/v4/positions/by-summoner/" + id + "?api_key=" + apikey + "");
+                JArray r = JArray.Parse(responserank);
+                string rank = null;
+            //using a for loop to check all the bodies of the json
+            //since each queue type is in another body
+                for (int x = 0; x < r.Count; x++)
+                {
+                    if (((string)r[x]["queueType"] == "RANKED_SOLO_5x5"))
+                    {
+                        var tier = (string)r[x]["tier"];
+                        var division = (string)r[x]["rank"];
+                        string soloq = tier + " " + division;
+                        rank = soloq;
+                    }
+                }
 
             string UserID = Context.User.Id.ToString();
             string DiscordName = Context.User.Username;
-            string rank = "rank";
             string Query = "INSERT INTO users_testing (Discord_Id,Discord_Name,League_Id,League_Name,SOLO_QUEUE,Icon_Id) VALUES ('" + UserID + "','" + DiscordName + "','" + id + "','" + lolname + "','" + rank+ "','" + icon + "');";
             string Duplicate = "SELECT Discord_Id FROM users_testing WHERE Discord_Id like  '%" + UserID + "%'; ";
             string Result;
 
             try
             {
+                //sql connection and command
                     MySqlConnection myconn = new MySqlConnection(connect);
                     MySqlCommand command = new MySqlCommand(Query, myconn);
                     MySqlCommand DuplicateCommand = new MySqlCommand(Duplicate, myconn);
@@ -73,7 +85,7 @@ namespace NewTestBot.Modules
                     myconn.Open();
                     Result = (string)DuplicateCommand.ExecuteScalar();
 
-
+                //check for duplicate of discord Ids
                 myreader = DuplicateCommand.ExecuteReader();
                 if (myreader.Read())
                 {
@@ -87,6 +99,7 @@ namespace NewTestBot.Modules
 
             myconn.Close();
 
+                //if the user already exists in the DB - just tell them and do nothing.
             if (Result == UserID)
             {
                     var embed = new EmbedBuilder();
@@ -109,6 +122,7 @@ namespace NewTestBot.Modules
 
                     await Context.Channel.SendMessageAsync("", false, embed);
             }
+            //if they dont exist - open connection and run the command to push to DB.
             else
             {
                     myconn.Open();
