@@ -7,6 +7,11 @@ using Discord.Commands;
 using System.Threading.Tasks;
 using System.Net;
 
+//todo
+//add update command that updates user rank
+//add roles, so it assigns the correct roles
+//add room creation, so it creates a room
+//add guild id and guild name, so you can see what guild the user is connected from
 
 namespace NewTestBot.Modules
 {
@@ -20,7 +25,7 @@ namespace NewTestBot.Modules
         {
             //replacing space with "%20"
             string account = response.Replace("_", "%20");
-
+            
             //reading db info and apikey from file
             string data = File.ReadAllText("Resources/config.json");
             
