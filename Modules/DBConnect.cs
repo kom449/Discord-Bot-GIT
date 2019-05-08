@@ -13,13 +13,13 @@ namespace NewTestBot.Modules
     public class DBConnect : ModuleBase<SocketCommandContext>
     {
         readonly string IconURL = "https://cdn.discordapp.com/avatars/467437867065540620/083828453afa6811a853008993c51a45.png";
+        readonly string thumbnail = "https://i.gyazo.com/f67d7843f1e9e918fb85816ab4a34181.png";
 
-        [Command("Connect", RunMode = RunMode.Async)] [RequireOwner]
+        [Command("Connect", RunMode = RunMode.Async)] 
         public async Task ConnectDB(string response)
         {
             //replacing space with "%20"
             string account = response.Replace("_", "%20");
-            Console.WriteLine(account);
 
             //reading db info and apikey from file
             string data = File.ReadAllText("Resources/config.json");
@@ -40,7 +40,6 @@ namespace NewTestBot.Modules
                 var id = i["id"];
                 var lolname = i["name"];
                 var icon = i["profileIconId"];
-                Console.WriteLine(id);
 
             //getting league account icon
                 string findlatestlolversion = c.DownloadString("https://ddragon.leagueoflegends.com/api/versions.json");
@@ -131,7 +130,7 @@ namespace NewTestBot.Modules
 
                     var embed = new EmbedBuilder();
                     embed.AddField("Connecting you...",
-                    "Your league account "+"`"+lolname+"`"+" has been added to the Database!")
+                    "Your league account "+"`"+lolname+"`"+" with the rank: "+"`"+rank+"`"+" has been added to the Database!")
                     .WithAuthor(author => { author
                     .WithName("Birdie Bot")
                     .WithIconUrl(IconURL);
@@ -156,6 +155,56 @@ namespace NewTestBot.Modules
                 Console.WriteLine(ex);
             }
 
+        }
+//-------------------------------------------------------------------------------------------------------------------------
+        [Command("disconnect", RunMode = RunMode.Async)]
+        public async Task RemoveAccount()
+        {
+            try
+            {
+                string data = File.ReadAllText("Resources/config.json");
+                JObject o = JObject.Parse(data);
+                string apikey = (string)o["lolapi"]["apikey"];
+                string connect = string.Format("server={0};user={1};database={2};port={3};password={4}",
+                (string)o["database"]["dbhost"], (string)o["database"]["dbuser"], (string)o["database"]["dbname"], (string)o["database"]["dbport"], (string)o["database"]["dbpass"]);
+
+                //removing the account from the DB 
+                string user = Context.User.Id.ToString();
+                string Query = "DELETE FROM users_testing WHERE Discord_Id like  '%" + user + "%'; ";
+
+                MySqlConnection myconn = new MySqlConnection(connect);
+                MySqlCommand command = new MySqlCommand(Query, myconn);
+                MySqlDataReader myreader;
+                myconn.Open();
+                myreader = command.ExecuteReader();
+                myconn.Close();
+
+                  var embed = new EmbedBuilder();
+                    embed.AddField("Removing your account...",
+                    "Your account has been removed!")
+                    .WithAuthor(author => { author
+                    .WithName("Birdie Bot")
+                    .WithIconUrl(IconURL);
+                    })
+                    .WithThumbnailUrl(thumbnail)
+                    .WithColor(new Color(255, 83, 13))
+                    .WithTitle("Birdie Bot nortification")
+
+                    .WithFooter(footer => { footer
+                    .WithText("Need help? Contact Birdie Zukira#3950")
+                    .WithIconUrl(IconURL);
+                    })
+                    .WithCurrentTimestamp()
+                    .Build();
+
+                    await Context.Channel.SendMessageAsync("", false, embed);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+          
         }
     }
 }
