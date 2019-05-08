@@ -14,8 +14,9 @@
 |Prefix|changes the current prefix|{prefix}prefix {new prefix}|
 |purge|deletes x amount of messages in a channel|{prefix}purge {amount}|
 |status|changes the game status of the bot|{prefix}status {text}|
-|calc|nifty little calculater|{prefix}calc {equation}|
-
+|connect|connect/link discord and lol|{prefix}connect {account name}|
+|disconnect|remove account from DB|{prefix}disconnect|
+|update|update rank in DB/discord|{prefix}update|
 
 # To do list
  - Add commands to individual drinks
