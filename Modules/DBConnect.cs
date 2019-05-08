@@ -6,9 +6,9 @@ using Discord;
 using Discord.Commands;
 using System.Threading.Tasks;
 using System.Net;
+using System.Linq;
 
 //todo
-//add update command that updates user rank
 //add roles, so it assigns the correct roles
 //add room creation, so it creates a room
 //add guild id and guild name, so you can see what guild the user is connected from
@@ -26,10 +26,10 @@ namespace NewTestBot.Modules
             //taking the response from the user, converts it to string and removing the .connect part
             string userMessage = Context.Message.ToString();
             string name = userMessage.Substring(userMessage.IndexOf(' ') + 1);
-
+            var allRanks = new[]{ "Challenger", "GrandMaster", "Master", "Diamond", "Platinum", "Gold", "Silver", "Bronze", "Iron"};
+            
             //replacing space with "%20"
             string account = name.Replace(" ", "%20");
-            Console.WriteLine(account);
             //reading db info and apikey from file
             string data = File.ReadAllText("Resources/config.json");
             
@@ -92,6 +92,7 @@ namespace NewTestBot.Modules
                 string responserank = c.DownloadString("https://euw1.api.riotgames.com/lol/league/v4/positions/by-summoner/" + id + "?api_key=" + apikey + "");
                 JArray r = JArray.Parse(responserank);
                 string rank = null;
+                string usedtier = null;
 
             //using a for loop to check all the bodies of the json
             //since each queue type is in another body
@@ -103,9 +104,9 @@ namespace NewTestBot.Modules
                         var division = (string)r[x]["rank"];
                         string soloq = tier + " " + division;
                         rank = soloq;
+                        usedtier = tier.ToLower();
                     }
                 }
-
             string UserID = Context.User.Id.ToString();
             string DiscordName = Context.User.Username;
             string Query = "INSERT INTO users_testing (Discord_Id,Discord_Name,League_Id,League_Name,SOLO_QUEUE,Icon_Id) VALUES ('" + UserID + "','" + DiscordName + "','" + id + "','" + lolname + "','" + rank+ "','" + icon + "');";
@@ -183,6 +184,10 @@ namespace NewTestBot.Modules
                     .WithCurrentTimestamp()
                     .Build();
 
+                    var username = Context.User;
+                    var role = Context.Guild.Roles.FirstOrDefault(x => x.Name.ToLower() == usedtier);
+                    await (username as IGuildUser).AddRoleAsync(role);
+
                     await Context.Channel.SendMessageAsync("", false, embed);
             }
 
@@ -206,17 +211,54 @@ namespace NewTestBot.Modules
                 (string)o["database"]["dbhost"], (string)o["database"]["dbuser"], (string)o["database"]["dbname"], (string)o["database"]["dbport"], (string)o["database"]["dbpass"]);
 
                 //removing the account from the DB 
-                string user = Context.User.Id.ToString();
-                string Query = "DELETE FROM users_testing WHERE Discord_Id like  '%" + user + "%'; ";
+                string UserID = Context.User.Id.ToString();
+                string Query = "DELETE FROM users_testing WHERE Discord_Id like  '%" + UserID + "%'; ";
+                string getID = "SELECT League_id FROM users_testing WHERE Discord_Id like  '%" + UserID + "%'; ";
+                string id = null;
 
                 MySqlConnection myconn = new MySqlConnection(connect);
                 MySqlCommand command = new MySqlCommand(Query, myconn);
+                MySqlCommand fetchID = new MySqlCommand(getID, myconn);
                 MySqlDataReader myreader;
+                MySqlDataReader myreader2;
+
+                //first connection
+                myconn.Open();
+                myreader2 = fetchID.ExecuteReader();
+                while (myreader2.Read())
+                {
+                    data = myreader2.GetString(0);
+                    id = data;
+                }
+                myconn.Close();
+
+                //second connection
                 myconn.Open();
                 myreader = command.ExecuteReader();
                 myconn.Close();
 
-                  var embed = new EmbedBuilder();
+                WebClient c = new WebClient();
+                //getting league rank from ID
+                //using "r" for rank
+                string responserank = c.DownloadString("https://euw1.api.riotgames.com/lol/league/v4/positions/by-summoner/" + id + "?api_key=" + apikey + "");
+                JArray r = JArray.Parse(responserank);
+                string rank = null;
+                string tierused = null;
+                
+                //using a for loop to check all the bodies of the json
+                //since each queue type is in another body
+                for (int x = 0; x < r.Count; x++)
+                {
+                    if (((string)r[x]["queueType"] == "RANKED_SOLO_5x5"))
+                    {
+                        var tier = (string)r[x]["tier"];
+                        var division = (string)r[x]["rank"];
+                        string soloq = tier + " " + division;
+                        rank = soloq;
+                        tierused = tier.ToLower();
+                    }
+                }
+                var embed = new EmbedBuilder();
                     embed.AddField("Removing your account...",
                     "Your account has been removed!")
                     .WithAuthor(author => { author
@@ -234,7 +276,12 @@ namespace NewTestBot.Modules
                     .WithCurrentTimestamp()
                     .Build();
 
-                    await Context.Channel.SendMessageAsync("", false, embed);
+                var username = Context.User;
+                var role = Context.Guild.Roles.FirstOrDefault(x => x.Name.ToLower() == tierused);
+                var UnrankedRole = Context.Guild.Roles.FirstOrDefault(x => x.Name.ToLower() == "unranked");
+                await (username as IGuildUser).RemoveRoleAsync(role);
+                await (username as IGuildUser).AddRoleAsync(UnrankedRole);
+                await Context.Channel.SendMessageAsync("", false, embed);
             }
             catch(Exception ex)
             {
@@ -327,7 +374,12 @@ namespace NewTestBot.Modules
         [Command("create", RunMode = RunMode.Async),RequireOwner]
         public async Task Createroles()
         {
-            
+            string name = "please work";
+            GuildPermissions permissions = default(GuildPermissions);
+            Color color = default(Color);
+            bool ishoisted = true;
+            RequestOptions options = null;
+            await Context.Guild.CreateRoleAsync(name, permissions, color, ishoisted,options);
         }
     }
 }
