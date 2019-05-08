@@ -26,7 +26,6 @@ namespace NewTestBot.Modules
             //taking the response from the user, converts it to string and removing the .connect part
             string userMessage = Context.Message.ToString();
             string name = userMessage.Substring(userMessage.IndexOf(' ') + 1);
-            var allRanks = new[]{ "Challenger", "GrandMaster", "Master", "Diamond", "Platinum", "Gold", "Silver", "Bronze", "Iron"};
             
             //replacing space with "%20"
             string account = name.Replace(" ", "%20");
@@ -374,12 +373,25 @@ namespace NewTestBot.Modules
         [Command("create", RunMode = RunMode.Async),RequireOwner]
         public async Task Createroles()
         {
-            string name = "please work";
-            GuildPermissions permissions = default(GuildPermissions);
-            Color color = default(Color);
-            bool ishoisted = true;
-            RequestOptions options = null;
-            await Context.Guild.CreateRoleAsync(name, permissions, color, ishoisted,options);
+            var allRanks = new[] { "Challenger", "GrandMaster", "Master", "Diamond", "Platinum", "Gold", "Silver", "Bronze", "Iron" };
+            var allrankcolors = new[] { new Color(240,140,15), new Color(253,7,7), new Color(192,7,146),new Color(32,102,148),new Color(46,204,113),new Color(241,196,15),new Color(151,156,159),new Color(187,121,68),new Color(255,255,255)};
+
+            for (int x = 0; x < allRanks.GetLength(0); x++)
+            {
+                GuildPermissions permissions = default;
+                bool ishoisted = true;
+                RequestOptions options = null;
+                new Color = Color.Default;
+                await Context.Guild.CreateRoleAsync(allRanks[x], permissions, allrankcolors[y], ishoisted, options);
+
+                for (int y = 0; x < allrankcolors.GetLength(0); x++)
+                {
+                    
+
+                }
+
+            }
+
         }
     }
 }
