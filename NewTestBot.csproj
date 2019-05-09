@@ -233,7 +233,9 @@
     <Compile Include="Modules\ban.cs" />
     <Compile Include="Modules\birb.cs" />
     <Compile Include="Modules\calc.cs" />
+    <Compile Include="Modules\createroles.cs" />
     <Compile Include="Modules\DBConnect.cs" />
+    <Compile Include="Modules\disconnect.cs" />
     <Compile Include="Modules\drink.cs" />
     <Compile Include="Modules\help.cs" />
     <Compile Include="Modules\kaffe.cs" />
@@ -242,6 +244,7 @@
     <Compile Include="Modules\prefix.cs" />
     <Compile Include="Modules\purge.cs" />
     <Compile Include="Modules\status.cs" />
+    <Compile Include="Modules\updaterole.cs" />
     <Compile Include="Modules\updateroles.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
