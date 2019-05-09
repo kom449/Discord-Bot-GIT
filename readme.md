@@ -20,14 +20,15 @@
 |create|Creates ranks from unranked to Challenger|{prefix}create|
 
 # To do list
- - Add commands to individual drinks
  - Automatic assign roles to users that have been kicked and reinvited
- - Optimize commands and put each command into individual files 
- - Add MYSQL support and store user information remotely
+ - Add token support
+ - create global update command
+ - support multiple accounts
  
 # Known Issues
  - There is currently no way to get specific roles of users
  - Using more than 1 word in a reason will result in a "Using too many parameters" will be fixed soon
+ 
  
 # Low priority
  - make embeds pretty
