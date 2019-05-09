@@ -17,6 +17,7 @@
 |connect|connect/link discord and lol|{prefix}connect {account name}|
 |disconnect|remove account from DB|{prefix}disconnect|
 |update|update rank in DB/discord|{prefix}update|
+|create|Creates ranks from unranked to Challenger|{prefix}create|
 
 # To do list
  - Add commands to individual drinks
