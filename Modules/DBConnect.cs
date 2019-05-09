@@ -70,7 +70,7 @@ namespace NewTestBot.Modules
                     })
                     .WithCurrentTimestamp()
                     .Build();
-
+                
                     await Context.Channel.SendMessageAsync("", false, embed);
             }
 
@@ -79,7 +79,10 @@ namespace NewTestBot.Modules
             var lolname = f["name"];
             var icon = f["profileIconId"];
 
-            //getting league account icon
+            //to get the account icon, you first need to find the latest version of the game
+            //which i could have written in manually - but where's the fun in that.
+            // after getting the latest version of the game i use it with the DDragon api that have all the game assets
+            //then the version and icon id is used in the DDragon api string to retrive the icon as a png
             string findlatestlolversion = c.DownloadString("https://ddragon.leagueoflegends.com/api/versions.json");
                 JArray latestlolversion = JArray.Parse(findlatestlolversion);
                 var version = latestlolversion[0];
@@ -127,10 +130,6 @@ namespace NewTestBot.Modules
                 {
                     Result = myreader.GetString(myreader.GetOrdinal("Discord_Id"));
                 }
-
-                 while (myreader.Read())
-                 {
-                 }
 
             myconn.Close();
 
@@ -192,9 +191,8 @@ namespace NewTestBot.Modules
             }
 
             }
-            catch(Exception ex)
+            catch(Exception)
             {
-                Console.WriteLine(ex);
             }
 
         }
@@ -204,6 +202,7 @@ namespace NewTestBot.Modules
         {
             try
             {
+                //creating the connect string from the config file. 
                 string data = File.ReadAllText("Resources/config.json");
                 JObject o = JObject.Parse(data);
                 string apikey = (string)o["lolapi"]["apikey"];
@@ -237,10 +236,38 @@ namespace NewTestBot.Modules
                 myreader = command.ExecuteReader();
                 myconn.Close();
 
+                string responserank = null;
+
                 WebClient c = new WebClient();
+                try
+                {
+                    responserank = c.DownloadString("https://euw1.api.riotgames.com/lol/league/v4/positions/by-summoner/" + id + "?api_key=" + apikey + "");
+                }
+                catch(Exception)
+                {
+                    var embed2 = new EmbedBuilder();
+                    embed2.AddField("Removing your account...",
+                    "failed to remove your account \n no accounts are linked to your discord!")
+                    .WithAuthor(author => { author
+                    .WithName("Birdie Bot")
+                    .WithIconUrl(IconURL);
+                    })
+                    .WithThumbnailUrl(thumbnail)
+                    .WithColor(new Color(255, 83, 13))
+                    .WithTitle("Birdie Bot nortification")
+
+                    .WithFooter(footer => { footer
+                    .WithText("Need help? Contact Birdie Zukira#3950")
+                    .WithIconUrl(IconURL);
+                    })
+                    .WithCurrentTimestamp()
+                    .Build();
+                    await Context.Channel.SendMessageAsync("", false, embed2);
+
+                }
                 //getting league rank from ID
                 //using "r" for rank
-                string responserank = c.DownloadString("https://euw1.api.riotgames.com/lol/league/v4/positions/by-summoner/" + id + "?api_key=" + apikey + "");
+
                 JArray r = JArray.Parse(responserank);
                 string rank = null;
                 string tierused = null;
@@ -275,7 +302,8 @@ namespace NewTestBot.Modules
                     })
                     .WithCurrentTimestamp()
                     .Build();
-
+                
+                //removing their role and giving them unranked
                 var username = Context.User;
                 var role = Context.Guild.Roles.FirstOrDefault(x => x.Name.ToLower() == tierused);
                 var UnrankedRole = Context.Guild.Roles.FirstOrDefault(x => x.Name.ToLower() == "unranked");
@@ -283,9 +311,8 @@ namespace NewTestBot.Modules
                 await (username as IGuildUser).AddRoleAsync(UnrankedRole);
                 await Context.Channel.SendMessageAsync("", false, embed);
             }
-            catch(Exception ex)
+            catch(Exception)
             {
-                Console.WriteLine(ex);
             }
 
           
@@ -362,12 +389,12 @@ namespace NewTestBot.Modules
                     rank = soloq;
                 }
             }
+
             //updating the rank of the user
             string updaterank = "UPDATE users_testing SET `SOLO_QUEUE` = '" + rank + "' WHERE Discord_Id like  '%" + UserID + "%';";
                 MySqlCommand updatecommand = new MySqlCommand(updaterank, myconn);
-                MySqlDataReader myreader2;
                 myconn.Open();
-                myreader2 = updatecommand.ExecuteReader();
+                myreader = updatecommand.ExecuteReader();
                 myconn.Close();
 
             var embed = new EmbedBuilder();
@@ -391,7 +418,7 @@ namespace NewTestBot.Modules
                     await Context.Channel.SendMessageAsync("", false, embed);
         }
 
-        //-------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------
         [Command("create", RunMode = RunMode.Async),RequireOwner]
         public async Task Createroles()
         {
