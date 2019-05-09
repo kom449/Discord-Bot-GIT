@@ -35,7 +35,7 @@ namespace NewTestBot
             {
                 if (context.IsPrivate == true)
                 {
-                    string IconURL = "https://cdn.discordapp.com/avatars/467437867065540620/083828453afa6811a853008993c51a45.png";
+                    string IconURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
                     var embed = new EmbedBuilder();
                     embed.WithTitle("Birdie Bot nortification");
                     embed.WithDescription("I do not accept commands from Direct messages!");

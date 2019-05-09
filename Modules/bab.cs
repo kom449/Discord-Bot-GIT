@@ -9,7 +9,7 @@ namespace NewTestBot.Modules
     {
         readonly string IconURL = "https://cdn.discordapp.com/avatars/467437867065540620/083828453afa6811a853008993c51a45.png";
 
-        [Command("bab")]
+        [Command("bab"),RequireOwner]
         public async Task Bab(string message = "")
         {
 

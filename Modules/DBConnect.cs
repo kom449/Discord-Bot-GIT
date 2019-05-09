@@ -19,13 +19,36 @@ namespace NewTestBot.Modules
 {
     public class DBConnect : ModuleBase<SocketCommandContext>
     {
-        readonly string IconURL = "https://cdn.discordapp.com/avatars/467437867065540620/083828453afa6811a853008993c51a45.png";
-        readonly string thumbnail = "https://i.gyazo.com/f67d7843f1e9e918fb85816ab4a34181.png";
+        readonly string IconURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
+        readonly string thumbnail = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
 
         [Command("Connect", RunMode = RunMode.Async)] 
-        public async Task ConnectDB(string response, params string[] args)
+        public async Task ConnectDB(string response = null,params string[] args)
         {
             //taking the response from the user, converts it to string and removing the .connect part
+            if (response == null)
+            {
+                    var embed = new EmbedBuilder();
+                    embed.AddField("Connecting you...",
+                    "no account name was provided!")
+                    .WithAuthor(author => { author
+                    .WithName("Birdie Bot")
+                    .WithIconUrl(IconURL);
+                    })
+                    .WithThumbnailUrl(thumbnail)
+                    .WithColor(new Color(255, 83, 13))
+                    .WithTitle("Birdie Bot nortification")
+
+                    .WithFooter(footer => { footer
+                    .WithText("Need help? Contact Birdie Zukira#3950")
+                    .WithIconUrl(IconURL);
+                    })
+                    .WithCurrentTimestamp()
+                    .Build();
+                
+                    await Context.Channel.SendMessageAsync("", false, embed);
+                    return;
+            }
             string userMessage = Context.Message.ToString();
             string name = userMessage.Substring(userMessage.IndexOf(' ') + 1);
             
@@ -75,6 +98,7 @@ namespace NewTestBot.Modules
                     .Build();
                 
                     await Context.Channel.SendMessageAsync("", false, embed);
+                    return;
             }
 
             //getting id, name and icon id from response
@@ -189,7 +213,10 @@ namespace NewTestBot.Modules
                     await (username as IGuildUser).AddRoleAsync(role);
                     var UnrankedRole = Context.Guild.Roles.FirstOrDefault(x => x.Name.ToLower() == "unranked");
                     await (username as IGuildUser).RemoveRoleAsync(UnrankedRole);
+                    var newones = Context.Guild.Roles.FirstOrDefault(x => x.Name.ToLower() == "New ones :)");
+                    await (username as IGuildUser).RemoveRoleAsync(newones);
 
+                    
                     await Context.Channel.SendMessageAsync("", false, embed);
             }
 
@@ -266,7 +293,7 @@ namespace NewTestBot.Modules
                     .WithCurrentTimestamp()
                     .Build();
                     await Context.Channel.SendMessageAsync("", false, embed2);
-
+                    return;
                 }
                 //getting league rank from ID
                 //using "r" for rank

@@ -11,9 +11,9 @@ namespace NewTestBot.Modules
 {
     public class Drink : ModuleBase<SocketCommandContext>
     {
-        readonly string IconURL = "https://cdn.discordapp.com/avatars/467437867065540620/083828453afa6811a853008993c51a45.png";
+        readonly string IconURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
 
-        [Command("drink")]
+        [Command("drink"),RequireOwner]
         public async Task Drinks(string drikkelse, float amount)
         {
             // change first letter to uppercase, and the rest of the letters to lower case.
@@ -111,7 +111,7 @@ namespace NewTestBot.Modules
             }
         }
 
-        [Command("drinklist")]
+        [Command("drinklist"),RequireOwner]
         public async Task DrinkList()
         {
             //update user info
@@ -155,7 +155,7 @@ namespace NewTestBot.Modules
             await Context.Channel.SendMessageAsync("", false, embed);
         }
 
-        [Command("drinkleader")]
+        [Command("drinkleader"),RequireOwner]
         public async Task DrinkLeaderboard(string drikkelse)
         {
             // change first letter to uppercase, and the rest of the letters to lower case.
@@ -237,7 +237,7 @@ namespace NewTestBot.Modules
             await Context.Channel.SendMessageAsync("", false, embed);
         }
 
-        [Command("drinktotal")]
+        [Command("drinktotal"),RequireOwner]
         public async Task DrinkTotal(string drikkelse)
         {
             if (drikkelse == "")

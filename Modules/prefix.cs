@@ -9,8 +9,8 @@ namespace NewTestBot.Modules
 {
     public class Prefix : ModuleBase<SocketCommandContext>
     {
-        readonly string IconURL = "https://cdn.discordapp.com/avatars/467437867065540620/083828453afa6811a853008993c51a45.png";
-        readonly string thumbnailURL = "https://i.gyazo.com/f67d7843f1e9e918fb85816ab4a34181.png";
+        readonly string IconURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
+        readonly string thumbnailURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
 
         [Command ("prefix"),RequireUserPermission(GuildPermission.Administrator)]
          public async Task Prefixchange(string input = "")
