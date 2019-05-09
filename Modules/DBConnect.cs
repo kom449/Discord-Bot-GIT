@@ -9,7 +9,6 @@ using System.Net;
 using System.Linq;
 
 //todo
-//add roles, so it assigns the correct roles
 //add room creation, so it creates a room
 //add guild id and guild name, so you can see what guild the user is connected from
 
@@ -186,6 +185,8 @@ namespace NewTestBot.Modules
                     var username = Context.User;
                     var role = Context.Guild.Roles.FirstOrDefault(x => x.Name.ToLower() == usedtier);
                     await (username as IGuildUser).AddRoleAsync(role);
+                    var UnrankedRole = Context.Guild.Roles.FirstOrDefault(x => x.Name.ToLower() == "unranked");
+                    await (username as IGuildUser).RemoveRoleAsync(UnrankedRole);
 
                     await Context.Channel.SendMessageAsync("", false, embed);
             }
@@ -297,6 +298,7 @@ namespace NewTestBot.Modules
             //getting id of sender and selecting lol id
             string UserID = Context.User.Id.ToString();
             string getID = "SELECT League_id FROM users_testing WHERE Discord_Id like  '%" + UserID + "%'; ";
+            string getIcon = "SELECT Icon_id FROM users_testing WHERE Discord_Id like '%" + UserID + "%';";
             string id = null;
 
             //getting DB information
@@ -309,7 +311,11 @@ namespace NewTestBot.Modules
             //getting the lol id from the sender of the update command
             MySqlConnection myconn = new MySqlConnection(connect);
             MySqlCommand command = new MySqlCommand(getID, myconn);
+            MySqlCommand geticon = new MySqlCommand(getIcon, myconn);
             MySqlDataReader myreader;
+            MySqlDataReader iconreader;
+
+            //getting the League ID from the DB
             myconn.Open();
             myreader = command.ExecuteReader();
             while (myreader.Read())
@@ -319,6 +325,16 @@ namespace NewTestBot.Modules
             }
             myconn.Close();
 
+            //getting the icon ID from the DB
+            myconn.Open();
+            string iconid = null;
+            iconreader = geticon.ExecuteReader();
+            while (iconreader.Read())
+            {
+                data = iconreader.GetString(0);
+                iconid = data;
+            }
+            myconn.Close();
             //using c for webclient connections
             WebClient c = new WebClient();
 
@@ -327,6 +343,12 @@ namespace NewTestBot.Modules
             string responserank = c.DownloadString("https://euw1.api.riotgames.com/lol/league/v4/positions/by-summoner/" + id + "?api_key=" + apikey + "");
             JArray r = JArray.Parse(responserank);
             string rank = null;
+
+            //getting icon for thumbnail
+            string findlatestlolversion = c.DownloadString("https://ddragon.leagueoflegends.com/api/versions.json");
+            JArray latestlolversion = JArray.Parse(findlatestlolversion);
+            var version = latestlolversion[0];
+            string thumbnailURL = "http://ddragon.leagueoflegends.com/cdn/" + version + "/img/profileicon/" + iconid + ".png";
 
             //using a for loop to check all the bodies of the json
             //since each queue type is in another body
@@ -355,7 +377,7 @@ namespace NewTestBot.Modules
                     .WithName("Birdie Bot")
                     .WithIconUrl(IconURL);
                     })
-                    .WithThumbnailUrl(thumbnail)
+                    .WithThumbnailUrl(thumbnailURL)
                     .WithColor(new Color(255, 83, 13))
                     .WithTitle("Birdie Bot nortification")
 
@@ -373,24 +395,41 @@ namespace NewTestBot.Modules
         [Command("create", RunMode = RunMode.Async),RequireOwner]
         public async Task Createroles()
         {
-            var allRanks = new[] { "Challenger", "GrandMaster", "Master", "Diamond", "Platinum", "Gold", "Silver", "Bronze", "Iron" };
-            var allrankcolors = new[] { new Color(240,140,15), new Color(253,7,7), new Color(192,7,146),new Color(32,102,148),new Color(46,204,113),new Color(241,196,15),new Color(151,156,159),new Color(187,121,68),new Color(255,255,255)};
+            var allRanks = new[] { "Challenger", "GrandMaster", "Master", "Diamond", "Platinum", "Gold", "Silver", "Bronze", "Iron","Unranked" };
+            var allrankcolors = new[] { new Color(240,140,15), new Color(253,7,7), new Color(192,7,146),new Color(32,102,148),new Color(46,204,113),new Color(241,196,15),new Color(151,156,159),new Color(187,121,68),new Color(255,255,255),new Color(124, 136, 120)};
 
-            for (int x = 0; x < allRanks.GetLength(0); x++)
+            //my int for the color array
+            int y = 0;
+
+            //running through all the different roles and create them
+            for (int x = 0; x < allRanks.GetLength(0); x++, y++)
             {
                 GuildPermissions permissions = default;
                 bool ishoisted = true;
                 RequestOptions options = null;
-                new Color = Color.Default;
                 await Context.Guild.CreateRoleAsync(allRanks[x], permissions, allrankcolors[y], ishoisted, options);
 
-                for (int y = 0; x < allrankcolors.GetLength(0); x++)
-                {
-                    
-
-                }
-
             }
+                    var embed = new EmbedBuilder();
+                    embed.AddField("Creating roles for you now...",
+                    "All of the rank roles has been created!")
+                    .WithAuthor(author => { author
+                    .WithName("Birdie Bot")
+                    .WithIconUrl(IconURL);
+                    })
+                    .WithThumbnailUrl(thumbnail)
+                    .WithColor(new Color(255, 83, 13))
+                    .WithTitle("Birdie Bot nortification")
+
+                    .WithFooter(footer => { footer
+                    .WithText("Need help? Contact Birdie Zukira#3950")
+                    .WithIconUrl(IconURL);
+                    })
+                    .WithCurrentTimestamp()
+                    .Build();
+
+                    await Context.Channel.SendMessageAsync("", false, embed);
+      
 
         }
     }

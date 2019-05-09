@@ -23,7 +23,10 @@ namespace NewTestBot.Modules
 
             var embed = new EmbedBuilder();
             embed.AddField("Here is a list of my commands",
-            p+"bab\n"+p+"kick (Requires permissions)"+"\n"+p+"ban (Requires permissions)"+"\n"+p+"drink"+"\n"+p+"drinktotal"+"\n"+p+"drinkleader"+"\n"+p+"drinklist"+"\n"+p+"birb"+"\n"+p+"prefix"+"\n"+p+"purge"+"\n"+p+"status"+"\n"+p+"calc"+"\n" +"\n"+"Current version of Birdie bot is: "+"***"+version+"***")
+            p+"bab\n"+p+"kick (Requires permissions)"+"\n"+p+"ban (Requires permissions)"+"\n"+p+"drink"+"\n"+p+"drinktotal"+"" +
+            "\n"+p+"drinkleader"+"\n"+p+"drinklist"+"\n"+p+"birb"+"\n"+p+"prefix"+"\n"+p+"purge"+"\n"+p+"status"+
+            "\n"+p+"calc"+"\n"+ "\n" + p + "connect" + "\n"+ "\n" + p + "disconnect" + "\n"+ "\n" + p + "update" + "\n"+ "\n" + p + "create (requires permissions)" + "\n" + "\n"+
+            "Current version of Birdie bot is: "+"***"+version+"***")
             .WithAuthor(author => { author
             .WithName("Birdie Bot")
             .WithIconUrl(IconURL);

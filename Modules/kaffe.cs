@@ -12,7 +12,7 @@ namespace NewTestBot.Modules
     {
         readonly string IconURL = "https://cdn.discordapp.com/avatars/467437867065540620/083828453afa6811a853008993c51a45.png";
 
-        [Command("kaffe")]
+        [Command("kaffe"),RequireOwner]
         public async Task Kaffe()
         {
             //get unique user id
@@ -63,7 +63,7 @@ namespace NewTestBot.Modules
             await Context.Channel.SendMessageAsync("", false, embed);
         }
 //---------------------------------------------------------------------------------------------------------
-          [Command("kaffetotal")]
+          [Command("kaffetotal"),RequireOwner]
         public async Task Kaffetotal()
         {
 
