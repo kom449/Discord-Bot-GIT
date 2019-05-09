@@ -11,6 +11,9 @@ using System.Linq;
 //todo
 //add room creation, so it creates a room
 //add guild id and guild name, so you can see what guild the user is connected from
+//add token generation to verify ownership of lol account
+//add storage of flex 5v5 and flex 3v3 in DB
+//add rank command, so it shows the rank of the user in all 3 queues
 
 namespace NewTestBot.Modules
 {
