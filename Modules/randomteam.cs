@@ -8,12 +8,11 @@ using Discord.Commands;
 
 namespace NewTestBot.Modules
 {
-    class randomteam : ModuleBase<SocketCommandContext>
+    public class randomteam : ModuleBase<SocketCommandContext>
     {
         [Command("randomteam", RunMode = RunMode.Async)]
         //[Command("randomteam"),RequireUserPermission(GuildPermission.Administrator)]
         //[RequireBotPermission(GuildPermission.Administrator)]
-
         public async Task RandomizeTeam(string response = null, params string[] args)
         {
             try
