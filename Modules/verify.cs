@@ -18,8 +18,7 @@ namespace NewTestBot.Modules
         [Command("verify", RunMode = RunMode.Async)]
         public async Task Verifyaccounts()
         {
-            try
-            {
+            
 
             string data = File.ReadAllText("Resources/config.json");
             JObject o = JObject.Parse(data);
@@ -35,27 +34,19 @@ namespace NewTestBot.Modules
 
             myconn.Open();
             myreader = Get_Token_Command.ExecuteReader();
-            string GottenToken = null;
             while (myreader.Read())
             {
                 Token = myreader.GetString(0);
             }
             myconn.Close();
-            }
-            catch(Exception TokenCheck_ex)
+            Console.WriteLine(Token);
+            //Breaking if token/DBData already exists
+            if (Token != null)
             {
-                Console.WriteLine(TokenCheck_ex);
+                return;
             }
-
-
-            try
+            else
             {
-                //Breaking if token/DBData already exists
-                if (Token != null)
-                {
-                    break;
-
-                }
 
                 //string of chars to use in token generation
                 var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -69,21 +60,21 @@ namespace NewTestBot.Modules
                 }
                 //finally adding the array of chars to the final string token
                 Token = new String(stringChars);
-                
+
+
+
+
+
+
+                string Send_Token = "UPDATE users_testing SET TOKEN = '" + Token + "' WHERE Discord_Id like '%" + UserID + "%';";
+
+                MySqlCommand Send_Token_Command = new MySqlCommand(Send_Token, myconn);
+
+                myconn.Open();
+                myreader = Send_Token_Command.ExecuteReader();
+                myconn.Close();
             }
-            catch (Exception TokenSend_ex)
-            {
-                Console.WriteLine(TokenSend_ex);
-            }
 
-
-            string Send_Token = "UPDATE users_testing SET TOKEN = '" + Token + "' WHERE Discord_Id like '%" + UserID + "%';";
-
-            MySqlCommand Send_Token_Command = new MySqlCommand(Send_Token, myconn);
-
-            myconn.Open();
-            myreader = Send_Token_Command.ExecuteReader();
-            myconn.Close();
 
 
         }
