@@ -170,8 +170,6 @@ namespace NewTestBot.Modules
             string Duplicate = "SELECT Discord_Id FROM users_testing WHERE Discord_Id like  '%" + UserID + "%'; ";
             string Result;
 
-            try
-            {
                 //sql connection and command
                 MySqlConnection myconn = new MySqlConnection(connect);
                 MySqlCommand command = new MySqlCommand(Query, myconn);
@@ -254,10 +252,7 @@ namespace NewTestBot.Modules
                     await (username as IGuildUser).RemoveRoleAsync(newones);
 
                 }
-            }
-            catch (Exception)
-            {
-            }
+            
         }
     }
 }

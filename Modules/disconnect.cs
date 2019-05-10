@@ -17,8 +17,6 @@ namespace NewTestBot.Modules
         [Command("disconnect", RunMode = RunMode.Async)]
         public async Task RemoveAccount()
         {
-            try
-            {
                 //creating the connect string from the config file. 
                 string data = File.ReadAllText("Resources/config.json");
                 JObject o = JObject.Parse(data);
@@ -127,12 +125,8 @@ namespace NewTestBot.Modules
                 await (username as IGuildUser).RemoveRoleAsync(role);
                 await (username as IGuildUser).AddRoleAsync(UnrankedRole);
                 await Context.Channel.SendMessageAsync("", false, embed);
-            }
-            catch(Exception)
-            {
-            }
+            
 
-          
         }
     }
 }
