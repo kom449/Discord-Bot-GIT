@@ -61,11 +61,6 @@ namespace NewTestBot.Modules
                 //finally adding the array of chars to the final string token
                 Token = new String(stringChars);
 
-
-
-
-
-
                 string Send_Token = "UPDATE users_testing SET TOKEN = '" + Token + "' WHERE Discord_Id like '%" + UserID + "%';";
 
                 MySqlCommand Send_Token_Command = new MySqlCommand(Send_Token, myconn);
