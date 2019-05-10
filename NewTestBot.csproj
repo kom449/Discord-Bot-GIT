@@ -245,6 +245,7 @@
     <Compile Include="Modules\purge.cs" />
     <Compile Include="Modules\rank.cs" />
     <Compile Include="Modules\status.cs" />
+    <Compile Include="Modules\Updateall.cs" />
     <Compile Include="Modules\updaterole.cs" />
     <Compile Include="Modules\verify.cs" />
     <Compile Include="Program.cs" />

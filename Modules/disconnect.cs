@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace NewTestBot.Modules
 {
-    class Disconnect : ModuleBase<SocketCommandContext>
+    public class Disconnect : ModuleBase<SocketCommandContext>
     {
         readonly string IconURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
         readonly string thumbnail = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
@@ -58,12 +58,14 @@ namespace NewTestBot.Modules
                 {
                     responserank = c.DownloadString("https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/" + id + "?api_key=" + apikey + "");
                 }
-                catch(Exception)
+                catch (Exception)
                 {
                     var embed2 = new EmbedBuilder();
                     embed2.AddField("Removing your account...",
                     "failed to remove your account \n no accounts are linked to your discord!")
-                    .WithAuthor(author => { author
+                    .WithAuthor(author =>
+                    {
+                        author
                     .WithName("Birdie Bot")
                     .WithIconUrl(IconURL);
                     })
@@ -71,7 +73,9 @@ namespace NewTestBot.Modules
                     .WithColor(new Color(255, 83, 13))
                     .WithTitle("Birdie Bot notification")
 
-                    .WithFooter(footer => { footer
+                    .WithFooter(footer =>
+                    {
+                        footer
                     .WithText("Need help? Contact Birdie Zukira#3950")
                     .WithIconUrl(IconURL);
                     })
@@ -86,7 +90,7 @@ namespace NewTestBot.Modules
                 JArray r = JArray.Parse(responserank);
                 string rank = null;
                 string tierused = null;
-                
+
                 //using a for loop to check all the bodies of the json
                 //since each queue type is in another body
                 for (int x = 0; x < r.Count; x++)
@@ -101,23 +105,27 @@ namespace NewTestBot.Modules
                     }
                 }
                 var embed = new EmbedBuilder();
-                    embed.AddField("Removing your account...",
-                    "Your account has been removed!")
-                    .WithAuthor(author => { author
-                    .WithName("Birdie Bot")
-                    .WithIconUrl(IconURL);
-                    })
-                    .WithThumbnailUrl(thumbnail)
-                    .WithColor(new Color(255, 83, 13))
-                    .WithTitle("Birdie Bot notification")
+                embed.AddField("Removing your account...",
+                "Your account has been removed!")
+                .WithAuthor(author =>
+                {
+                    author
+                .WithName("Birdie Bot")
+                .WithIconUrl(IconURL);
+                })
+                .WithThumbnailUrl(thumbnail)
+                .WithColor(new Color(255, 83, 13))
+                .WithTitle("Birdie Bot notification")
 
-                    .WithFooter(footer => { footer
-                    .WithText("Need help? Contact Birdie Zukira#3950")
-                    .WithIconUrl(IconURL);
-                    })
-                    .WithCurrentTimestamp()
-                    .Build();
-                
+                .WithFooter(footer =>
+                {
+                    footer
+                .WithText("Need help? Contact Birdie Zukira#3950")
+                .WithIconUrl(IconURL);
+                })
+                .WithCurrentTimestamp()
+                .Build();
+
                 //removing their role and giving them unranked
                 var username = Context.User;
                 var role = Context.Guild.Roles.FirstOrDefault(x => x.Name.ToLower() == tierused);
@@ -125,7 +133,6 @@ namespace NewTestBot.Modules
                 await (username as IGuildUser).RemoveRoleAsync(role);
                 await (username as IGuildUser).AddRoleAsync(UnrankedRole);
                 await Context.Channel.SendMessageAsync("", false, embed);
-            
 
         }
     }

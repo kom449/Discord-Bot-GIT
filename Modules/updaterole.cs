@@ -8,7 +8,7 @@ using System.Net;
 
 namespace NewTestBot.Modules
 {
-    class Updaterole : ModuleBase<SocketCommandContext>
+    public class Updaterole : ModuleBase<SocketCommandContext>
     {
         readonly string IconURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
 
@@ -100,7 +100,6 @@ namespace NewTestBot.Modules
                     .WithThumbnailUrl(thumbnailURL)
                     .WithColor(new Color(255, 83, 13))
                     .WithTitle("Birdie Bot notification")
-
                     .WithFooter(footer => { footer
                     .WithText("Need help? Contact Birdie Zukira#3950")
                     .WithIconUrl(IconURL);

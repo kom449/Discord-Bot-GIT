@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace NewTestBot.Modules
 {
-    class Createroles : ModuleBase<SocketCommandContext>
+    public class Createroles : ModuleBase<SocketCommandContext>
     {
         readonly string IconURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
         readonly string thumbnail = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
@@ -37,7 +37,7 @@ namespace NewTestBot.Modules
                     })
                     .WithThumbnailUrl(thumbnail)
                     .WithColor(new Color(255, 83, 13))
-                    .WithTitle("Birdie Bot nortification")
+                    .WithTitle("Birdie Bot notification")
 
                     .WithFooter(footer => { footer
                     .WithText("Need help? Contact Birdie Zukira#3950")

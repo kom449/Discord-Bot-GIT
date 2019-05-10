@@ -9,12 +9,12 @@ using System.Net;
 
 namespace NewTestBot.Modules
 {
-    public class Verify : ModuleBase<SocketCommandContext>
+    class Updateall : ModuleBase<SocketCommandContext>
     {
         readonly string IconURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
         readonly string thumbnail = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
-        [Command("verify", RunMode = RunMode.Async)]
-        public async Task Verifyaccounts()
+        [Command("updateall", RunMode = RunMode.Async)]
+        public async Task Updateallranks()
         {
 
         }
