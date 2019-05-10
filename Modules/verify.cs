@@ -12,7 +12,6 @@ namespace NewTestBot.Modules
 {
     public class Verify : ModuleBase<SocketCommandContext>
     {
-        Random rnd = new Random();
         readonly string IconURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
         readonly string thumbnail = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
         string token = "";
@@ -28,13 +27,14 @@ namespace NewTestBot.Modules
         */
         public async Task Verifyaccounts()
         {
-            
-                const string chars = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789";
-                for (int i = 0; i < 8; i++)
-                {
-                    char tmpchar = (char)rnd.Next(chars.Length);
-                    token += tmpchar;
-                }
+
+            Random rnd = new Random();
+            const string chars = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789";
+            for (int i = 0; i < 8; i++)
+            {
+                char tmpchar = (char)rnd.Next(chars.Length);
+                token += tmpchar;
+            }
 
 
 
