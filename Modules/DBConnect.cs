@@ -13,7 +13,6 @@ using System.Linq;
 //make it check if the roles already exists before creating them to avoid duplicates
 //add guild id and guild name, so you can see what guild the user is connected from
 //add token generation to verify ownership of lol account
-//add rank command, so it shows the rank of the user in all 3 queues
 
 namespace NewTestBot.Modules
 {
@@ -249,7 +248,6 @@ namespace NewTestBot.Modules
                     .WithCurrentTimestamp()
                     .Build();
                     await Context.Channel.SendMessageAsync("", false, embed);
-                    await Context.User.SendMessageAsync("", false, embed);
                     var username = Context.User;
                     var role = Context.Guild.Roles.FirstOrDefault(x => x.Name.ToLower() == usedtiersolo);
                     await (username as IGuildUser).AddRoleAsync(role);

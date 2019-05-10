@@ -13,7 +13,6 @@ namespace NewTestBot.Modules
         [Command("randomteam", RunMode = RunMode.Async)]
         //[Command("randomteam"),RequireUserPermission(GuildPermission.Administrator)]
         //[RequireBotPermission(GuildPermission.Administrator)]
-
         public async Task RandomizeTeam(string response = null, params string[] args)
         {
             try
