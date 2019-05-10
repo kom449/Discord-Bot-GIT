@@ -18,10 +18,7 @@ namespace NewTestBot.Modules
         [Command("update", RunMode = RunMode.Async)]
         public async Task UpdateAccount()
         {
-            try
-            {
-
-            
+        
             //getting id of sender and selecting lol id
             string UserID = Context.User.Id.ToString();
             string getID = "SELECT League_id FROM users_testing WHERE Discord_Id like  '%" + UserID + "%'; ";
@@ -135,11 +132,7 @@ namespace NewTestBot.Modules
                     .WithCurrentTimestamp()
                     .Build();
                     await Context.Channel.SendMessageAsync("", false, embed);
-                }
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
+                     
         }       
     }
 }

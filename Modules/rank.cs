@@ -159,7 +159,7 @@ namespace NewTestBot.Modules
                 catch (Exception)
                 {
                     var embed2 = new EmbedBuilder();
-                    embed2.AddField("Connecting you...",
+                    embed2.AddField("Looking up Summoner...",
                     "Summoner account doesnt exist!")
                     .WithAuthor(author =>
                     {
