@@ -1,3 +1,6 @@
+# About this project
+ This discord bot is made as a way for me to improve my coding skills, so beware that there might be bugs here and there. I try my best to keep it as bug free as possible. It started out as a simple idea of a bot to do fun commands such as sending a reponse when sending a command (first command ever made was the "bab" command) and then it evoled into a way bigger project than expected. i started spending way more time on the bot, as i learned new stuff and ways to do cool stuff. Latest entry to the list of stuff, is that the bot now requests from a API and stores the information in a DB, for it to use as a way to assign roles and remove them as needed. I'm always open for new ideas to the bot, so feel free to write a request in the issues tab, if there is something i should try adding to it.
+
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/77b4cd256aab40d59c107a6daff1314c)](https://www.codacy.com/app/kom449/Discord-Bot-GIT?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=kom449/Discord-Bot-GIT&amp;utm_campaign=Badge_Grade)
 # Commands
 | Command | Description | Usage |
@@ -35,6 +38,4 @@
 # Low priority
  - make embeds pretty
  - create global variables for the embeds, so it's easier to make them in the future
- 
-# About this project
- This discord bot is made as a way for me to improve my coding skills, so beware that there might be bugs here and there. I try my best to keep it as bug free as possible. It started out as a simple idea of a bot to do fun commands such as sending a reponse when sending a command (first command ever made was the "bab" command) and then it evoled into a way bigger project than expected. i started spending way more time on the bot, as i learned new stuff and ways to do cool stuff. Latest entry to the list of stuff, is that the bot now requests from a API and stores the information in a DB, for it to use as a way to assign roles and remove them as needed. I'm always open for new ideas to the bot, so feel free to write a request in the issues tab, if there is something i should try adding to it.  
+   
