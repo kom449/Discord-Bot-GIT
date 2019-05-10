@@ -10,9 +10,9 @@ using System.Linq;
 
 //todo
 //add room creation, so it creates a room
+//make it check if the roles already exists before creating them to avoid duplicates
 //add guild id and guild name, so you can see what guild the user is connected from
 //add token generation to verify ownership of lol account
-//add storage of flex 5v5 and flex 3v3 in DB
 //add rank command, so it shows the rank of the user in all 3 queues
 
 namespace NewTestBot.Modules
@@ -117,27 +117,56 @@ namespace NewTestBot.Modules
 
             //getting league rank from ID
             //using "r" for rank
-                string responserank = c.DownloadString("https://euw1.api.riotgames.com/lol/league/v4/positions/by-summoner/" + id + "?api_key=" + apikey + "");
+                string responserank = c.DownloadString("https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/" + id + "?api_key=" + apikey + "");
                 JArray r = JArray.Parse(responserank);
-                string rank = null;
-                string usedtier = null;
+                string ranksolo = null;
+                string rankflex5 = null;
+                string rankflex3 = null;
+                string usedtiersolo = null;
 
-            //using a for loop to check all the bodies of the json
-            //since each queue type is in another body
+                //using a for loop to check all the bodies of the json
+                //since each queue type is in another body
                 for (int x = 0; x < r.Count; x++)
                 {
                     if (((string)r[x]["queueType"] == "RANKED_SOLO_5x5"))
                     {
-                        var tier = (string)r[x]["tier"];
-                        var division = (string)r[x]["rank"];
-                        string soloq = tier + " " + division;
-                        rank = soloq;
-                        usedtier = tier.ToLower();
+                        var tiersolo = (string)r[x]["tier"];
+                        var divisionsolo = (string)r[x]["rank"];
+                        string soloq = tiersolo + " " + divisionsolo;
+                        ranksolo = soloq;
+                        usedtiersolo = tiersolo.ToLower();
                     }
                 }
+
+                //using the same loop to get the Flex 5v5 rank
+                for (int y = 0; y < r.Count; y++)
+                {
+                    if(((string)r[y]["queueType"] == "RANKED_FLEX_SR"))
+                    {
+                        var tierflex5v5 = (string)r[y]["tier"];
+                        var divisionflex5v5 = (string)r[y]["rank"];
+                        string flex5v5 = tierflex5v5 + " " + divisionflex5v5;
+                        rankflex5 = flex5v5;
+                    }
+
+                }
+
+                //again using the same loop to find the Flex 3v3 rank
+                for (int z = 0; z < r.Count; z++)
+                {
+                     if(((string)r[z]["queueType"] == "RANKED_FLEX_TT"))
+                     {
+                        var tierflex3v3 = (string)r[z]["tier"];
+                        var divisionflex3v3 = (string)r[z]["rank"];
+                        string flex3v3 = tierflex3v3 + " " + divisionflex3v3;
+                        rankflex3 = flex3v3;
+                     }
+                    
+                }
+
             string UserID = Context.User.Id.ToString();
             string DiscordName = Context.User.Username;
-            string Query = "INSERT INTO users_testing (Discord_Id,Discord_Name,League_Id,League_Name,SOLO_QUEUE,Icon_Id) VALUES ('" + UserID + "','" + DiscordName + "','" + id + "','" + lolname + "','" + rank+ "','" + icon + "');";
+            string Query = "INSERT INTO users_testing (Discord_Id,Discord_Name,League_Id,League_Name,SOLO_QUEUE,FLEX_3V3,FLEX_5V5,Icon_Id) VALUES ('" + UserID + "','" + DiscordName + "','" + id + "','" + lolname + "','" + ranksolo+ "','" + rankflex3 + "','" + rankflex5 + "','" + icon + "');";
             string Duplicate = "SELECT Discord_Id FROM users_testing WHERE Discord_Id like  '%" + UserID + "%'; ";
             string Result;
 
@@ -196,7 +225,7 @@ namespace NewTestBot.Modules
 
                     var embed = new EmbedBuilder();
                     embed.AddField("Connecting you...",
-                    "Your league account " + "`" + lolname + "`" + " with the rank: " + "`" + rank + "`" + " has been added to the Database!")
+                    "Your league account " + "`" + lolname + "`" + " with the rank: " + "`" + ranksolo + "`" + " has been added to the Database!")
                     .WithAuthor(author =>
                     {
                         author
@@ -215,17 +244,15 @@ namespace NewTestBot.Modules
                     })
                     .WithCurrentTimestamp()
                     .Build();
-
+                    await Context.Channel.SendMessageAsync("", false, embed);
                     var username = Context.User;
-                    var role = Context.Guild.Roles.FirstOrDefault(x => x.Name.ToLower() == usedtier);
+                    var role = Context.Guild.Roles.FirstOrDefault(x => x.Name.ToLower() == usedtiersolo);
                     await (username as IGuildUser).AddRoleAsync(role);
                     var UnrankedRole = Context.Guild.Roles.FirstOrDefault(x => x.Name.ToLower() == "unranked");
                     await (username as IGuildUser).RemoveRoleAsync(UnrankedRole);
                     var newones = Context.Guild.Roles.FirstOrDefault(x => x.Name.ToLower() == "New ones :)");
                     await (username as IGuildUser).RemoveRoleAsync(newones);
 
-
-                    await Context.Channel.SendMessageAsync("", false, embed);
                 }
             }
             catch (Exception)

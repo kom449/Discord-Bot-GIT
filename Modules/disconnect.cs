@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace NewTestBot.Modules
 {
-    class disconnect : ModuleBase<SocketCommandContext>
+    class Disconnect : ModuleBase<SocketCommandContext>
     {
         readonly string IconURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
         readonly string thumbnail = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
@@ -58,7 +58,7 @@ namespace NewTestBot.Modules
                 WebClient c = new WebClient();
                 try
                 {
-                    responserank = c.DownloadString("https://euw1.api.riotgames.com/lol/league/v4/positions/by-summoner/" + id + "?api_key=" + apikey + "");
+                    responserank = c.DownloadString("https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/" + id + "?api_key=" + apikey + "");
                 }
                 catch(Exception)
                 {

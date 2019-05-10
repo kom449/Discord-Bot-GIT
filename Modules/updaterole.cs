@@ -8,7 +8,7 @@ using System.Net;
 
 namespace NewTestBot.Modules
 {
-    class updaterole : ModuleBase<SocketCommandContext>
+    class Updaterole : ModuleBase<SocketCommandContext>
     {
         readonly string IconURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
 
@@ -60,7 +60,7 @@ namespace NewTestBot.Modules
 
             //getting league rank from ID
             //using "r" for rank
-            string responserank = c.DownloadString("https://euw1.api.riotgames.com/lol/league/v4/positions/by-summoner/" + id + "?api_key=" + apikey + "");
+            string responserank = c.DownloadString("https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/" + id + "?api_key=" + apikey + "");
             JArray r = JArray.Parse(responserank);
             string rank = null;
 
@@ -107,7 +107,6 @@ namespace NewTestBot.Modules
                     })
                     .WithCurrentTimestamp()
                     .Build();
-
                     await Context.Channel.SendMessageAsync("", false, embed);
         }       
     }

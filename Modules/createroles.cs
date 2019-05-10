@@ -1,22 +1,17 @@
-﻿using System;
-using MySql.Data.MySqlClient;
-using Newtonsoft.Json.Linq;
-using System.IO;
-using Discord;
+﻿using Discord;
 using Discord.Commands;
 using System.Threading.Tasks;
-using System.Net;
-using System.Linq;
+
 
 namespace NewTestBot.Modules
 {
-    class createroles : ModuleBase<SocketCommandContext>
+    class Createroles : ModuleBase<SocketCommandContext>
     {
         readonly string IconURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
         readonly string thumbnail = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
 
         [Command("create", RunMode = RunMode.Async),RequireOwner]
-        public async Task Createroles()
+        public async Task Rolecreation()
         {
             var allRanks = new[] { "Challenger", "GrandMaster", "Master", "Diamond", "Platinum", "Gold", "Silver", "Bronze", "Iron","Unranked" };
             var allrankcolors = new[] { new Color(240,140,15), new Color(253,7,7), new Color(192,7,146),new Color(32,102,148),new Color(46,204,113),new Color(241,196,15),new Color(151,156,159),new Color(187,121,68),new Color(255,255,255),new Color(124, 136, 120)};
