@@ -19,7 +19,7 @@ namespace NewTestBot.Modules
         {
             if (response == null)
             {
-                  string UserID = Context.User.Id.ToString();
+            string UserID = Context.User.Id.ToString();
             string data = File.ReadAllText("Resources/config.json");
             string Query = "SELECT League_id FROM users_testing WHERE Discord_Id like  '%" + UserID + "%'; ";
             string getIcon = "SELECT Icon_id FROM users_testing WHERE Discord_Id like '%" + UserID + "%';";
@@ -148,8 +148,7 @@ namespace NewTestBot.Modules
                 (string)o["database"]["dbhost"], (string)o["database"]["dbuser"], (string)o["database"]["dbname"], (string)o["database"]["dbport"], (string)o["database"]["dbpass"]);
 
                 WebClient c = new WebClient();
-
-                                JObject f = null;
+                JObject f = null;
                 try
                 {
                     string responsename = c.DownloadString("https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + account + "?api_key=" + apikey + "");
@@ -200,7 +199,6 @@ namespace NewTestBot.Modules
                 string ranksolo = null;
                 string rankflex5 = null;
                 string rankflex3 = null;
-                string usedtiersolo = null;
 
                 //using a for loop to check all the bodies of the json
                 //since each queue type is in another body
@@ -212,7 +210,7 @@ namespace NewTestBot.Modules
                         var divisionsolo = (string)r[x]["rank"];
                         string soloq = tiersolo + " " + divisionsolo;
                         ranksolo = soloq;
-                        usedtiersolo = tiersolo.ToLower();
+
                     }
                     else
                     {
@@ -251,9 +249,6 @@ namespace NewTestBot.Modules
                         rankflex3 = "Unranked";
                     }
                 }
-                Console.WriteLine("solo: "+ranksolo);
-                Console.WriteLine("flex5: "+rankflex5);
-                Console.WriteLine("flex3: "+rankflex3);
 
                 var embed = new EmbedBuilder();
                     embed.AddField("Getting the ranks of user "+name+"...",

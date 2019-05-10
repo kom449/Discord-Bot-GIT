@@ -5,6 +5,9 @@ using Discord;
 using Discord.Commands;
 using System.Threading.Tasks;
 using System.Net;
+using System.Linq;
+using System;
+
 
 namespace NewTestBot.Modules
 {
@@ -15,6 +18,10 @@ namespace NewTestBot.Modules
         [Command("update", RunMode = RunMode.Async)]
         public async Task UpdateAccount()
         {
+            try
+            {
+
+            
             //getting id of sender and selecting lol id
             string UserID = Context.User.Id.ToString();
             string getID = "SELECT League_id FROM users_testing WHERE Discord_Id like  '%" + UserID + "%'; ";
@@ -63,6 +70,7 @@ namespace NewTestBot.Modules
             string responserank = c.DownloadString("https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/" + id + "?api_key=" + apikey + "");
             JArray r = JArray.Parse(responserank);
             string rank = null;
+            string usedtiersolo = null;
 
             //getting icon for thumbnail
             string findlatestlolversion = c.DownloadString("https://ddragon.leagueoflegends.com/api/versions.json");
@@ -76,10 +84,11 @@ namespace NewTestBot.Modules
             {
                 if (((string)r[x]["queueType"] == "RANKED_SOLO_5x5"))
                 {
-                    var tier = (string)r[x]["tier"];
+                    var tiersolo = (string)r[x]["tier"];
                     var division = (string)r[x]["rank"];
-                    string soloq = tier + " " + division;
+                    string soloq = tiersolo + " " + division;
                     rank = soloq;
+                    usedtiersolo = tiersolo.ToLower();
                 }
             }
 
@@ -89,6 +98,25 @@ namespace NewTestBot.Modules
                 myconn.Open();
                 myreader = updatecommand.ExecuteReader();
                 myconn.Close();
+
+            var allRanks = new[] { "challenger", "grandMaster", "master", "diamond", "platinum", "gold", "silver", "bronze", "iron","unranked" };
+            var username = Context.User;
+            
+            //running through all the different roles and create them
+            for (int x = 0; x < allRanks.GetLength(0); x++)
+            {
+                    try
+                    {
+                        var roles = Context.Guild.Roles.FirstOrDefault(y => y.Name.ToLower() == allRanks[x]);
+                        await (username as IGuildUser).RemoveRoleAsync(roles);
+                    }
+                    catch(Exception)
+                    {
+                        //nothing 
+                    }
+            }
+            var role = Context.Guild.Roles.FirstOrDefault(x => x.Name.ToLower() == usedtiersolo);
+            await (username as IGuildUser).AddRoleAsync(role);
 
             var embed = new EmbedBuilder();
                     embed.AddField("updating your account...",
@@ -107,6 +135,11 @@ namespace NewTestBot.Modules
                     .WithCurrentTimestamp()
                     .Build();
                     await Context.Channel.SendMessageAsync("", false, embed);
+                }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
         }       
     }
 }
