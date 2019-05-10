@@ -14,21 +14,49 @@ namespace NewTestBot.Modules
     {
         readonly string IconURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
         readonly string thumbnail = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
-        string Token = "";
+        string Token = null;
         [Command("verify", RunMode = RunMode.Async)]
-
-        /*
-            Generate a password
-
-            Requirements for password:
-            random 8 chars
-            letters and numbers
-            upper and lower case letters
-        */
         public async Task Verifyaccounts()
         {
             try
             {
+
+            string data = File.ReadAllText("Resources/config.json");
+            JObject o = JObject.Parse(data);
+            string connect = string.Format("server={0};user={1};database={2};port={3};password={4}",
+            (string)o["database"]["dbhost"], (string)o["database"]["dbuser"], (string)o["database"]["dbname"], (string)o["database"]["dbport"], (string)o["database"]["dbpass"]);
+
+            string UserID = Context.User.Id.ToString();
+
+            string Get_Token = "SELECT TOKEN FROM users_testing WHERE Discord_Id like  '%" + UserID + "%'; ";
+            MySqlConnection myconn = new MySqlConnection(connect);
+            MySqlCommand Get_Token_Command = new MySqlCommand(Get_Token, myconn);
+            MySqlDataReader myreader;
+
+            myconn.Open();
+            myreader = Get_Token_Command.ExecuteReader();
+            string GottenToken = null;
+            while (myreader.Read())
+            {
+                Token = myreader.GetString(0);
+            }
+            myconn.Close();
+            }
+            catch(Exception TokenCheck_ex)
+            {
+                Console.WriteLine(TokenCheck_ex);
+            }
+
+
+            try
+            {
+                //Breaking if token/DBData already exists
+                if (Token != null)
+                {
+                    break;
+
+                }
+
                 //string of chars to use in token generation
                 var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
                 //array of chars with given length [length of token]
@@ -41,29 +69,20 @@ namespace NewTestBot.Modules
                 }
                 //finally adding the array of chars to the final string token
                 Token = new String(stringChars);
+                
             }
-            catch (Exception ex)
+            catch (Exception TokenSend_ex)
             {
-                Console.WriteLine(ex);
+                Console.WriteLine(TokenSend_ex);
             }
 
 
-            string data = File.ReadAllText("Resources/config.json");
-            JObject o = JObject.Parse(data);
-            string connect = string.Format("server={0};user={1};database={2};port={3};password={4}",
-            (string)o["database"]["dbhost"], (string)o["database"]["dbuser"], (string)o["database"]["dbname"], (string)o["database"]["dbport"], (string)o["database"]["dbpass"]);
+            string Send_Token = "UPDATE users_testing SET TOKEN = '" + Token + "' WHERE Discord_Id like '%" + UserID + "%';";
 
-
-            string UserID = Context.User.Id.ToString();
-            string Query = "UPDATE users_testing SET TOKEN = '" + Token + "' WHERE Discord_Id like '%" + UserID + "%';";
-
-
-            MySqlConnection myconn = new MySqlConnection(connect);
-            MySqlCommand command = new MySqlCommand(Query, myconn);
-            MySqlDataReader myreader;
+            MySqlCommand Send_Token_Command = new MySqlCommand(Send_Token, myconn);
 
             myconn.Open();
-            myreader = command.ExecuteReader();
+            myreader = Send_Token_Command.ExecuteReader();
             myconn.Close();
 
 
