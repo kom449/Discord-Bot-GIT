@@ -28,16 +28,16 @@ namespace NewTestBot.Modules
         */
         public async Task Verifyaccounts()
         {
-            const string chars = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789";
-            for (int i = 0; i < 8; i++)
-            {
-                char tmpchar = (char)rnd.Next(chars.Length);
-                token += tmpchar;
-            }
+            
+                const string chars = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789";
+                for (int i = 0; i < 8; i++)
+                {
+                    char tmpchar = (char)rnd.Next(chars.Length);
+                    token += tmpchar;
+                }
 
-            //(Enumerable.Repeat(chars, 8).Select(s => s[random.Next(s.Length)]).ToArray());
-            
-            
+
+
         }
     }
 }
