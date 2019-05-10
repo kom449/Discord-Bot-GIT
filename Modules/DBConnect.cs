@@ -40,7 +40,6 @@ namespace NewTestBot.Modules
                     .WithThumbnailUrl(thumbnail)
                     .WithColor(new Color(255, 83, 13))
                     .WithTitle("Birdie Bot notification")
-
                     .WithFooter(footer =>
                     {
                         footer
@@ -241,7 +240,6 @@ namespace NewTestBot.Modules
                     .WithThumbnailUrl(thumbnailURL)
                     .WithColor(new Color(255, 83, 13))
                     .WithTitle("Birdie Bot notification")
-
                     .WithFooter(footer =>
                     {
                         footer
