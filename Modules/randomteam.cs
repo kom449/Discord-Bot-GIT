@@ -8,7 +8,7 @@ using Discord.Commands;
 
 namespace NewTestBot.Modules
 {
-    class randomteam : ModuleBase<SocketCommandContext>
+    public class randomteam : ModuleBase<SocketCommandContext>
     {
         [Command("randomteam", RunMode = RunMode.Async)]
         //[Command("randomteam"),RequireUserPermission(GuildPermission.Administrator)]
@@ -18,15 +18,17 @@ namespace NewTestBot.Modules
         {
             try
             {
-
-                string userMessage = Context.Message.ToString();
-                string name = userMessage.Substring(userMessage.IndexOf(' ') + 1);
-
+                //Context.Message.Tags.
+                string name = Context.Message.ToString().Substring(Context.Message.ToString().IndexOf(' ') + 1);
                 string[] users = name.Split(' ');
-                foreach (string item in users)
+                foreach(string item in users)
                 {
-                    Console.WriteLine(item);
+
+                    //var username = Context.User;
+                    //var role = Context.Guild.Roles.FirstOrDefault(x => x.Name.ToLower() == "role name");
+                    //await (username as IGuildUser).AddRoleAsync(role);
                 }
+
             }
             catch (Exception ex)
             {
