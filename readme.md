@@ -24,10 +24,12 @@
  - Add token support
  - create global update command
  - support multiple accounts
+ - Room creation, so it creates a room for it
+ - make it check if the roles already exists to avoid making duplicates
+ - add rank command so a user can get the ranks of a player
  
 # Known Issues
- - There is currently no way to get specific roles of users
- - Using more than 1 word in a reason will result in a "Using too many parameters" will be fixed soon
+ - there is a slight chance that the bot will not send a message when connecting 
  
  
 # Low priority
