@@ -3,6 +3,7 @@ using Discord;
 using Discord.Commands;
 using Newtonsoft.Json.Linq;
 using System.IO;
+using Discord.Rest;
 
 
 
@@ -40,7 +41,7 @@ namespace NewTestBot.Modules
             })
             .WithCurrentTimestamp()
             .Build();
-
+            //RestUserMessage msg = Context.Channel.SendMessageAsync("",false,embed);
             await Context.Channel.SendMessageAsync("", false, embed);
         }
     }

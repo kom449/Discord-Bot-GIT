@@ -7,13 +7,14 @@ using Discord.Commands;
 using System.Threading.Tasks;
 using System.Net;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace NewTestBot.Modules
 {
     public class Updateall : ModuleBase<SocketCommandContext>
     {
-        readonly string IconURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
-        readonly string thumbnail = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
+        //readonly string IconURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
+        //readonly string thumbnail = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
         [Command("updateall", RunMode = RunMode.Async)]
         public async Task Updateallranks()
         {
@@ -27,7 +28,7 @@ namespace NewTestBot.Modules
             string connect = string.Format("server={0};user={1};database={2};port={3};password={4}",
             (string)o["database"]["dbhost"], (string)o["database"]["dbuser"], (string)o["database"]["dbname"], (string)o["database"]["dbport"], (string)o["database"]["dbpass"]);
             string Query = "SELECT League_Id FROM users_testing";
-            ArrayList returnedids = new ArrayList();
+            List<string> results = new List<string>();
             MySqlConnection myconn = new MySqlConnection(connect);
             MySqlCommand command = new MySqlCommand(Query, myconn);
             MySqlDataReader myreader;
@@ -35,11 +36,13 @@ namespace NewTestBot.Modules
             myreader = command.ExecuteReader();
             while (myreader.Read())
             {
-                    
-
+                   string id;
+                   id = myreader.GetString(0);     
+                   results.Add(id);
             }
                 myconn.Close();
 
+                
 
             }
             catch(Exception ex)

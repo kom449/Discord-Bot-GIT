@@ -34,7 +34,7 @@ namespace NewTestBot.Modules
                 Console.WriteLine(ex);
             }
 
-
+            await Context.Channel.SendMessageAsync("");
         }
 
 

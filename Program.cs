@@ -22,6 +22,7 @@ namespace NewTestBot
                 LogLevel = LogSeverity.Verbose
             });
             _client.Log += Log;
+            _client.ReactionAdded += OnReactionAdded;
             await _client.LoginAsync(TokenType.Bot, Config.bot.token);
             await _client.StartAsync();
             await _client.SetGameAsync("Getting worked on ^v^");
@@ -29,6 +30,17 @@ namespace NewTestBot
             await _handler.InitializeAsync(_client);
             await Task.Delay(-1);
 
+        }
+
+        private async Task OnReactionAdded(Cacheable<IUserMessage, ulong> cache, ISocketMessageChannel channel, SocketReaction reaction)
+        {
+            if(reaction.MessageId == Global.MessageidToTrack)
+            {
+                if (reaction.Emote.Name == "👌")
+                {
+                    await channel.SendMessageAsync(reaction.User.Value.Username + "reacted!");
+                }
+            }
         }
 
         private async Task Log(LogMessage msg)

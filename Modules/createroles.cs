@@ -1,5 +1,7 @@
 ﻿using Discord;
 using Discord.Commands;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 
@@ -13,21 +15,37 @@ namespace NewTestBot.Modules
         [Command("create", RunMode = RunMode.Async),RequireOwner]
         public async Task Rolecreation()
         {
+            try { 
+
             var allRanks = new[] { "Challenger", "GrandMaster", "Master", "Diamond", "Platinum", "Gold", "Silver", "Bronze", "Iron","Unranked" };
             var allrankcolors = new[] { new Color(240,140,15), new Color(253,7,7), new Color(192,7,146),new Color(32,102,148),new Color(46,204,113),new Color(241,196,15),new Color(151,156,159),new Color(187,121,68),new Color(255,255,255),new Color(124, 136, 120)};
 
-            //my int for the color array
-            int y = 0;
-
-            //running through all the different roles and create them
-            for (int x = 0; x < allRanks.GetLength(0); x++, y++)
+            
+            for (int z = 0; z < allRanks.GetLength(0); z++)
             {
-                GuildPermissions permissions = default;
-                bool ishoisted = true;
-                RequestOptions options = null;
-                await Context.Guild.CreateRoleAsync(allRanks[x], permissions, allrankcolors[y], ishoisted, options);
+                var role = Context.Guild.Roles.FirstOrDefault(x => x.Name.ToLower() == allRanks[z]);
+                    Console.WriteLine(allRanks[z]);
+                    Console.WriteLine(role);
+                if (role.ToString() == allRanks[z].ToString())
+                {
+                    Console.WriteLine("Role already exist");
+                    z++;
+                }
+                else
+                {
+                    //my int for the color array
+                    int y = 0;
+        
+                    //running through all the different roles and create them
+                    for (int x = 0; x < allRanks.GetLength(0); x++, y++)
+                    {
+                           GuildPermissions permissions = default;
+                           bool ishoisted = true;
+                           RequestOptions options = null;
+                           await Context.Guild.CreateRoleAsync(allRanks[x], permissions, allrankcolors[y], ishoisted, options);
 
-            }
+                    }
+
                     var embed = new EmbedBuilder();
                     embed.AddField("Creating roles for you now...",
                     "All of the rank roles has been created!")
@@ -47,6 +65,13 @@ namespace NewTestBot.Modules
                     .Build();
 
                     await Context.Channel.SendMessageAsync("", false, embed);
+                }
+            }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
         } 
     }
 }

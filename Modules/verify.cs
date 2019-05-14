@@ -7,6 +7,7 @@ using Discord;
 using Discord.Commands;
 using System.Threading.Tasks;
 using System.Net;
+using Discord.Rest;
 
 namespace NewTestBot.Modules
 {
@@ -43,7 +44,27 @@ namespace NewTestBot.Modules
             //Breaking if token/DBData already exists
             if (Token != null)
             {
-                return;
+                    var embed = new EmbedBuilder();
+                    embed.AddField("Verification of your account...",
+                    "To verify your League of Legends account \nPlease take this Token: "+Token+"\n Use it in the league client under the settings page")
+                    .WithAuthor(author =>
+                    {author
+                    .WithName("Birdie Bot")
+                    .WithIconUrl(IconURL);})
+                    .WithThumbnailUrl(thumbnail)
+                    .WithColor(new Color(255, 83, 13))
+                    .WithTitle("Birdie Bot notification")
+                    .WithFooter(footer =>
+                    {footer
+                    .WithText("Need help? Contact Birdie Zukira#3950")
+                    .WithIconUrl(IconURL);})
+                    .WithCurrentTimestamp()
+                    .Build();
+                    //var emoji = new Emoji(":ok_hand:");
+                    //await Context.Message.AddReactionAsync(emoji);
+                    RestUserMessage msg = await Context.Channel.SendMessageAsync("",false,embed);
+                    Global.MessageidToTrack = msg.Id;
+                    return;
             }
             else
             {
@@ -68,8 +89,31 @@ namespace NewTestBot.Modules
                 myconn.Open();
                 myreader = Send_Token_Command.ExecuteReader();
                 myconn.Close();
-            }
 
+                    var embed = new EmbedBuilder();
+                    embed.AddField("Verification of your account...",
+                    "To verify your League of Legends account \nPlease take this Token: "+"***"+""+Token+""+"***"+"\n Use it in the league client under the settings page")
+                    .WithAuthor(author =>
+                    {author
+                    .WithName("Birdie Bot")
+                    .WithIconUrl(IconURL);})
+                    .WithThumbnailUrl(thumbnail)
+                    .WithColor(new Color(255, 83, 13))
+                    .WithTitle("Birdie Bot notification")
+                    .WithFooter(footer =>
+                    {footer
+                    .WithText("Need help? Contact Birdie Zukira#3950")
+                    .WithIconUrl(IconURL);})
+                    .WithCurrentTimestamp()
+                    .Build();
+                    //var emoji = new Emoji(":ok_hand:");
+                    //await Context.Message.AddReactionAsync(emoji);
+                    RestUserMessage msg = await Context.Channel.SendMessageAsync("", false, embed);
+                    Global.MessageidToTrack = msg.Id;
+            }
+            
+
+                  
 
 
         }
