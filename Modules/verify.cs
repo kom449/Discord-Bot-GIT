@@ -15,12 +15,9 @@ namespace NewTestBot.Modules
     {
         readonly string IconURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
         readonly string thumbnail = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
-        string Token = null;
         [Command("verify", RunMode = RunMode.Async)]
         public async Task Verifyaccounts()
         {
-            
-
             string data = File.ReadAllText("Resources/config.json");
             JObject o = JObject.Parse(data);
             string connect = string.Format("server={0};user={1};database={2};port={3};password={4}",
@@ -34,41 +31,12 @@ namespace NewTestBot.Modules
             MySqlDataReader myreader;
 
             myconn.Open();
-            myreader = Get_Token_Command.ExecuteReader();
-            while (myreader.Read())
-            {
-                Token = myreader.GetString(0);
-            }
+            string Token = (string)Get_Token_Command.ExecuteScalar();
             myconn.Close();
-            Console.WriteLine(Token);
-            //Breaking if token/DBData already exists
-            if (Token != null)
-            {
-                    var embed = new EmbedBuilder();
-                    embed.AddField("Verification of your account...",
-                    "To verify your League of Legends account \nPlease take this Token: "+Token+"\n Use it in the league client under the settings page")
-                    .WithAuthor(author =>
-                    {author
-                    .WithName("Birdie Bot")
-                    .WithIconUrl(IconURL);})
-                    .WithThumbnailUrl(thumbnail)
-                    .WithColor(new Color(255, 83, 13))
-                    .WithTitle("Birdie Bot notification")
-                    .WithFooter(footer =>
-                    {footer
-                    .WithText("Need help? Contact Birdie Zukira#3950")
-                    .WithIconUrl(IconURL);})
-                    .WithCurrentTimestamp()
-                    .Build();
-                    //var emoji = new Emoji(":ok_hand:");
-                    //await Context.Message.AddReactionAsync(emoji);
-                    RestUserMessage msg = await Context.Channel.SendMessageAsync("",false,embed);
-                    Global.MessageidToTrack = msg.Id;
-                    return;
-            }
-            else
-            {
 
+            //Breaking if token/DBData already exists
+            if (Token == "")
+            {
                 //string of chars to use in token generation
                 var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
                 //array of chars with given length [length of token]
@@ -90,32 +58,48 @@ namespace NewTestBot.Modules
                 myreader = Send_Token_Command.ExecuteReader();
                 myconn.Close();
 
-                    var embed = new EmbedBuilder();
-                    embed.AddField("Verification of your account...",
-                    "To verify your League of Legends account \nPlease take this Token: "+"***"+""+Token+""+"***"+"\n Use it in the league client under the settings page")
-                    .WithAuthor(author =>
-                    {author
-                    .WithName("Birdie Bot")
-                    .WithIconUrl(IconURL);})
-                    .WithThumbnailUrl(thumbnail)
-                    .WithColor(new Color(255, 83, 13))
-                    .WithTitle("Birdie Bot notification")
-                    .WithFooter(footer =>
-                    {footer
-                    .WithText("Need help? Contact Birdie Zukira#3950")
-                    .WithIconUrl(IconURL);})
-                    .WithCurrentTimestamp()
-                    .Build();
-                    //var emoji = new Emoji(":ok_hand:");
-                    //await Context.Message.AddReactionAsync(emoji);
-                    RestUserMessage msg = await Context.Channel.SendMessageAsync("", false, embed);
-                    Global.MessageidToTrack = msg.Id;
+                var embed = new EmbedBuilder();
+                embed.AddField("Verification of your account...",
+                "To verify your League of Legends account \nPlease take this Token: " + "***" + "" + Token + "" + "***" + "\n Use it in the league client under the settings page")
+                .WithAuthor(author =>{author
+                .WithName("Birdie Bot")
+                .WithIconUrl(IconURL);})
+                .WithThumbnailUrl(thumbnail)
+                .WithColor(new Color(255, 83, 13))
+                .WithTitle("Birdie Bot notification")
+                .WithFooter(footer =>{footer
+                .WithText("Need help? Contact Birdie Zukira#3950")
+                .WithIconUrl(IconURL);})
+                .WithCurrentTimestamp()
+                .Build();
+                var emoji = new Emoji("👌");
+                RestUserMessage msg = await Context.Channel.SendMessageAsync("", false, embed);
+                await msg.AddReactionAsync(emoji);
+                Global.MessageidToTrack = msg.Id;
             }
-            
+            else
+            {
 
-                  
+                var embed = new EmbedBuilder();
+                embed.AddField("Verification of your account...",
+                "To verify your League of Legends account \nPlease take this Token:  " + "***" + "" + Token + "" + "***" + "\n Use it in the league client under the settings page")
+                .WithAuthor(author =>{author
+                .WithName("Birdie Bot")
+                .WithIconUrl(IconURL);})
+                .WithThumbnailUrl(thumbnail)
+                .WithColor(new Color(255, 83, 13))
+                .WithTitle("Birdie Bot notification")
+                .WithFooter(footer =>{footer
+                .WithText("Need help? Contact Birdie Zukira#3950")
+                .WithIconUrl(IconURL);})
+                .WithCurrentTimestamp()
+                .Build();
+                var emoji = new Emoji("👌");
+                RestUserMessage msg = await Context.Channel.SendMessageAsync("", false, embed);
+                await msg.AddReactionAsync(emoji);
+                Global.MessageidToTrack = msg.Id;
 
-
+            }
         }
     }
 }

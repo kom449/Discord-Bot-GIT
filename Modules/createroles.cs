@@ -17,22 +17,9 @@ namespace NewTestBot.Modules
         {
             try { 
 
-            var allRanks = new[] { "Challenger", "GrandMaster", "Master", "Diamond", "Platinum", "Gold", "Silver", "Bronze", "Iron","Unranked" };
-            var allrankcolors = new[] { new Color(240,140,15), new Color(253,7,7), new Color(192,7,146),new Color(32,102,148),new Color(46,204,113),new Color(241,196,15),new Color(151,156,159),new Color(187,121,68),new Color(255,255,255),new Color(124, 136, 120)};
+            var allRanks = new[] { "Challenger", "GrandMaster", "Master", "Diamond", "Platinum", "Gold", "Silver", "Bronze", "Iron","Unranked", "New ones :)" };
+            var allrankcolors = new[] { new Color(240,140,15), new Color(253,7,7), new Color(192,7,146),new Color(32,102,148),new Color(46,204,113),new Color(241,196,15),new Color(151,156,159),new Color(187,121,68),new Color(255,255,255),new Color(124, 136, 120),new Color(188, 157, 154)};
 
-            
-            for (int z = 0; z < allRanks.GetLength(0); z++)
-            {
-                var role = Context.Guild.Roles.FirstOrDefault(x => x.Name.ToLower() == allRanks[z]);
-                    Console.WriteLine(allRanks[z]);
-                    Console.WriteLine(role);
-                if (role.ToString() == allRanks[z].ToString())
-                {
-                    Console.WriteLine("Role already exist");
-                    z++;
-                }
-                else
-                {
                     //my int for the color array
                     int y = 0;
         
@@ -65,8 +52,8 @@ namespace NewTestBot.Modules
                     .Build();
 
                     await Context.Channel.SendMessageAsync("", false, embed);
-                }
-            }
+                
+            
             }
             catch(Exception ex)
             {

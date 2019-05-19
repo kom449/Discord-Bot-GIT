@@ -96,7 +96,7 @@ namespace NewTestBot.Modules
                 myreader = updatecommand.ExecuteReader();
                 myconn.Close();
 
-            var allRanks = new[] { "challenger", "grandMaster", "master", "diamond", "platinum", "gold", "silver", "bronze", "iron","unranked" };
+            var allRanks = new[] { "challenger", "grandMaster", "master", "diamond", "platinum", "gold", "silver", "bronze", "iron","unranked", "new ones :)" };
             var username = Context.User;
             
             //running through all the different roles and create them
@@ -105,7 +105,10 @@ namespace NewTestBot.Modules
                     try
                     {
                         var roles = Context.Guild.Roles.FirstOrDefault(y => y.Name.ToLower() == allRanks[x]);
+                        var idk = Context.Guild.Roles.FirstOrDefault(y => y.Name.ToLower() == "New ones :)");
                         await (username as IGuildUser).RemoveRoleAsync(roles);
+                        await (username as IGuildUser).RemoveRoleAsync(idk);
+                        
                     }
                     catch(Exception)
                     {
@@ -132,7 +135,10 @@ namespace NewTestBot.Modules
                     .WithCurrentTimestamp()
                     .Build();
                     await Context.Channel.SendMessageAsync("", false, embed);
-                     
+                    await Task.Delay(2000);
+                    var messages = await Context.Channel.GetMessagesAsync(2).Flatten();
+                    await Context.Channel.DeleteMessagesAsync(messages);
+
         }       
     }
 }

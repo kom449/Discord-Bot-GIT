@@ -34,6 +34,7 @@ namespace NewTestBot.Modules
             MySqlDataReader myreader;
             myconn.Open();
             myreader = command.ExecuteReader();
+                //getting the current league id
             while (myreader.Read())
             {
                    string id;
