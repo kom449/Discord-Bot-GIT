@@ -61,7 +61,6 @@ namespace NewTestBot
                     string returnedtoken = null;
                     string queryid = "SELECT League_Id FROM users_testing WHERE Discord_Id like  '%" + reaction.UserId+ "%'; ";
                     string returnedid = null;
-                    Console.WriteLine("Reaction userid is: "+reaction.UserId);
 
                     //sql connection for League Id
                     MySqlConnection myconn = new MySqlConnection(connect);
@@ -82,11 +81,10 @@ namespace NewTestBot
                     {
                         string ResponseToken = c.DownloadString("https://euw1.api.riotgames.com/lol/platform/v4/third-party-code/by-summoner/" + returnedid + "?api_key=" + apikey + "");
                         ResponseToken = ResponseToken.Trim('"');
-                        Console.WriteLine("my token in league is: " + ResponseToken);
                         Emptyreponse = ResponseToken;
                         
                     }
-                    catch(Exception ex)
+                    catch(Exception)
                     {
                         string IconURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
                         string thumbnail = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
@@ -105,10 +103,7 @@ namespace NewTestBot
                         .WithCurrentTimestamp()
                         .Build();
 
-                        Console.WriteLine(ex);
                         await channel.SendMessageAsync("", false, embed);
-
-
                         await Task.Delay(2000);
                         var messages = await channel.GetMessagesAsync(3).Flatten();
                         await channel.DeleteMessagesAsync(messages);
@@ -193,7 +188,7 @@ namespace NewTestBot
                         .WithCurrentTimestamp()
                         .Build();
 
-                      
+
                         await channel.SendMessageAsync("", false, embed);
                         await Task.Delay(3000);
                         var messages = await channel.GetMessagesAsync(3).Flatten();
@@ -204,7 +199,6 @@ namespace NewTestBot
                     else
                     {
                         await channel.SendMessageAsync("Something went wrong");
-                        Console.WriteLine("something went wrong");
                         await Task.Delay(2000);
                         var messages = await channel.GetMessagesAsync(3).Flatten();
                         await channel.DeleteMessagesAsync(messages);

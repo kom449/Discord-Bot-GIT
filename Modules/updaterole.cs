@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Linq;
 using System;
-
+using Discord.WebSocket;
 
 namespace NewTestBot.Modules
 {
@@ -97,7 +97,7 @@ namespace NewTestBot.Modules
                 myconn.Close();
 
             var allRanks = new[] { "challenger", "grandMaster", "master", "diamond", "platinum", "gold", "silver", "bronze", "iron","unranked", "new ones :)" };
-            var username = Context.User;
+            var username = Context.User as SocketGuildUser;
             
             //running through all the different roles and create them
             for (int x = 0; x < allRanks.GetLength(0); x++)
@@ -105,10 +105,10 @@ namespace NewTestBot.Modules
                     try
                     {
                         var roles = Context.Guild.Roles.FirstOrDefault(y => y.Name.ToLower() == allRanks[x]);
-                        var idk = Context.Guild.Roles.FirstOrDefault(y => y.Name.ToLower() == "New ones :)");
+                        if(username.Roles.Contains(roles))
+                        {
                         await (username as IGuildUser).RemoveRoleAsync(roles);
-                        await (username as IGuildUser).RemoveRoleAsync(idk);
-                        
+                        }
                     }
                     catch(Exception)
                     {

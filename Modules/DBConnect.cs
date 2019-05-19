@@ -12,7 +12,6 @@ using System.Linq;
 //add room creation, so it creates a room
 //make it check if the roles already exists before creating them to avoid duplicates
 //add guild id and guild name, so you can see what guild the user is connected from
-//add token generation to verify ownership of lol account
 
 namespace NewTestBot.Modules
 {

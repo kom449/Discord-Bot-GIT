@@ -26,17 +26,22 @@ namespace NewTestBot.Modules
             string UserID = Context.User.Id.ToString();
 
             string Get_Token = "SELECT TOKEN FROM users_testing WHERE Discord_Id like  '%" + UserID + "%'; ";
+            string GetRank = "SELECT SOLO_QUEUE FROM users_testing WHERE Discord_Id like '%" + UserID + "%';";
+            string GottenRank = "";
             MySqlConnection myconn = new MySqlConnection(connect);
             MySqlCommand Get_Token_Command = new MySqlCommand(Get_Token, myconn);
+            MySqlCommand GetRankCommand = new MySqlCommand(GetRank, myconn);
             MySqlDataReader myreader;
 
             myconn.Open();
             string Token = (string)Get_Token_Command.ExecuteScalar();
+            GottenRank = (string)GetRankCommand.ExecuteScalar();
             myconn.Close();
 
-            //Breaking if token/DBData already exists
-            if (Token == "")
+            if (GottenRank == "")
             {
+                if (Token == "")
+                {
                 //string of chars to use in token generation
                 var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
                 //array of chars with given length [length of token]
@@ -76,9 +81,9 @@ namespace NewTestBot.Modules
                 RestUserMessage msg = await Context.Channel.SendMessageAsync("", false, embed);
                 await msg.AddReactionAsync(emoji);
                 Global.MessageidToTrack = msg.Id;
-            }
-            else
-            {
+                }
+                else
+                {
 
                 var embed = new EmbedBuilder();
                 embed.AddField("Verification of your account...",
@@ -99,7 +104,30 @@ namespace NewTestBot.Modules
                 await msg.AddReactionAsync(emoji);
                 Global.MessageidToTrack = msg.Id;
 
+                }
             }
+            else
+            {
+                 var embed = new EmbedBuilder();
+                embed.AddField("Verification of your account...",
+                "Your account is already verified!")
+                .WithAuthor(author =>{author
+                .WithName("Birdie Bot")
+                .WithIconUrl(IconURL);})
+                .WithThumbnailUrl(thumbnail)
+                .WithColor(new Color(255, 83, 13))
+                .WithTitle("Birdie Bot notification")
+                .WithFooter(footer =>{footer
+                .WithText("Need help? Contact Birdie Zukira#3950")
+                .WithIconUrl(IconURL);})
+                .WithCurrentTimestamp()
+                .Build();
+                await Context.Channel.SendMessageAsync("", false, embed);
+                await Task.Delay(2000);
+                var messages = await Context.Channel.GetMessagesAsync(3).Flatten();
+                await Context.Channel.DeleteMessagesAsync(messages);
+            }
+          
         }
     }
 }
