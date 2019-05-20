@@ -244,7 +244,6 @@
     <Compile Include="Modules\Misc.cs" />
     <Compile Include="Modules\prefix.cs" />
     <Compile Include="Modules\purge.cs" />
-    <Compile Include="Modules\randomteam.cs" />
     <Compile Include="Modules\rank.cs" />
     <Compile Include="Modules\status.cs" />
     <Compile Include="Modules\Updateall.cs" />
