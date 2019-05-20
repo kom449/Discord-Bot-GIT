@@ -12,7 +12,7 @@ namespace NewTestBot.Modules
         readonly string IconURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
         readonly string thumbnailURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
 
-        [Command ("prefix"),RequireUserPermission(GuildPermission.Administrator)]
+        [Command ("prefix"),RequireOwner]
          public async Task Prefixchange(string input = "")
          {
             if (input == "")

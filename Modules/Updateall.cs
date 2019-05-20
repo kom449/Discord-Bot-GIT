@@ -9,6 +9,8 @@ using System.Net;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using Discord.WebSocket;
+using System.Linq;
 
 namespace NewTestBot.Modules
 {
@@ -30,19 +32,23 @@ namespace NewTestBot.Modules
             (string)o["database"]["dbhost"], (string)o["database"]["dbuser"], (string)o["database"]["dbname"], (string)o["database"]["dbport"], (string)o["database"]["dbpass"]);
             string QueryLeagueId = "SELECT League_Id FROM users_testing";
             List<string> results = new List<string>();
+            List<string> DiscordIdResults = new List<string>();
             MySqlConnection myconn = new MySqlConnection(connect);
             MySqlCommand LeagueQuery = new MySqlCommand(QueryLeagueId, myconn);
             MySqlDataReader myreader;
             myconn.Open();
             myreader = LeagueQuery.ExecuteReader();
+
                 //getting the current league id
-            while (myreader.Read())
-            {
+                 while (myreader.Read())
+                 {
                    string leagueid;
                    leagueid = myreader.GetString(0);     
                    results.Add(leagueid);
-            }
+                 }
                 myconn.Close();
+
+                myconn.Open();
 
                 //using b as the variable for discord id list
                 for (int x = 0; x  < results.Count; x++)
@@ -104,8 +110,9 @@ namespace NewTestBot.Modules
                             myconn.Open();
                             myreader = postdata.ExecuteReader();
                             myconn.Close();
+
                     Console.WriteLine("Updated User: " + lolname);
-                            Thread.Sleep(5000);
+                    Thread.Sleep(5000);
 
                 }
                 

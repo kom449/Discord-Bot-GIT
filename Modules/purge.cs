@@ -6,9 +6,8 @@ namespace NewTestBot.Modules
 {
     public class purge : ModuleBase<SocketCommandContext>
     {
-        [Command("purge", RunMode = RunMode.Async)]
+        [Command("purge", RunMode = RunMode.Async),RequireOwner]
         [Summary("Deletes the specified amount of messages.")]
-        [RequireUserPermission(GuildPermission.Administrator)]
         [RequireBotPermission(ChannelPermission.ManageMessages)]
         public async Task PurgeChat(uint amount)
         {
