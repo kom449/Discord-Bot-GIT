@@ -21,20 +21,19 @@
 |status|changes the game status of the bot|{prefix}status {text}|
 |connect|connect/link discord and lol|{prefix}connect {account name}|
 |disconnect|remove account from DB|{prefix}disconnect|
+|verify|verify your league of legends account|{prefix}verify|
 |update|update rank in DB/discord|{prefix}update|
 |create|Creates ranks from unranked to Challenger|{prefix}create|
 
 # To do list
  - Automatic assign roles to users that have been kicked and reinvited
- - Add token support
- - create global update command
  - support multiple accounts
  - Room creation, so it creates a room for it
  - make it check if the roles already exists to avoid making duplicates
- - add rank command so a user can get the ranks of a player
+
  
 # Known Issues
- - there is a slight chance that the bot will not send a message when connecting 
+ - Currently no known issues with the current build.
  
  
 # Low priority
