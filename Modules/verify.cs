@@ -53,26 +53,26 @@ namespace NewTestBot.Modules
                     stringChars[i] = chars[random.Next(chars.Length)];
                 }
                 //finally adding the array of chars to the final string token
-                Token = new String(stringChars);
+                Token = new string(stringChars);
 
                 string Send_Token = "UPDATE users_testing SET TOKEN = '" + Token + "' WHERE Discord_Id like '%" + UserID + "%';";
 
                 MySqlCommand Send_Token_Command = new MySqlCommand(Send_Token, myconn);
-
                 myconn.Open();
                 myreader = Send_Token_Command.ExecuteReader();
                 myconn.Close();
 
                 var embed = new EmbedBuilder();
                 embed.AddField("Verification of your account...",
-                "To verify your League of Legends account \nPlease take this Token: " + "***" + "" + Token + "" + "***" + "\n Use it in the league client under the settings page")
-                .WithAuthor(author =>{author
+                "To verify your League of Legends account \nPlease take this Token: " + "***" + "" + Token + "" + "***" + "\nOpen your league Client and go into the Settings" +
+                "\nScroll to the buttom and find the verification tab.\nCopy your token press save and done.\nAfter that, press the :ok_hand: reaction under the message. ")
+                .WithAuthor(author =>{ author
                 .WithName("Birdie Bot")
                 .WithIconUrl(IconURL);})
                 .WithThumbnailUrl(thumbnail)
                 .WithColor(new Color(255, 83, 13))
                 .WithTitle("Birdie Bot notification")
-                .WithFooter(footer =>{footer
+                .WithFooter(footer =>{ footer
                 .WithText("Need help? Contact Birdie Zukira#3950")
                 .WithIconUrl(IconURL);})
                 .WithCurrentTimestamp()
@@ -87,14 +87,15 @@ namespace NewTestBot.Modules
 
                 var embed = new EmbedBuilder();
                 embed.AddField("Verification of your account...",
-                "To verify your League of Legends account \nPlease take this Token:  " + "***" + "" + Token + "" + "***" + "\n Use it in the league client under the settings page")
-                .WithAuthor(author =>{author
+                "To verify your League of Legends account \nPlease take this Token: " + "***" + "" + Token + "" + "***" + "\nOpen your league Client and go into the Settings" +
+                "\nScroll to the buttom and find the verification tab.\nCopy your token press save and done.\nAfter that, press the :ok_hand: reaction under the message. ")
+                .WithAuthor(author =>{ author
                 .WithName("Birdie Bot")
                 .WithIconUrl(IconURL);})
                 .WithThumbnailUrl(thumbnail)
                 .WithColor(new Color(255, 83, 13))
                 .WithTitle("Birdie Bot notification")
-                .WithFooter(footer =>{footer
+                .WithFooter(footer =>{ footer
                 .WithText("Need help? Contact Birdie Zukira#3950")
                 .WithIconUrl(IconURL);})
                 .WithCurrentTimestamp()
@@ -111,19 +112,19 @@ namespace NewTestBot.Modules
                  var embed = new EmbedBuilder();
                 embed.AddField("Verification of your account...",
                 "Your account is already verified!")
-                .WithAuthor(author =>{author
+                .WithAuthor(author =>{ author
                 .WithName("Birdie Bot")
                 .WithIconUrl(IconURL);})
                 .WithThumbnailUrl(thumbnail)
                 .WithColor(new Color(255, 83, 13))
                 .WithTitle("Birdie Bot notification")
-                .WithFooter(footer =>{footer
+                .WithFooter(footer =>{ footer
                 .WithText("Need help? Contact Birdie Zukira#3950")
                 .WithIconUrl(IconURL);})
                 .WithCurrentTimestamp()
                 .Build();
                 await Context.Channel.SendMessageAsync("", false, embed);
-                await Task.Delay(2000);
+                await Task.Delay(5000);
                 var messages = await Context.Channel.GetMessagesAsync(3).Flatten();
                 await Context.Channel.DeleteMessagesAsync(messages);
             }

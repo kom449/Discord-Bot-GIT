@@ -14,7 +14,7 @@ namespace NewTestBot.Modules
     public class Updaterole : ModuleBase<SocketCommandContext>
     {
         readonly string IconURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
-
+        readonly string thumbnail = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
         [Command("update", RunMode = RunMode.Async)]
         public async Task UpdateAccount()
         {
@@ -48,6 +48,29 @@ namespace NewTestBot.Modules
                 id = data;
             }
             myconn.Close();
+                
+                if(id == "")
+                {
+                    var embed2 = new EmbedBuilder();
+                    embed2.AddField("updating your account...",
+                    "No account was found!")
+                    .WithAuthor(author => { author
+                    .WithName("Birdie Bot")
+                    .WithIconUrl(IconURL);})
+                    .WithThumbnailUrl(thumbnail)
+                    .WithColor(new Color(255, 83, 13))
+                    .WithTitle("Birdie Bot notification")
+                    .WithFooter(footer => { footer
+                    .WithText("Need help? Contact Birdie Zukira#3950")
+                    .WithIconUrl(IconURL);})
+                    .WithCurrentTimestamp()
+                    .Build();
+                    await Context.Channel.SendMessageAsync("", false, embed2);
+                    await Task.Delay(5000);
+                    var messages2 = await Context.Channel.GetMessagesAsync(2).Flatten();
+                    await Context.Channel.DeleteMessagesAsync(messages2);
+                    return;
+                }
 
             //getting the icon ID from the DB
             myconn.Open();
@@ -123,21 +146,20 @@ namespace NewTestBot.Modules
                     "Your rank has been updated!")
                     .WithAuthor(author => { author
                     .WithName("Birdie Bot")
-                    .WithIconUrl(IconURL);
-                    })
+                    .WithIconUrl(IconURL);})
                     .WithThumbnailUrl(thumbnailURL)
                     .WithColor(new Color(255, 83, 13))
                     .WithTitle("Birdie Bot notification")
                     .WithFooter(footer => { footer
                     .WithText("Need help? Contact Birdie Zukira#3950")
-                    .WithIconUrl(IconURL);
-                    })
+                    .WithIconUrl(IconURL);})
                     .WithCurrentTimestamp()
                     .Build();
                     await Context.Channel.SendMessageAsync("", false, embed);
-                    await Task.Delay(2000);
+                    await Task.Delay(5000);
                     var messages = await Context.Channel.GetMessagesAsync(2).Flatten();
                     await Context.Channel.DeleteMessagesAsync(messages);
+                
 
         }       
     }

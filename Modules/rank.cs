@@ -161,22 +161,15 @@ namespace NewTestBot.Modules
                     var embed2 = new EmbedBuilder();
                     embed2.AddField("Looking up Summoner...",
                     "Summoner account doesnt exist!")
-                    .WithAuthor(author =>
-                    {
-                        author
+                    .WithAuthor(author =>{ author
                     .WithName("Birdie Bot")
-                    .WithIconUrl(IconURL);
-                    })
+                    .WithIconUrl(IconURL);})
                     .WithThumbnailUrl(thumbnail)
                     .WithColor(new Color(255, 83, 13))
                     .WithTitle("Birdie Bot notification")
-
-                    .WithFooter(footer =>
-                    {
-                        footer
+                    .WithFooter(footer =>{ footer
                     .WithText("Need help? Contact Birdie Zukira#3950")
-                    .WithIconUrl(IconURL);
-                    })
+                    .WithIconUrl(IconURL);})
                     .WithCurrentTimestamp()
                     .Build();
 
@@ -210,7 +203,6 @@ namespace NewTestBot.Modules
                         var divisionsolo = (string)r[x]["rank"];
                         string soloq = tiersolo + " " + divisionsolo;
                         ranksolo = soloq;
-
                     }
                     else
                     {
@@ -255,15 +247,13 @@ namespace NewTestBot.Modules
                     "\nSolo Queue: "+ranksolo+"\n \n Flex 5v5: "+rankflex5+"\n \n Flex 3v3: "+rankflex3+"")
                     .WithAuthor(author => { author
                     .WithName("Birdie Bot")
-                    .WithIconUrl(IconURL);
-                    })
+                    .WithIconUrl(IconURL);})
                     .WithThumbnailUrl(thumbnailURL)
                     .WithColor(new Color(255, 83, 13))
                     .WithTitle("Birdie Bot notification")
                     .WithFooter(footer => { footer
                     .WithText("Need help? Contact Birdie Zukira#3950")
-                    .WithIconUrl(IconURL);
-                    })
+                    .WithIconUrl(IconURL);})
                     .WithCurrentTimestamp()
                     .Build();
                     await Context.Channel.SendMessageAsync("", false, embed);

@@ -27,13 +27,13 @@ namespace NewTestBot
             if (Config.bot.token == "" || Config.bot.token == null) return;
             _client = new DiscordSocketClient(new DiscordSocketConfig
             {
-                LogLevel = LogSeverity.Verbose
+                LogLevel = LogSeverity.Info
             });
             _client.Log += Log;
             _client.ReactionAdded += OnReactionAdded;
             await _client.LoginAsync(TokenType.Bot, Config.bot.token);
             await _client.StartAsync();
-            await _client.SetGameAsync("Getting worked on ^v^");
+            await _client.SetGameAsync("Doing a fancy ^v^");
             _handler = new CommandHandler();
             await _handler.InitializeAsync(_client);
             await Task.Delay(-1);
@@ -190,7 +190,7 @@ namespace NewTestBot
 
 
                         await channel.SendMessageAsync("", false, embed);
-                        await Task.Delay(3000);
+                        await Task.Delay(5000);
                         var messages = await channel.GetMessagesAsync(3).Flatten();
                         await channel.DeleteMessagesAsync(messages);
 
@@ -199,7 +199,7 @@ namespace NewTestBot
                     else
                     {
                         await channel.SendMessageAsync("Something went wrong");
-                        await Task.Delay(2000);
+                        await Task.Delay(5000);
                         var messages = await channel.GetMessagesAsync(3).Flatten();
                         await channel.DeleteMessagesAsync(messages);
                     }                 

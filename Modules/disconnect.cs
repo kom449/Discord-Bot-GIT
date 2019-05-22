@@ -63,26 +63,22 @@ namespace NewTestBot.Modules
                     var embed2 = new EmbedBuilder();
                     embed2.AddField("Removing your account...",
                     "failed to remove your account \n no accounts are linked to your discord!")
-                    .WithAuthor(author =>
-                    {
-                        author
+                    .WithAuthor(author =>{ author
                     .WithName("Birdie Bot")
-                    .WithIconUrl(IconURL);
-                    })
+                    .WithIconUrl(IconURL);})
                     .WithThumbnailUrl(thumbnail)
                     .WithColor(new Color(255, 83, 13))
                     .WithTitle("Birdie Bot notification")
-
-                    .WithFooter(footer =>
-                    {
-                        footer
+                    .WithFooter(footer =>{ footer
                     .WithText("Need help? Contact Birdie Zukira#3950")
-                    .WithIconUrl(IconURL);
-                    })
+                    .WithIconUrl(IconURL);})
                     .WithCurrentTimestamp()
                     .Build();
                     await Context.Channel.SendMessageAsync("", false, embed2);
-                    return;
+                    await Task.Delay(5000);
+                    var messages2 = await Context.Channel.GetMessagesAsync(2).Flatten();
+                    await Context.Channel.DeleteMessagesAsync(messages2);
+                return;
                 }
                 //getting league rank from ID
                 //using "r" for rank
@@ -107,22 +103,15 @@ namespace NewTestBot.Modules
                 var embed = new EmbedBuilder();
                 embed.AddField("Removing your account...",
                 "Your account has been removed!")
-                .WithAuthor(author =>
-                {
-                    author
+                .WithAuthor(author =>{ author
                 .WithName("Birdie Bot")
-                .WithIconUrl(IconURL);
-                })
+                .WithIconUrl(IconURL);})
                 .WithThumbnailUrl(thumbnail)
                 .WithColor(new Color(255, 83, 13))
                 .WithTitle("Birdie Bot notification")
-
-                .WithFooter(footer =>
-                {
-                    footer
+                .WithFooter(footer =>{ footer
                 .WithText("Need help? Contact Birdie Zukira#3950")
-                .WithIconUrl(IconURL);
-                })
+                .WithIconUrl(IconURL);})
                 .WithCurrentTimestamp()
                 .Build();
 
@@ -133,6 +122,9 @@ namespace NewTestBot.Modules
                 await (username as IGuildUser).RemoveRoleAsync(role);
                 await (username as IGuildUser).AddRoleAsync(UnrankedRole);
                 await Context.Channel.SendMessageAsync("", false, embed);
+                await Task.Delay(5000);
+                var messages = await Context.Channel.GetMessagesAsync(2).Flatten();
+                await Context.Channel.DeleteMessagesAsync(messages);
 
         }
     }

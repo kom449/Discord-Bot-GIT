@@ -121,19 +121,17 @@ namespace NewTestBot.Modules
                     "all ranks has been updated!")
                     .WithAuthor(author => { author
                     .WithName("Birdie Bot")
-                    .WithIconUrl(IconURL);
-                    })
+                    .WithIconUrl(IconURL);})
                     .WithThumbnailUrl(thumbnail)
                     .WithColor(new Color(255, 83, 13))
                     .WithTitle("Birdie Bot notification")
                     .WithFooter(footer => { footer
                     .WithText("Need help? Contact Birdie Zukira#3950")
-                    .WithIconUrl(IconURL);
-                    })
+                    .WithIconUrl(IconURL);})
                     .WithCurrentTimestamp()
                     .Build();
                     await Context.Channel.SendMessageAsync("", false, embed);
-                    await Task.Delay(2000);
+                    await Task.Delay(5000);
                     var messages = await Context.Channel.GetMessagesAsync(2).Flatten();
                     await Context.Channel.DeleteMessagesAsync(messages);
 

@@ -6,12 +6,6 @@ using Discord;
 using Discord.Commands;
 using System.Threading.Tasks;
 using System.Net;
-using System.Linq;
-
-//todo
-//add room creation, so it creates a room
-//make it check if the roles already exists before creating them to avoid duplicates
-//add guild id and guild name, so you can see what guild the user is connected from
 
 namespace NewTestBot.Modules
 {
@@ -29,26 +23,20 @@ namespace NewTestBot.Modules
                     var embed = new EmbedBuilder();
                     embed.AddField("Connecting you...",
                     "no account name was provided!")
-                    .WithAuthor(author =>
-                    {
-                        author
+                    .WithAuthor(author =>{ author
                     .WithName("Birdie Bot")
-                    .WithIconUrl(IconURL);
-                    })
+                    .WithIconUrl(IconURL);})
                     .WithThumbnailUrl(thumbnail)
                     .WithColor(new Color(255, 83, 13))
                     .WithTitle("Birdie Bot notification")
-                    .WithFooter(footer =>
-                    {
-                        footer
+                    .WithFooter(footer =>{ footer
                     .WithText("Need help? Contact Birdie Zukira#3950")
-                    .WithIconUrl(IconURL);
-                    })
+                    .WithIconUrl(IconURL);})
                     .WithCurrentTimestamp()
                     .Build();
 
                     await Context.Channel.SendMessageAsync("", false, embed);
-                    await Task.Delay(2000);
+                    await Task.Delay(5000);
                     var messages = await Context.Channel.GetMessagesAsync(2).Flatten();
                     await Context.Channel.DeleteMessagesAsync(messages);
                 return;
@@ -86,22 +74,15 @@ namespace NewTestBot.Modules
                     var embed = new EmbedBuilder();
                     embed.AddField("Connecting you...",
                     "Summoner account doesnt exist!")
-                    .WithAuthor(author =>
-                    {
-                        author
+                    .WithAuthor(author =>{ author
                     .WithName("Birdie Bot")
-                    .WithIconUrl(IconURL);
-                    })
+                    .WithIconUrl(IconURL);})
                     .WithThumbnailUrl(thumbnail)
                     .WithColor(new Color(255, 83, 13))
                     .WithTitle("Birdie Bot notification")
-
-                    .WithFooter(footer =>
-                    {
-                        footer
+                    .WithFooter(footer =>{ footer
                     .WithText("Need help? Contact Birdie Zukira#3950")
-                    .WithIconUrl(IconURL);
-                    })
+                    .WithIconUrl(IconURL);})
                     .WithCurrentTimestamp()
                     .Build();
 
@@ -173,7 +154,7 @@ namespace NewTestBot.Modules
                     .Build();
 
                     await Context.Channel.SendMessageAsync("", false, embed);
-                    await Task.Delay(2000);
+                    await Task.Delay(5000);
                     var messages = await Context.Channel.GetMessagesAsync(2).Flatten();
                     await Context.Channel.DeleteMessagesAsync(messages);
             }
@@ -187,27 +168,20 @@ namespace NewTestBot.Modules
                     var embed = new EmbedBuilder();
                     embed.AddField("Connecting you...",
                     "Your league account " + "`" + lolname + "`"+" has been added to the Database!")
-                    .WithAuthor(author =>
-                    {
-                        author
+                    .WithAuthor(author =>{ author
                     .WithName("Birdie Bot")
-                    .WithIconUrl(IconURL);
-                    })
+                    .WithIconUrl(IconURL);})
                     .WithThumbnailUrl(thumbnailURL)
                     .WithColor(new Color(255, 83, 13))
                     .WithTitle("Birdie Bot notification")
-                    .WithFooter(footer =>
-                    {
-                        footer
+                    .WithFooter(footer =>{ footer
                     .WithText("Need help? Contact Birdie Zukira#3950")
-                    .WithIconUrl(IconURL);
-                    })
+                    .WithIconUrl(IconURL);})
                     .WithCurrentTimestamp()
                     .Build();
                     await Context.Channel.SendMessageAsync("", false, embed);
-                    await Task.Delay(2000);
-                    var messages = await this.Context.Channel.GetMessagesAsync(2).Flatten();
-                  
+                    await Task.Delay(5000);
+                    var messages = await this.Context.Channel.GetMessagesAsync(2).Flatten();                 
                     await Context.Channel.DeleteMessagesAsync(messages);
 
 
