@@ -48,8 +48,6 @@ namespace NewTestBot.Modules
                  }
                 myconn.Close();
 
-                myconn.Open();
-
                 //using b as the variable for discord id list
                 for (int x = 0; x  < results.Count; x++)
                 {
@@ -62,6 +60,18 @@ namespace NewTestBot.Modules
                         string ResponseName = c.DownloadString("https://euw1.api.riotgames.com/lol/summoner/v4/summoners/" + results[x] + "?api_key=" + apikey + "");
                         JObject i = JObject.Parse(ResponseName);
                         var lolname = i["name"];
+
+                        string QueryDiscordId = "SELECT Discord_Name FROM users_testing WHERE League_Id like  '%" + results[x] + "%';";
+                        string resultid;
+                        MySqlCommand GetID = new MySqlCommand(QueryDiscordId, myconn);
+                        myconn.Open();
+                        myreader = GetID.ExecuteReader();
+                        while (myreader.Read())
+                        {
+                            data = myreader.GetString(0);
+                            resultid = data;
+                        }
+                        myconn.Close();
 
                         //using a for loop to check all the bodies of the json
                         //since each queue type is in another body
@@ -103,7 +113,7 @@ namespace NewTestBot.Modules
 
                         }
 
-           
+                  
                             string QueryUpdateRank = "UPDATE users_testing SET SOLO_QUEUE = '"+ranksolo+ "',FLEX_3V3 ='"+rankflex3+ "',FLEX_5V5 = '" + rankflex5 + "',League_Name = '" + lolname + "' WHERE League_Id like  '%" + results[x]+ "%';";
                             //sql connection and command
                             MySqlCommand postdata = new MySqlCommand(QueryUpdateRank, myconn);

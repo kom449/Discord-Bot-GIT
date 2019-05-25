@@ -113,14 +113,15 @@ namespace NewTestBot.Modules
             }
 
             //updating the rank of the user
-            string updaterank = "UPDATE users_testing SET `SOLO_QUEUE` = '" + rank + "' WHERE Discord_Id like  '%" + UserID + "%';";
+            string Discordname = Context.User.Username;
+            string updaterank = "UPDATE users_testing SET `SOLO_QUEUE` = '" + rank + "', `Discord_Name` = '" + Discordname + "' WHERE Discord_Id like  '%" + UserID + "%';";
                 MySqlCommand updatecommand = new MySqlCommand(updaterank, myconn);
                 myconn.Open();
                 myreader = updatecommand.ExecuteReader();
                 myconn.Close();
 
             var allRanks = new[] { "challenger", "grandMaster", "master", "diamond", "platinum", "gold", "silver", "bronze", "iron","unranked", "new ones :)" };
-            var username = Context.User as SocketGuildUser;
+            var username = Context.User as SocketGuildUser;            
             
             //running through all the different roles and create them
             for (int x = 0; x < allRanks.GetLength(0); x++)
@@ -140,6 +141,7 @@ namespace NewTestBot.Modules
             }
             var role = Context.Guild.Roles.FirstOrDefault(x => x.Name.ToLower() == usedtiersolo);
             await (username as IGuildUser).AddRoleAsync(role);
+           
 
             var embed = new EmbedBuilder();
                     embed.AddField("updating your account...",
