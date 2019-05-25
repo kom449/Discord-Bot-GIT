@@ -30,6 +30,8 @@
  - support multiple accounts
  - Room creation, so it creates a room for it
  - make it check if the roles already exists to avoid making duplicates
+ - Bot setup, to config the bot when it joins the server
+ - Support multiple regions in leauge of legends
 
  
 # Known Issues
