@@ -109,12 +109,14 @@ namespace NewTestBot.Modules
                 string DiscordName = Context.User.Username;
                 string Query = "INSERT INTO users_testing (Discord_Id,Discord_Name,League_Id,League_Name,Icon_Id) VALUES ('" + UserID + "','" + DiscordName + "','" + id + "','" + lolname + "','" + icon + "');";
                 string Duplicate = "SELECT Discord_Id FROM users_testing WHERE Discord_Id like  '%" + UserID + "%'; ";
+                string InsertDiscordName = "UPDATE users_testing SET `Discord_Name` = '" + DiscordName + "' WHERE Discord_Id like  '%" + UserID + "%';";
                 string Result;
 
                 //sql connection and command
                 MySqlConnection myconn = new MySqlConnection(connect);
                 MySqlCommand command = new MySqlCommand(Query, myconn);
                 MySqlCommand DuplicateCommand = new MySqlCommand(Duplicate, myconn);
+                MySqlCommand InsertDiscordname = new MySqlCommand(InsertDiscordName,myconn);
                 MySqlDataReader myreader;
                 myconn.Open();
                 Result = (string)DuplicateCommand.ExecuteScalar();
@@ -131,25 +133,22 @@ namespace NewTestBot.Modules
                 //if the user already exists in the DB - just tell them and do nothing.
                 if (Result == UserID)
                 {
+                    myconn.Open();
+                    myreader = InsertDiscordname.ExecuteReader();
+                    myconn.Close();
+                    
                     var embed = new EmbedBuilder();
                     embed.AddField("Connecting you...",
                     "Your League and Discord account already exist in the Database!")
-                    .WithAuthor(author =>
-                    {
-                        author
+                    .WithAuthor(author =>{ author
                     .WithName("Birdie Bot")
-                    .WithIconUrl(IconURL);
-                    })
+                    .WithIconUrl(IconURL);})
                     .WithThumbnailUrl(thumbnailURL)
                     .WithColor(new Color(255, 83, 13))
                     .WithTitle("Birdie Bot notification")
-
-                    .WithFooter(footer =>
-                    {
-                        footer
+                    .WithFooter(footer =>{ footer
                     .WithText("Need help? Contact Birdie Zukira#3950")
-                    .WithIconUrl(IconURL);
-                    })
+                    .WithIconUrl(IconURL);})
                     .WithCurrentTimestamp()
                     .Build();
 

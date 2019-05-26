@@ -18,11 +18,13 @@ namespace NewTestBot.Modules
         [Command("update", RunMode = RunMode.Async)]
         public async Task UpdateAccount()
         {
-        
+
             //getting id of sender and selecting lol id
+            string DiscordName = Context.User.Username;
             string UserID = Context.User.Id.ToString();
             string getID = "SELECT League_id FROM users_testing WHERE Discord_Id like  '%" + UserID + "%'; ";
             string getIcon = "SELECT Icon_id FROM users_testing WHERE Discord_Id like '%" + UserID + "%';";
+            string InsertDiscordName = "UPDATE users_testing SET `Discord_Name` = '" + DiscordName + "' WHERE Discord_Id like  '%" + UserID + "%';";
             string id = null;
 
             //getting DB information
@@ -36,6 +38,7 @@ namespace NewTestBot.Modules
             MySqlConnection myconn = new MySqlConnection(connect);
             MySqlCommand command = new MySqlCommand(getID, myconn);
             MySqlCommand geticon = new MySqlCommand(getIcon, myconn);
+            MySqlCommand InsertDiscordname = new MySqlCommand(InsertDiscordName, myconn);
             MySqlDataReader myreader;
             MySqlDataReader iconreader;
 
@@ -50,7 +53,7 @@ namespace NewTestBot.Modules
             myconn.Close();
                 
                 if(id == "")
-                {
+                {                   
                     var embed2 = new EmbedBuilder();
                     embed2.AddField("updating your account...",
                     "No account was found!")
@@ -111,6 +114,10 @@ namespace NewTestBot.Modules
                     usedtiersolo = tiersolo.ToLower();
                 }
             }
+
+            myconn.Open();
+            myreader = InsertDiscordname.ExecuteReader();
+            myconn.Close();
 
             //updating the rank of the user
             string Discordname = Context.User.Username;
