@@ -239,6 +239,7 @@
     <Compile Include="Modules\disconnect.cs" />
     <Compile Include="Modules\drink.cs" />
     <Compile Include="Modules\help.cs" />
+    <Compile Include="Modules\information.cs" />
     <Compile Include="Modules\kaffe.cs" />
     <Compile Include="Modules\kick.cs" />
     <Compile Include="Modules\Misc.cs" />
