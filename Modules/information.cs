@@ -23,7 +23,7 @@ namespace NewTestBot.Modules
 
             var embed = new EmbedBuilder();
             embed.AddField("How do i connect and get a rank?",
-            ""+p+ "connect (summonername) [Really just your ingame name]\n\n" +
+            ""+p+ "connect summonername [Really just your ingame name]\n\n" +
             "Then you type "+p+ "verify to start the verification process\n" +
             "Take the token and put it in the League client under:\n" +
             "Settings - Verification. After that press the :ok_hand:\n" +

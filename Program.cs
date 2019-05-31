@@ -200,10 +200,7 @@ namespace NewTestBot
                         }
                         else
                         {
-                            await channel.SendMessageAsync("Something went wrong");
-                            await Task.Delay(5000);
-                            var messages = await channel.GetMessagesAsync(3).Flatten();
-                            await channel.DeleteMessagesAsync(messages);
+                            await channel.SendMessageAsync("Something went wrong - Contact Birdie Zukira#3950 ASAP");
                         }
                     }
                 }

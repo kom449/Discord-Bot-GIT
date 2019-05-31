@@ -63,8 +63,7 @@ namespace NewTestBot.Modules
 
                         string QueryDiscordName = "SELECT Discord_Name FROM users_testing WHERE League_Id like  '%" + results[x] + "%';";
                         string QueryDiscordId = "SELECT Discord_Id FROM users_testing WHERE League_Id like  '%" + results[x] + "%';";
-                        string QueryUpdateDiscordName = "UPDATE users_testing SET Discord_Name ='" + ranksolo + "';";
-                        string resultid;
+                        string resultid = null;
                         string resultname;
                         
                         //gettting ID from of the entry that is being updated
@@ -79,10 +78,17 @@ namespace NewTestBot.Modules
                         myconn.Close();
                         
                         //part that updates the user name from the ID
-                        
+                        ulong xx = Convert.ToUInt64(resultid);
+                        var GottenName = Context.Guild.GetUser(xx);
+                        var username = GottenName as SocketGuildUser;
+                        string QueryUpdateDiscordName = "UPDATE users_testing SET Discord_Name ='" + username + "'WHERE League_Id like  '%" + results[x] + "%';";
+                        MySqlCommand Updatename = new MySqlCommand(QueryUpdateDiscordName, myconn);
+                        myconn.Open();
+                        myreader = Updatename.ExecuteReader();
+                        myconn.Close();
 
-                        //getting the user name of the entry being updated
-                        MySqlCommand GetName = new MySqlCommand(QueryDiscordName, myconn);
+                    //getting the user name of the entry being updated
+                    MySqlCommand GetName = new MySqlCommand(QueryDiscordName, myconn);
                         myconn.Open();
                         myreader = GetName.ExecuteReader();
                         while (myreader.Read())
@@ -139,8 +145,39 @@ namespace NewTestBot.Modules
                             myconn.Open();
                             myreader = postdata.ExecuteReader();
                             myconn.Close();
+                    try
+                    {
+                        var allRanks = new[] { "challenger", "grandMaster", "master", "diamond", "platinum", "gold", "silver", "bronze", "iron", "unranked", "new ones :)" };
 
-                    Console.WriteLine("Updated User: " + lolname);
+                        //running through all the different roles and remove the found role
+                        for (int xy = 0; xy < allRanks.GetLength(0); xy++)
+                        {
+                            try
+                            {
+                                var roles = Context.Guild.Roles.FirstOrDefault(yy => yy.Name.ToLower() == allRanks[xy]);
+                                if (username.Roles.Contains(roles))
+                                {
+                                    await (username as IGuildUser).RemoveRoleAsync(roles);
+                                }
+                            }
+                            catch (Exception)
+                            {
+                                //nothing 
+                            }
+                        }
+
+                        var role = Context.Guild.Roles.FirstOrDefault(xyz => xyz.Name.ToLower() == usedtiersolo);
+                        await (username as IGuildUser).AddRoleAsync(role);
+                    }
+                    catch(Exception)
+                    {
+                        Console.WriteLine("Couldn't assign role to lol user "+ lolname + " Since the user isn't on the discord server!\n");
+                        Thread.Sleep(5000);
+                        continue;
+                    }
+
+
+                    Console.WriteLine("Updated User: " + lolname+ "\nDiscord name: " + GottenName+ "\n");
                     Thread.Sleep(5000);
 
                 }
