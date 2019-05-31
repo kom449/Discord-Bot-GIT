@@ -9,6 +9,7 @@ using System.Linq;
 using System;
 using Discord.WebSocket;
 
+
 namespace NewTestBot.Modules
 {
     public class Updaterole : ModuleBase<SocketCommandContext>
@@ -18,7 +19,6 @@ namespace NewTestBot.Modules
         [Command("update", RunMode = RunMode.Async)]
         public async Task UpdateAccount()
         {
-
             //getting id of sender and selecting lol id
             string DiscordName = Context.User.Username;
             string UserID = Context.User.Id.ToString();

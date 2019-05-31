@@ -61,9 +61,10 @@ namespace NewTestBot.Modules
                         JObject i = JObject.Parse(ResponseName);
                         var lolname = i["name"];
 
-                        string QueryDiscordId = "SELECT Discord_Name FROM users_testing WHERE League_Id like  '%" + results[x] + "%';";
+                        string QueryDiscordName = "SELECT Discord_Name FROM users_testing WHERE League_Id like  '%" + results[x] + "%';";
+                        string QueryDiscordId = "";
                         string resultid;
-                        MySqlCommand GetID = new MySqlCommand(QueryDiscordId, myconn);
+                        MySqlCommand GetID = new MySqlCommand(QueryDiscordName, myconn);
                         myconn.Open();
                         myreader = GetID.ExecuteReader();
                         while (myreader.Read())
@@ -115,6 +116,7 @@ namespace NewTestBot.Modules
 
                   
                             string QueryUpdateRank = "UPDATE users_testing SET SOLO_QUEUE = '"+ranksolo+ "',FLEX_3V3 ='"+rankflex3+ "',FLEX_5V5 = '" + rankflex5 + "',League_Name = '" + lolname + "' WHERE League_Id like  '%" + results[x]+ "%';";
+                            string QueryUpdateDiscordName = "UPDATE users_testing SET Discord_Name ='" + ranksolo + "';";
                             //sql connection and command
                             MySqlCommand postdata = new MySqlCommand(QueryUpdateRank, myconn);
                             myconn.Open();
