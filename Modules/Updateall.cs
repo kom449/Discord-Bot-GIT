@@ -62,15 +62,33 @@ namespace NewTestBot.Modules
                         var lolname = i["name"];
 
                         string QueryDiscordName = "SELECT Discord_Name FROM users_testing WHERE League_Id like  '%" + results[x] + "%';";
-                        string QueryDiscordId = "";
+                        string QueryDiscordId = "SELECT Discord_Id FROM users_testing WHERE League_Id like  '%" + results[x] + "%';";
+                        string QueryUpdateDiscordName = "UPDATE users_testing SET Discord_Name ='" + ranksolo + "';";
                         string resultid;
-                        MySqlCommand GetID = new MySqlCommand(QueryDiscordName, myconn);
+                        string resultname;
+                        
+                        //gettting ID from of the entry that is being updated
+                        MySqlCommand GetID = new MySqlCommand(QueryDiscordId, myconn);
                         myconn.Open();
                         myreader = GetID.ExecuteReader();
                         while (myreader.Read())
                         {
                             data = myreader.GetString(0);
                             resultid = data;
+                        }
+                        myconn.Close();
+                        
+                        //part that updates the user name from the ID
+                        
+
+                        //getting the user name of the entry being updated
+                        MySqlCommand GetName = new MySqlCommand(QueryDiscordName, myconn);
+                        myconn.Open();
+                        myreader = GetName.ExecuteReader();
+                        while (myreader.Read())
+                        {
+                            data = myreader.GetString(0);
+                            resultname = data;
                         }
                         myconn.Close();
 
@@ -114,9 +132,8 @@ namespace NewTestBot.Modules
 
                         }
 
-                  
+                            
                             string QueryUpdateRank = "UPDATE users_testing SET SOLO_QUEUE = '"+ranksolo+ "',FLEX_3V3 ='"+rankflex3+ "',FLEX_5V5 = '" + rankflex5 + "',League_Name = '" + lolname + "' WHERE League_Id like  '%" + results[x]+ "%';";
-                            string QueryUpdateDiscordName = "UPDATE users_testing SET Discord_Name ='" + ranksolo + "';";
                             //sql connection and command
                             MySqlCommand postdata = new MySqlCommand(QueryUpdateRank, myconn);
                             myconn.Open();
