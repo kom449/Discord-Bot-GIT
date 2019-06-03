@@ -247,6 +247,7 @@
     <Compile Include="Modules\purge.cs" />
     <Compile Include="Modules\rank.cs" />
     <Compile Include="Modules\restart.cs" />
+    <Compile Include="Modules\Rolebypass.cs" />
     <Compile Include="Modules\status.cs" />
     <Compile Include="Modules\Updateall.cs" />
     <Compile Include="Modules\updaterole.cs" />
