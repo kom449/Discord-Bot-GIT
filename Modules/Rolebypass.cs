@@ -12,38 +12,39 @@ namespace NewTestBot.Modules
         [Command ("addrole"),RequireOwner]
         public async Task Assignrole(params string[] args)
         {
-            DiscordSocketClient _client = new DiscordSocketClient();
-            
-            ulong guildid = 478956379143405569;
-            var guild = _client.GetGuild(guildid);
-            Console.WriteLine(guild);
+                DiscordSocketClient _client = Context.Client;
+                
+                //currently set for Serenity gaming discord server
+                ulong guildid = 315967505422090260;
+                var guild = _client.GetGuild(guildid);
 
-            string userMessage = Context.Message.ToString();
-            string input = userMessage.Substring(userMessage.IndexOf(' ') + 1);
-            string[] inputarray = input.Split(',');
-            ulong xx = Convert.ToUInt64(inputarray.First());
-            var GottenName = guild.GetUser(xx);
-            var username = GottenName as SocketGuildUser;
-            var role = guild.Roles.FirstOrDefault(yy => yy.Name.ToLower() == inputarray.Last().ToString());
-            Console.WriteLine(role);
-            await (username as IGuildUser).AddRoleAsync(role);
+                string userMessage = Context.Message.ToString();
+                string input = userMessage.Substring(userMessage.IndexOf(' ') + 1);
+                string[] inputarray = input.Split(',');
+                ulong xx = Convert.ToUInt64(inputarray.First());
+                var GottenName = guild.GetUser(xx);
+                var username = GottenName as SocketGuildUser;
+                var role = guild.Roles.FirstOrDefault(yy => yy.Name.ToLower() == inputarray.Last().ToString());
+                await (username as IGuildUser).AddRoleAsync(role);
         }
 
         [Command("removerole"), RequireOwner]
         public async Task Removerole(params string[] args)
         {
-            DiscordSocketClient _client = new DiscordSocketClient();
-            ulong guildid = 478956379143405569;
-            var guild = _client.GetGuild(guildid);
+                DiscordSocketClient _client = Context.Client;
+                
+                //currently set for Serenity gaming discord server
+                ulong guildid = 315967505422090260;
+                var guild = _client.GetGuild(guildid);
 
-            string userMessage = Context.Message.ToString();
-            string input = userMessage.Substring(userMessage.IndexOf(' ') + 1);
-            string[] inputarray = input.Split(',');
-            ulong xx = Convert.ToUInt64(inputarray.First());
-            var GottenName = guild.GetUser(xx);
-            var username = GottenName as SocketGuildUser;
-            var role = guild.Roles.FirstOrDefault(yy => yy.Name.ToLower() == inputarray.Last().ToString());
-            await (username as IGuildUser).RemoveRoleAsync(role);
+                string userMessage = Context.Message.ToString();
+                string input = userMessage.Substring(userMessage.IndexOf(' ') + 1);
+                string[] inputarray = input.Split(',');
+                ulong xx = Convert.ToUInt64(inputarray.First());
+                var GottenName = guild.GetUser(xx);
+                var username = GottenName as SocketGuildUser;
+                var role = guild.Roles.FirstOrDefault(yy => yy.Name.ToLower() == inputarray.Last().ToString());
+                await (username as IGuildUser).RemoveRoleAsync(role);
         }
     }
 }
