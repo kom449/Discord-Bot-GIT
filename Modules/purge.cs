@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 
@@ -11,6 +12,7 @@ namespace NewTestBot.Modules
         [RequireBotPermission(ChannelPermission.ManageMessages)]
         public async Task PurgeChat(uint amount)
         {
+            Console.WriteLine("Removing "+amount+" Messages!");
             var messages = await this.Context.Channel.GetMessagesAsync((int)amount + 1).Flatten();
             await Context.Channel.DeleteMessagesAsync(messages);
             const int delay = 5000;

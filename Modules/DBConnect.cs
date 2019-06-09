@@ -179,6 +179,7 @@ namespace NewTestBot.Modules
                     .WithCurrentTimestamp()
                     .Build();
                     await Context.Channel.SendMessageAsync("", false, embed);
+                    Console.WriteLine(Context.User.Username + " Just added their lol account: " + lolname + " To the Database!");
                     await Task.Delay(5000);
                     var messages = await this.Context.Channel.GetMessagesAsync(2).Flatten();                 
                     await Context.Channel.DeleteMessagesAsync(messages);

@@ -84,6 +84,7 @@ namespace NewTestBot.Modules
                         RestUserMessage msg = await Context.Channel.SendMessageAsync("", false, embed);
                         await msg.AddReactionAsync(emoji);
                         Global.MessageidToTrack = msg.Id;
+                        Console.WriteLine(Context.User.Username+" Just started verification!");
                     }
                     else
                     {
@@ -107,6 +108,7 @@ namespace NewTestBot.Modules
                         RestUserMessage msg = await Context.Channel.SendMessageAsync("", false, embed);
                         await msg.AddReactionAsync(emoji);
                         Global.MessageidToTrack = msg.Id;
+                        Console.WriteLine(Context.User.Username + " Just started verification!");
 
                     }
                 }

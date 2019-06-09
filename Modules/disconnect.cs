@@ -122,6 +122,7 @@ namespace NewTestBot.Modules
                 await (username as IGuildUser).RemoveRoleAsync(role);
                 await (username as IGuildUser).AddRoleAsync(UnrankedRole);
                 await Context.Channel.SendMessageAsync("", false, embed);
+                Console.WriteLine("Removed role from "+Context.User.Username);
                 await Task.Delay(5000);
                 var messages = await Context.Channel.GetMessagesAsync(2).Flatten();
                 await Context.Channel.DeleteMessagesAsync(messages);

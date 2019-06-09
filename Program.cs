@@ -194,6 +194,7 @@ namespace NewTestBot
 
 
                             await channel.SendMessageAsync("", false, embed);
+                            Console.WriteLine(reaction.User +" Just verified their account!");
                             await Task.Delay(5000);
                             var messages = await channel.GetMessagesAsync(3).Flatten();
                             await channel.DeleteMessagesAsync(messages);
