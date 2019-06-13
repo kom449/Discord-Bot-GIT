@@ -45,7 +45,8 @@ namespace NewTestBot
                     });
                     embed.WithCurrentTimestamp();
                     embed.WithColor(new Color(255, 0, 0));
-                    await context.User.SendMessageAsync("", false, embed);                 
+                    await context.User.SendMessageAsync("", false, embed);
+                    Console.WriteLine("Received a DM from "+context.User.Username+" - Ignoring it");
                 }
                 else
                 {
