@@ -156,7 +156,7 @@ namespace NewTestBot.Modules
                     await Task.Delay(5000);
                     var messages = await Context.Channel.GetMessagesAsync(2).Flatten();
                     await Context.Channel.DeleteMessagesAsync(messages);
-            }
+                }
                 //if they dont exist - open connection and run the command to push to DB.
                 else
                 {
@@ -185,7 +185,7 @@ namespace NewTestBot.Modules
                     await Context.Channel.DeleteMessagesAsync(messages);
 
 
-            }
+                }
         }
     }
 }

@@ -25,6 +25,7 @@ namespace NewTestBot.Modules
                 string connect = string.Format("server={0};user={1};database={2};port={3};password={4}",
                 (string)o["database"]["dbhost"], (string)o["database"]["dbuser"], (string)o["database"]["dbname"], (string)o["database"]["dbport"], (string)o["database"]["dbpass"]);
 
+                //getting the Discord ID of the user that sent the command
                 string UserID = Context.User.Id.ToString();
 
                 string Get_Token = "SELECT TOKEN FROM users_testing WHERE Discord_Id like  '%" + UserID + "%'; ";
@@ -57,13 +58,14 @@ namespace NewTestBot.Modules
                         //finally adding the array of chars to the final string token
                         Token = new string(stringChars);
 
+                        //sending token to DB
                         string Send_Token = "UPDATE users_testing SET TOKEN = '" + Token + "' WHERE Discord_Id like '%" + UserID + "%';";
-
                         MySqlCommand Send_Token_Command = new MySqlCommand(Send_Token, myconn);
                         myconn.Open();
                         myreader = Send_Token_Command.ExecuteReader();
                         myconn.Close();
 
+                        //embed
                         var embed = new EmbedBuilder();
                         embed.AddField("Verification of your account...",
                         "To verify your League of Legends account \nPlease take this Token: " + "***" + "" + Token + "" + "***" + "\nOpen your league Client and go into the Settings" +
@@ -80,15 +82,19 @@ namespace NewTestBot.Modules
                         .WithIconUrl(IconURL);})
                         .WithCurrentTimestamp()
                         .Build();
+
+                        //adding emoji reaction to the message it just sent
                         var emoji = new Emoji("👌");
                         RestUserMessage msg = await Context.Channel.SendMessageAsync("", false, embed);
                         await msg.AddReactionAsync(emoji);
+
+                        //tracking the message ID to check if the user that started the command, reacts to the message
                         Global.MessageidToTrack = msg.Id;
                         Console.WriteLine(Context.User.Username+" Just started verification!");
                     }
                     else
                     {
-
+                        //pretty much the same as above, just that if the user has a token, it wont generate a new one
                         var embed = new EmbedBuilder();
                         embed.AddField("Verification of your account...",
                         "To verify your League of Legends account \nPlease take this Token: " + "***" + "" + Token + "" + "***" + "\nOpen your league Client and go into the Settings" +
@@ -114,6 +120,7 @@ namespace NewTestBot.Modules
                 }
                 else
                 {
+                    //if account is already verified
                     var embed = new EmbedBuilder();
                     embed.AddField("Verification of your account...",
                     "Your account is already verified!")
