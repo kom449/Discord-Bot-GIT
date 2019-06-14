@@ -49,14 +49,14 @@ namespace NewTestBot.Modules
                 //reading db info and apikey from file
                 string data = File.ReadAllText("Resources/config.json");
 
-                //using c for webclient connections
-                WebClient c = new WebClient();
-
                 //getting DB information
                 JObject o = JObject.Parse(data);
                 string apikey = (string)o["lolapi"]["apikey"];
                 string connect = string.Format("server={0};user={1};database={2};port={3};password={4}",
                 (string)o["database"]["dbhost"], (string)o["database"]["dbuser"], (string)o["database"]["dbname"], (string)o["database"]["dbport"], (string)o["database"]["dbpass"]);
+
+                //using c for webclient connections
+                WebClient c = new WebClient();
 
                 //getting league account ID
                 //using "i" and "f" for id

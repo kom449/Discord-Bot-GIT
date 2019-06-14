@@ -26,7 +26,7 @@ namespace NewTestBot
             if (Config.bot.token == "" || Config.bot.token == null) return;
             _client = new DiscordSocketClient(new DiscordSocketConfig
             {
-                LogLevel = LogSeverity.Verbose
+                LogLevel = LogSeverity.Info
             });
             _client.Log += Log;
             _client.ReactionAdded += OnReactionAdded;
@@ -48,8 +48,9 @@ namespace NewTestBot
 
                 if (reaction.MessageId == Global.MessageidToTrack)
                 {
-                    if (reaction.Emote.Name == "👌")
+                    if (reaction.Emote.Name == "👌" && reaction.UserId != _client.CurrentUser.Id)
                     {
+                        
                         string data = File.ReadAllText("Resources/config.json");
 
                         //using c for webclient connections
@@ -64,6 +65,8 @@ namespace NewTestBot
                         string returnedtoken = null;
                         string queryid = "SELECT League_Id FROM users_testing WHERE Discord_Id like  '%" + reaction.UserId + "%'; ";
                         string returnedid = null;
+                        Console.WriteLine(reaction.UserId);
+                        
 
                         //sql connection for League Id
                         MySqlConnection myconn = new MySqlConnection(connect);
@@ -75,6 +78,7 @@ namespace NewTestBot
                         string id = (string)GetId.ExecuteScalar();
                         string token = (string)GetToken.ExecuteScalar();
                         returnedid = id;
+                        Console.WriteLine(returnedid);
                         returnedtoken = token;
                         myconn.Close();
 
@@ -87,7 +91,7 @@ namespace NewTestBot
                             Emptyreponse = ResponseToken;
 
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
                             string IconURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
                             string thumbnail = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
@@ -106,6 +110,7 @@ namespace NewTestBot
                             .WithCurrentTimestamp()
                             .Build();
 
+                            Console.WriteLine(ex);
                             await channel.SendMessageAsync("", false, embed);
                             await Task.Delay(2000);
                             var messages = await channel.GetMessagesAsync(3).Flatten();

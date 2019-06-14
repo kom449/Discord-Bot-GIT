@@ -9,6 +9,7 @@ using System.Linq;
 using System;
 using Discord.WebSocket;
 
+//major bug in update role is found - user can run the update command after doing the dbconnect, since update doesn't check to see if their account has a token
 
 namespace NewTestBot.Modules
 {
@@ -25,7 +26,9 @@ namespace NewTestBot.Modules
             string getID = "SELECT League_id FROM users_testing WHERE Discord_Id like  '%" + UserID + "%'; ";
             string getIcon = "SELECT Icon_id FROM users_testing WHERE Discord_Id like '%" + UserID + "%';";
             string InsertDiscordName = "UPDATE users_testing SET `Discord_Name` = '" + DiscordName + "' WHERE Discord_Id like  '%" + UserID + "%';";
+            string getToken = "SELECT TOKEN FROM users_testing WHERE Discord_Id like '%" + UserID + "%';";
             string id = null;
+            string token = null;
 
             //getting DB information
             string data = File.ReadAllText("Resources/config.json");
@@ -38,6 +41,7 @@ namespace NewTestBot.Modules
             MySqlConnection myconn = new MySqlConnection(connect);
             MySqlCommand command = new MySqlCommand(getID, myconn);
             MySqlCommand geticon = new MySqlCommand(getIcon, myconn);
+            MySqlCommand GetToken = new MySqlCommand(getToken, myconn);
             MySqlCommand InsertDiscordname = new MySqlCommand(InsertDiscordName, myconn);
             MySqlDataReader myreader;
             MySqlDataReader iconreader;
@@ -72,6 +76,38 @@ namespace NewTestBot.Modules
                     await Task.Delay(5000);
                     var messages2 = await Context.Channel.GetMessagesAsync(2).Flatten();
                     await Context.Channel.DeleteMessagesAsync(messages2);
+                    return;
+                }
+
+            myconn.Open();
+            myreader = GetToken.ExecuteReader();
+            while (myreader.Read())
+            {
+                data = myreader.GetString(0);
+                token = data;
+            }
+            myconn.Close();
+
+                if(token == "")
+                {                   
+                    var embed2 = new EmbedBuilder();
+                    embed2.AddField("updating your account...",
+                    "Your account is not verified!")
+                    .WithAuthor(author => { author
+                    .WithName("Birdie Bot")
+                    .WithIconUrl(IconURL);})
+                    .WithThumbnailUrl(thumbnail)
+                    .WithColor(new Color(255, 83, 13))
+                    .WithTitle("Birdie Bot notification")
+                    .WithFooter(footer => { footer
+                    .WithText("Need help? Contact Birdie Zukira#3950")
+                    .WithIconUrl(IconURL);})
+                    .WithCurrentTimestamp()
+                    .Build();
+                    await Context.Channel.SendMessageAsync("", false, embed2);
+                    await Task.Delay(5000);
+                    var messages3 = await Context.Channel.GetMessagesAsync(2).Flatten();
+                    await Context.Channel.DeleteMessagesAsync(messages3);
                     return;
                 }
 

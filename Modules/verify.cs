@@ -8,6 +8,7 @@ using Discord.Commands;
 using System.Threading.Tasks;
 using System.Net;
 using Discord.Rest;
+using System.Diagnostics;
 
 namespace NewTestBot.Modules
 {
@@ -91,6 +92,7 @@ namespace NewTestBot.Modules
                         //tracking the message ID to check if the user that started the command, reacts to the message
                         Global.MessageidToTrack = msg.Id;
                         Console.WriteLine(Context.User.Username+" Just started verification!");
+                        
                     }
                     else
                     {
