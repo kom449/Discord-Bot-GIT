@@ -65,7 +65,6 @@ namespace NewTestBot
                         string returnedtoken = null;
                         string queryid = "SELECT League_Id FROM users_testing WHERE Discord_Id like  '%" + reaction.UserId + "%'; ";
                         string returnedid = null;
-                        Console.WriteLine(reaction.UserId);
                         
 
                         //sql connection for League Id
