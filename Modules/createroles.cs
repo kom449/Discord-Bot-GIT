@@ -1,5 +1,6 @@
 ﻿using Discord;
 using Discord.Commands;
+using Discord.WebSocket;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,24 +25,32 @@ namespace NewTestBot.Modules
                     int y = 0;                    
 
                     //running through all the different roles and create them
+                    //somehow when it checks for roles, it returns null everytime. But it only does it here?
                     for (int x = 0; x < allRanks.GetLength(0); x++, y++)
                     {
-                    var role = Context.Guild.Roles.FirstOrDefault(yy => yy.Name.ToLower() == allRanks[x]);
-                                
-                        if (role == null)
+                        try
                         {
-                            GuildPermissions permissions = default;
-                            bool ishoisted = true;
-                            RequestOptions options = null;
-                            Console.WriteLine("Creating Role "+allRanks[x]+" On the server "+Context.Guild.Name);
-                            await Context.Guild.CreateRoleAsync(allRanks[x], permissions, allrankcolors[y], ishoisted, options);
+                        var role = Context.Guild.Roles.FirstOrDefault(z => z.Name.ToLower() == allRanks[x]);
+                        Console.WriteLine(role);  
+                    
+                        //if (role == null)
+                        //{
+                        //    GuildPermissions permissions = default;
+                        //    bool ishoisted = true;
+                        //    RequestOptions options = null;
+                        //    Console.WriteLine("Creating Role "+allRanks[x]+" On the server "+Context.Guild.Name);
+                        //    await Context.Guild.CreateRoleAsync(allRanks[x], permissions, allrankcolors[y], ishoisted, options);
+                        //}
+                        //else
+                        //{
+                        //    Console.WriteLine(allRanks[x] + " Already exists on the the server " + Context.Guild.Name);
+                        //    continue;
+                        //}
                         }
-                        else
+                        catch (Exception ex)
                         {
-                            Console.WriteLine(allRanks[x] + " Already exists on the the server " + Context.Guild.Name);
-                            continue;
+                            Console.WriteLine(ex);
                         }
-
                     }
 
                     var embed = new EmbedBuilder();
