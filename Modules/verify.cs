@@ -28,6 +28,7 @@ namespace NewTestBot.Modules
 
                 //getting the Discord ID of the user that sent the command
                 string UserID = Context.User.Id.ToString();
+                Global.currentuserid = UserID;
 
                 string Get_Token = "SELECT TOKEN FROM users_testing WHERE Discord_Id like  '%" + UserID + "%'; ";
                 string GetRank = "SELECT SOLO_QUEUE FROM users_testing WHERE Discord_Id like '%" + UserID + "%';";
@@ -60,7 +61,8 @@ namespace NewTestBot.Modules
                         Token = new string(stringChars);
 
                         //sending token to DB
-                        string Send_Token = "UPDATE users_testing SET TOKEN = '" + Token + "' WHERE Discord_Id like '%" + UserID + "%';";
+                        string notverified = "false";
+                        string Send_Token = "UPDATE users_testing SET TOKEN = '" + Token + "', Verified = '" + notverified + "' WHERE Discord_Id like '%" + UserID + "%';";
                         MySqlCommand Send_Token_Command = new MySqlCommand(Send_Token, myconn);
                         myconn.Open();
                         myreader = Send_Token_Command.ExecuteReader();
@@ -143,11 +145,11 @@ namespace NewTestBot.Modules
                     await Context.Channel.DeleteMessagesAsync(messages);
                 }
             }
+
             catch(Exception ex)
             {
                 Console.WriteLine(ex);
             }
-          
         }
     }
 }

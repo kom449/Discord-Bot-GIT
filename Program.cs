@@ -26,7 +26,7 @@ namespace NewTestBot
             if (Config.bot.token == "" || Config.bot.token == null) return;
             _client = new DiscordSocketClient(new DiscordSocketConfig
             {
-                LogLevel = LogSeverity.Info
+                LogLevel = LogSeverity.Verbose
             });
             _client.Log += Log;
             _client.ReactionAdded += OnReactionAdded;
@@ -37,9 +37,10 @@ namespace NewTestBot
             await _handler.InitializeAsync(_client);
             await Task.Delay(-1);
 
-        }
+        }     
 
-        [RequireBotPermission(ChannelPermission.ManageMessages)]
+
+          [RequireBotPermission(ChannelPermission.ManageMessages)]
         public async Task OnReactionAdded(Cacheable<IUserMessage, ulong> cache, ISocketMessageChannel channel, SocketReaction reaction) 
         {
             try
@@ -48,9 +49,8 @@ namespace NewTestBot
 
                 if (reaction.MessageId == Global.MessageidToTrack)
                 {
-                    if (reaction.Emote.Name == "👌" && reaction.UserId != _client.CurrentUser.Id)
+                    if (reaction.Emote.Name == "👌" && reaction.UserId.ToString() == Global.currentuserid)
                     {
-                        
                         string data = File.ReadAllText("Resources/config.json");
 
                         //using c for webclient connections
@@ -77,10 +77,8 @@ namespace NewTestBot
                         string id = (string)GetId.ExecuteScalar();
                         string token = (string)GetToken.ExecuteScalar();
                         returnedid = id;
-                        Console.WriteLine(returnedid);
                         returnedtoken = token;
                         myconn.Close();
-
                         //getting their token in the League Client
                         string Emptyreponse;
                         try
@@ -170,7 +168,7 @@ namespace NewTestBot
                             }
 
 
-                            string Query = "UPDATE users_testing SET SOLO_QUEUE = '" + ranksolo + "',FLEX_3V3 ='" + rankflex3 + "',FLEX_5V5 = '" + rankflex5 + "' WHERE Discord_Id like  '%" + reaction.UserId + "%';";
+                            string Query = "UPDATE users_testing SET SOLO_QUEUE = '" + ranksolo + "',FLEX_3V3 ='" + rankflex3 + "',FLEX_5V5 = '" + rankflex5 + "', Verified = '" + "true" + "' WHERE Discord_Id like  '%" + reaction.UserId + "%';";
                             //sql connection and command
                             MySqlCommand postdata = new MySqlCommand(Query, myconn);
                             MySqlDataReader myreader;
@@ -215,6 +213,7 @@ namespace NewTestBot
             }
 
         }
+
 
         private async Task Log(LogMessage msg)
         {

@@ -9,8 +9,6 @@ using System.Linq;
 using System;
 using Discord.WebSocket;
 
-//major bug in update role is found - user can run the update command after doing the dbconnect, since update doesn't check to see if their account has a token
-
 namespace NewTestBot.Modules
 {
     public class Updaterole : ModuleBase<SocketCommandContext>
@@ -25,10 +23,12 @@ namespace NewTestBot.Modules
             string UserID = Context.User.Id.ToString();
             string getID = "SELECT League_id FROM users_testing WHERE Discord_Id like  '%" + UserID + "%'; ";
             string getIcon = "SELECT Icon_id FROM users_testing WHERE Discord_Id like '%" + UserID + "%';";
+            string getstatus = "SELECT verified FROM users_testing WHERE Discord_ID like '%" + UserID + "%';";
             string InsertDiscordName = "UPDATE users_testing SET `Discord_Name` = '" + DiscordName + "' WHERE Discord_Id like  '%" + UserID + "%';";
             string getToken = "SELECT TOKEN FROM users_testing WHERE Discord_Id like '%" + UserID + "%';";
             string id = null;
             string token = null;
+            string status = null;
 
             //getting DB information
             string data = File.ReadAllText("Resources/config.json");
@@ -42,6 +42,7 @@ namespace NewTestBot.Modules
             MySqlCommand command = new MySqlCommand(getID, myconn);
             MySqlCommand geticon = new MySqlCommand(getIcon, myconn);
             MySqlCommand GetToken = new MySqlCommand(getToken, myconn);
+            MySqlCommand GetStatus = new MySqlCommand(getstatus, myconn);
             MySqlCommand InsertDiscordname = new MySqlCommand(InsertDiscordName, myconn);
             MySqlDataReader myreader;
             MySqlDataReader iconreader;
@@ -55,12 +56,45 @@ namespace NewTestBot.Modules
                 id = data;
             }
             myconn.Close();
+
+            //get verification status
+            myconn.Open();
+            myreader = GetStatus.ExecuteReader();
+            while (myreader.Read())
+            {
+                data = myreader.GetString(0);
+                status = data;
+            }
+            myconn.Close();
                 
                 if(id == "")
                 {                   
                     var embed2 = new EmbedBuilder();
                     embed2.AddField("updating your account...",
                     "No account was found!")
+                    .WithAuthor(author => { author
+                    .WithName("Birdie Bot")
+                    .WithIconUrl(IconURL);})
+                    .WithThumbnailUrl(thumbnail)
+                    .WithColor(new Color(255, 83, 13))
+                    .WithTitle("Birdie Bot notification")
+                    .WithFooter(footer => { footer
+                    .WithText("Need help? Contact Birdie Zukira#3950")
+                    .WithIconUrl(IconURL);})
+                    .WithCurrentTimestamp()
+                    .Build();
+                    await Context.Channel.SendMessageAsync("", false, embed2);
+                    await Task.Delay(5000);
+                    var messages2 = await Context.Channel.GetMessagesAsync(2).Flatten();
+                    await Context.Channel.DeleteMessagesAsync(messages2);
+                    return;
+                }
+
+                if (status == "false")
+                {                   
+                    var embed2 = new EmbedBuilder();
+                    embed2.AddField("updating your account...",
+                    "Your account is not verified!")
                     .WithAuthor(author => { author
                     .WithName("Birdie Bot")
                     .WithIconUrl(IconURL);})
@@ -121,12 +155,14 @@ namespace NewTestBot.Modules
                 iconid = data;
             }
             myconn.Close();
+
             //using c for webclient connections
             WebClient c = new WebClient();
 
             //getting league rank from ID
             //using "r" for rank
             string responserank = c.DownloadString("https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/" + id + "?api_key=" + apikey + "");
+
             JArray r = JArray.Parse(responserank);
             string rank = null;
             string usedtiersolo = null;
@@ -149,6 +185,11 @@ namespace NewTestBot.Modules
                     rank = soloq;
                     usedtiersolo = tiersolo.ToLower();
                 }
+                else
+                {
+                    rank = "Unranked";
+                    usedtiersolo = "unranked";
+                }
             }
 
             myconn.Open();
@@ -158,15 +199,15 @@ namespace NewTestBot.Modules
             //updating the rank of the user
             string Discordname = Context.User.Username;
             string updaterank = "UPDATE users_testing SET `SOLO_QUEUE` = '" + rank + "', `Discord_Name` = '" + Discordname + "' WHERE Discord_Id like  '%" + UserID + "%';";
-                MySqlCommand updatecommand = new MySqlCommand(updaterank, myconn);
-                myconn.Open();
-                myreader = updatecommand.ExecuteReader();
-                myconn.Close();
+            MySqlCommand updatecommand = new MySqlCommand(updaterank, myconn);
+            myconn.Open();
+            myreader = updatecommand.ExecuteReader();
+            myconn.Close();
 
             var allRanks = new[] { "challenger", "grandMaster", "master", "diamond", "platinum", "gold", "silver", "bronze", "iron","unranked", "new ones :)" };
             var username = Context.User as SocketGuildUser;            
             
-            //running through all the different roles and create them
+            //running through all the different roles
             for (int x = 0; x < allRanks.GetLength(0); x++)
             {
                     try

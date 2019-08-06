@@ -6,5 +6,6 @@ namespace NewTestBot
     {
         internal static ulong MessageidToTrack { get; set; }
         internal static string Username { get; }
+        internal static string currentuserid { get; set; }
     }
 }

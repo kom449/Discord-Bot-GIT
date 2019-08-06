@@ -242,6 +242,7 @@
     <Compile Include="Modules\information.cs" />
     <Compile Include="Modules\kaffe.cs" />
     <Compile Include="Modules\kick.cs" />
+    <Compile Include="Modules\lookup.cs" />
     <Compile Include="Modules\Misc.cs" />
     <Compile Include="Modules\prefix.cs" />
     <Compile Include="Modules\purge.cs" />

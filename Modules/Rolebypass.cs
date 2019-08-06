@@ -27,6 +27,7 @@ namespace NewTestBot.Modules
                 var role = guild.Roles.FirstOrDefault(yy => yy.Name.ToLower() == inputarray.Last().ToString());
                 await (username as IGuildUser).AddRoleAsync(role);
                 Console.WriteLine("Assigned role to "+username);
+                await Context.Channel.SendMessageAsync("Assigned role to: "+username+"!");
         }
 
         [Command("removerole"), RequireOwner]
@@ -47,6 +48,7 @@ namespace NewTestBot.Modules
                 var role = guild.Roles.FirstOrDefault(yy => yy.Name.ToLower() == inputarray.Last().ToString());
                 await (username as IGuildUser).RemoveRoleAsync(role);
                 Console.WriteLine("Removed role from " + username);
+                await Context.Channel.SendMessageAsync("removed role from: " + username + "!");
         }
     }
 }

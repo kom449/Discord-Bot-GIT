@@ -6,6 +6,7 @@ using Discord;
 using Discord.Commands;
 using System.Threading.Tasks;
 using System.Net;
+using Discord.WebSocket;
 
 namespace NewTestBot.Modules
 {
@@ -106,15 +107,20 @@ namespace NewTestBot.Modules
 
 
                 string UserID = Context.User.Id.ToString();
-                string DiscordName = Context.User.Username;
+                ulong resultid = Context.User.Id;
+                ulong xx = Convert.ToUInt64(resultid);
+                var GottenName = Context.Guild.GetUser(xx);
+                var DiscordName = GottenName as SocketGuildUser;
                 string Query = "INSERT INTO users_testing (Discord_Id,Discord_Name,League_Id,League_Name,Icon_Id) VALUES ('" + UserID + "','" + DiscordName + "','" + id + "','" + lolname + "','" + icon + "');";
                 string Duplicate = "SELECT Discord_Id FROM users_testing WHERE Discord_Id like  '%" + UserID + "%'; ";
                 string InsertDiscordName = "UPDATE users_testing SET `Discord_Name` = '" + DiscordName + "' WHERE Discord_Id like  '%" + UserID + "%';";
+                string setstatus = "UPDATE users_testing SET Verified = '" + "false" + "' WHERE Discord_Id like  '%" + UserID + "%';";
                 string Result;
 
                 //sql connection and command
                 MySqlConnection myconn = new MySqlConnection(connect);
                 MySqlCommand command = new MySqlCommand(Query, myconn);
+                MySqlCommand SetStatus = new MySqlCommand(setstatus,myconn);
                 MySqlCommand DuplicateCommand = new MySqlCommand(Duplicate, myconn);
                 MySqlCommand InsertDiscordname = new MySqlCommand(InsertDiscordName,myconn);
                 MySqlDataReader myreader;
@@ -160,9 +166,23 @@ namespace NewTestBot.Modules
                 //if they dont exist - open connection and run the command to push to DB.
                 else
                 {
+                    //sends all info to DB
                     myconn.Open();
                     myreader = command.ExecuteReader();
                     myconn.Close();
+
+                try
+                {
+                    //sets the user verification status to false
+                    myconn.Open();
+                    myreader = SetStatus.ExecuteReader();
+                    myconn.Close();
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+
 
                     var embed = new EmbedBuilder();
                     embed.AddField("Connecting you...",
