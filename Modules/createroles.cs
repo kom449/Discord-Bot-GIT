@@ -18,7 +18,7 @@ namespace NewTestBot.Modules
         {
             try
             { 
-                    var allRanks = new[] { "Challenger", "GrandMaster", "Master", "Diamond", "Platinum", "Gold", "Silver", "Bronze", "Iron","Unranked", "New ones :)" };
+                    var allRanks = new[] { "challenger", "grandMaster", "master", "diamond", "platinum", "gold", "silver", "bronze", "iron","unranked", "new ones :)" };
                     var allrankcolors = new[] { new Color(240,140,15), new Color(253,7,7), new Color(192,7,146),new Color(32,102,148),new Color(46,204,113),new Color(241,196,15),new Color(151,156,159),new Color(187,121,68),new Color(255,255,255),new Color(124, 136, 120),new Color(188, 157, 154)};
                     
                     //my int for the color array
@@ -28,29 +28,23 @@ namespace NewTestBot.Modules
                     //somehow when it checks for roles, it returns null everytime. But it only does it here?
                     for (int x = 0; x < allRanks.GetLength(0); x++, y++)
                     {
-                        try
-                        {
-                        var role = Context.Guild.Roles.FirstOrDefault(z => z.Name.ToLower() == allRanks[x]);
-                        Console.WriteLine(role);  
-                    
-                        //if (role == null)
-                        //{
-                        //    GuildPermissions permissions = default;
-                        //    bool ishoisted = true;
-                        //    RequestOptions options = null;
-                        //    Console.WriteLine("Creating Role "+allRanks[x]+" On the server "+Context.Guild.Name);
-                        //    await Context.Guild.CreateRoleAsync(allRanks[x], permissions, allrankcolors[y], ishoisted, options);
-                        //}
-                        //else
-                        //{
-                        //    Console.WriteLine(allRanks[x] + " Already exists on the the server " + Context.Guild.Name);
-                        //    continue;
-                        //}
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine(ex);
-                        }
+                            //checking if the role from allranks array can be found on the server
+                            var role = Context.Guild.Roles.FirstOrDefault(z => z.Name.ToLower() == allRanks[x]);                            
+                            if (role == null)
+                            {
+                                GuildPermissions permissions = default;
+                                bool ishoisted = true;
+                                RequestOptions options = null;
+                                Console.WriteLine("Creating Role " + allRanks[x] + " On the server " + Context.Guild.Name+"!");
+                                await Context.Guild.CreateRoleAsync(allRanks[x], permissions, allrankcolors[y], ishoisted, options);
+                            }
+
+                            //else if the rolecheck matches the current role then it must exist on server
+                            else if (role != null)
+                            {
+                                Console.WriteLine(allRanks[x] + " Already exists on the the server " + Context.Guild.Name+"!");
+                                continue;
+                            }
                     }
 
                     var embed = new EmbedBuilder();

@@ -9,7 +9,6 @@ using Discord.Commands;
 using System.Net;
 
 
-
 namespace NewTestBot
 {
 

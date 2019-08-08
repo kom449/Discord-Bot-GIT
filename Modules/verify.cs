@@ -17,6 +17,7 @@ namespace NewTestBot.Modules
         readonly string IconURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
         readonly string thumbnail = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
         [Command("verify", RunMode = RunMode.Async)]
+        [RequireBotPermission(ChannelPermission.ManageMessages)]
         public async Task Verifyaccounts()
         {
             try

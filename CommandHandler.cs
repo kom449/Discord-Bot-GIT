@@ -37,7 +37,7 @@ namespace NewTestBot
                 {
                     string IconURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
                     var embed = new EmbedBuilder();
-                    embed.WithTitle("Dingo Bot notification");
+                    embed.WithTitle("Birdie Bot notification");
                     embed.WithDescription("I do not accept commands from Direct messages!");
                     embed.WithFooter(footer => { footer
                     .WithText("Need help? Contact Birdie Zukira#3950")
@@ -46,7 +46,8 @@ namespace NewTestBot
                     embed.WithCurrentTimestamp();
                     embed.WithColor(new Color(255, 0, 0));
                     await context.User.SendMessageAsync("", false, embed);
-                    Console.WriteLine("Received a DM from "+context.User+" - Ignoring it");
+                    Console.WriteLine("Received a DM from "+context.User+ " Saying: "+context.Message+" - Ignoring it");
+                    
                 }
                 else
                 {
