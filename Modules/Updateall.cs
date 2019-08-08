@@ -24,6 +24,22 @@ namespace NewTestBot.Modules
             try
             {
 
+                    var embed = new EmbedBuilder();
+                    embed.AddField("updating all accounts...",
+                    "This might take some time!")
+                    .WithAuthor(author => { author
+                    .WithName("Birdie Bot")
+                    .WithIconUrl(IconURL);})
+                    .WithThumbnailUrl(thumbnail)
+                    .WithColor(new Color(255, 83, 13))
+                    .WithTitle("Birdie Bot notification")
+                    .WithFooter(footer => { footer
+                    .WithText("Need help? Contact Birdie Zukira#3950")
+                    .WithIconUrl(IconURL);})
+                    .WithCurrentTimestamp()
+                    .Build();
+                    var message = await Context.Channel.SendMessageAsync("", false, embed);
+
             WebClient c = new WebClient();
             string data = File.ReadAllText("Resources/config.json");
             JObject o = JObject.Parse(data);
@@ -181,22 +197,24 @@ namespace NewTestBot.Modules
                     Thread.Sleep(5000);
 
                 }
-                
-                    var embed = new EmbedBuilder();
-                    embed.AddField("updating all accounts...",
-                    "all ranks has been updated!")
-                    .WithAuthor(author => { author
-                    .WithName("Birdie Bot")
-                    .WithIconUrl(IconURL);})
-                    .WithThumbnailUrl(thumbnail)
-                    .WithColor(new Color(255, 83, 13))
-                    .WithTitle("Birdie Bot notification")
-                    .WithFooter(footer => { footer
-                    .WithText("Need help? Contact Birdie Zukira#3950")
-                    .WithIconUrl(IconURL);})
-                    .WithCurrentTimestamp()
-                    .Build();
-                    await Context.Channel.SendMessageAsync("", false, embed);
+                    
+                    await message.ModifyAsync(x =>
+                    {
+                        x.Embed = new EmbedBuilder()
+                        .AddField("All ranks has been updated!",
+                        "everyone should be up to date!")
+                        .WithAuthor(author => { author
+                        .WithName("Birdie Bot")
+                        .WithIconUrl(IconURL);})
+                        .WithThumbnailUrl(thumbnail)
+                        .WithColor(new Color(0, 255, 0))
+                        .WithTitle("Birdie Bot notification")
+                        .WithFooter(footer => { footer
+                        .WithText("Need help? Contact Birdie Zukira#3950")
+                        .WithIconUrl(IconURL);})
+                        .WithCurrentTimestamp()
+                        .Build();
+                    });
                     await Task.Delay(5000);
                     var messages = await Context.Channel.GetMessagesAsync(2).Flatten();
                     await Context.Channel.DeleteMessagesAsync(messages);
