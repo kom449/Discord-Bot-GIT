@@ -72,6 +72,7 @@ namespace NewTestBot.Modules
                         string ranksolo = null;
                         string rankflex5 = null;
                         string rankflex3 = null;
+                        string rankTFT = null;
                         string usedtiersolo = null;
                         string ResponseName = c.DownloadString("https://euw1.api.riotgames.com/lol/summoner/v4/summoners/" + results[x] + "?api_key=" + apikey + "");
                         JObject i = JObject.Parse(ResponseName);
@@ -154,8 +155,21 @@ namespace NewTestBot.Modules
 
                         }
 
-                            
-                            string QueryUpdateRank = "UPDATE users_testing SET SOLO_QUEUE = '"+ranksolo+ "',FLEX_3V3 ='"+rankflex3+ "',FLEX_5V5 = '" + rankflex5 + "',League_Name = '" + lolname + "' WHERE League_Id like  '%" + results[x]+ "%';";
+                        //again using the same loop to find the Flex 3v3 rank
+                        for (int ab = 0; ab < r.Count; ab++)
+                        {
+                            if (((string)r[ab]["queueType"] == "RANKED_TFT"))
+                            {
+                                var tierTFT = (string)r[ab]["tier"];
+                                var divisionTFT = (string)r[ab]["rank"];
+                                string internalTFT = tierTFT + " " + divisionTFT;
+                                rankTFT = internalTFT;
+                            }
+
+                        }
+
+
+                    string QueryUpdateRank = "UPDATE users_testing SET SOLO_QUEUE = '"+ranksolo+ "',FLEX_3V3 ='"+rankflex3+ "',FLEX_5V5 = '" + rankflex5 + "',TFT = '" + rankTFT + "',League_Name = '" + lolname + "' WHERE League_Id like  '%" + results[x]+ "%';";
                             //sql connection and command
                             MySqlCommand postdata = new MySqlCommand(QueryUpdateRank, myconn);
                             myconn.Open();

@@ -18,6 +18,7 @@ namespace NewTestBot.Modules
         [Command("update", RunMode = RunMode.Async)]
         public async Task UpdateAccount()
         {
+
             //getting id of sender and selecting lol id
             string DiscordName = Context.User.Username;
             string UserID = Context.User.Id.ToString();
@@ -172,12 +173,28 @@ namespace NewTestBot.Modules
             JArray latestlolversion = JArray.Parse(findlatestlolversion);
             var version = latestlolversion[0];
             string thumbnailURL = "http://ddragon.leagueoflegends.com/cdn/" + version + "/img/profileicon/" + iconid + ".png";
+            
+                    var embed = new EmbedBuilder();
+                    embed.AddField("updating your account...",
+                    "Hang on while i update your rank!")
+                    .WithAuthor(author => { author
+                    .WithName("Birdie Bot")
+                    .WithIconUrl(IconURL);})
+                    .WithThumbnailUrl(thumbnailURL)
+                    .WithColor(new Color(255, 0, 0))
+                    .WithTitle("Birdie Bot notification")
+                    .WithFooter(footer => { footer
+                    .WithText("Need help? Contact Birdie Zukira#3950")
+                    .WithIconUrl(IconURL);})
+                    .WithCurrentTimestamp()
+                    .Build();
+                    var message = await Context.Channel.SendMessageAsync("", false, embed);
 
             //using a for loop to check all the bodies of the json
             //since each queue type is in another body
             for (int x = 0; x < r.Count; x++)
             {
-                if (((string)r[x]["queueType"] == "RANKED_SOLO_5x5"))
+                if ((string)r[x]["queueType"] == "RANKED_SOLO_5x5")
                 {
                     var tiersolo = (string)r[x]["tier"];
                     var division = (string)r[x]["rank"];
@@ -210,41 +227,17 @@ namespace NewTestBot.Modules
             //running through all the different roles
             for (int x = 0; x < allRanks.GetLength(0); x++)
             {
-                    try
-                    {
                         var roles = Context.Guild.Roles.FirstOrDefault(y => y.Name.ToLower() == allRanks[x]);
                         if(username.Roles.Contains(roles))
                         {
                         await (username as IGuildUser).RemoveRoleAsync(roles);
                         }
-                    }
-                    catch(Exception)
-                    {
-                        //nothing 
-                    }
             }
             var role = Context.Guild.Roles.FirstOrDefault(x => x.Name.ToLower() == usedtiersolo);
             await (username as IGuildUser).AddRoleAsync(role);
            
 
-            var embed = new EmbedBuilder();
-                    embed.AddField("updating your account...",
-                    "Hang on while i update your rank!")
-                    .WithAuthor(author => { author
-                    .WithName("Birdie Bot")
-                    .WithIconUrl(IconURL);})
-                    .WithThumbnailUrl(thumbnailURL)
-                    .WithColor(new Color(255, 0, 0))
-                    .WithTitle("Birdie Bot notification")
-                    .WithFooter(footer => { footer
-                    .WithText("Need help? Contact Birdie Zukira#3950")
-                    .WithIconUrl(IconURL);})
-                    .WithCurrentTimestamp()
-                    .Build();
-
-                    var message = await Context.Channel.SendMessageAsync("", false, embed);
-
-                    await Task.Delay(3000);
+                    await Task.Delay(2000);
                     await message.ModifyAsync(x =>
                     {
                         x.Embed = new EmbedBuilder()
