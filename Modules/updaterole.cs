@@ -213,10 +213,10 @@ namespace NewTestBot.Modules
                     string internalTFT = tierTFT + " " + divisionTFT;
                     rankTFT = internalTFT;
                 }
-                else if ((string)r[ab]["queueType"] == null)
+                else
                 {
-                    rankTFT = "Unranked";
-                    usedtierTFT = "Unranked";
+                    rankTFT = "TFT-Unranked";
+                    usedtierTFT = "TFT-Unranked";
                 }
 
             }
@@ -227,14 +227,14 @@ namespace NewTestBot.Modules
 
             //updating the rank of the user
             string Discordname = Context.User.Username;
-            string updaterank = "UPDATE users_testing SET `SOLO_QUEUE` = '" + rank + "', `Discord_Name` = '" + Discordname + "',`TFT` = '" + rankTFT + "' WHERE Discord_Id like  '%" + UserID + "%';";
+            string updaterank = "UPDATE users_testing SET `SOLO_QUEUE` = '" + rank + "', `Discord_Name` = '" + Discordname + "', `TFT` = '" + rankTFT + "' WHERE Discord_Id like  '%" + UserID + "%';";
             MySqlCommand updatecommand = new MySqlCommand(updaterank, myconn);
             myconn.Open();
             myreader = updatecommand.ExecuteReader();
             myconn.Close();
-
+            
             var allRanks = new[] { "challenger", "grandMaster", "master", "diamond", "platinum", "gold", "silver", "bronze", "iron","unranked", "new ones :)" };
-            var TFTRanks = new[] { "TFT-Challenger", "TFT-Grandmaster", "TFT-Master", "TFT-Diamond", "TFT-Platinum", "TFT-Gold", "TFT-Bronze", "TFT-Iron", "TFT-Unranked" };
+            var TFTRanks = new[] { "TFT-Challenger", "TFT-Grandmaster", "TFT-Master", "TFT-Diamond", "TFT-Platinum", "TFT-Gold","TFT-Silver", "TFT-Bronze", "TFT-Iron", "TFT-Unranked" };
             var username = Context.User as SocketGuildUser;            
             
             //running through all the different roles
@@ -248,6 +248,7 @@ namespace NewTestBot.Modules
             }
             var role = Context.Guild.Roles.FirstOrDefault(x => x.Name.ToLower() == usedtiersolo);
             await (username as IGuildUser).AddRoleAsync(role);
+            Console.WriteLine(Context.User.Username + "Was assigned the role " + usedtiersolo +" on the server "+ Context.Guild.Name);
 
             try
             {
@@ -260,9 +261,9 @@ namespace NewTestBot.Modules
                         await (username as IGuildUser).RemoveRoleAsync(roles);
                     }
                 }
-                var TFTrole = Context.Guild.Roles.FirstOrDefault(xx => xx.Name.ToLower() == usedtierTFT);
+                var TFTrole = Context.Guild.Roles.FirstOrDefault(xx => xx.Name == usedtierTFT);
                 await (username as IGuildUser).AddRoleAsync(TFTrole);
-
+                Console.WriteLine(Context.User.Username + "Was assigned the role " + usedtierTFT + " on the server " + Context.Guild.Name);
             }
             catch(Exception)
             {
@@ -289,7 +290,7 @@ namespace NewTestBot.Modules
                         .WithCurrentTimestamp()
                         .Build();
                     });
-                    await Task.Delay(5000);
+                    await Task.Delay(4000);
                     var messages = await Context.Channel.GetMessagesAsync(2).Flatten();
                     await Context.Channel.DeleteMessagesAsync(messages);
                 

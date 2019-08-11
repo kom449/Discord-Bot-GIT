@@ -15,6 +15,9 @@ namespace NewTestBot
         internal readonly static string Birdieicon = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
         internal readonly static string Birdiethumbnail = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
 
+        //current version of the bot - I increment the number depending on what amount of features or fixes i do
+        internal readonly static string version = "0.5.4";
+
         //db Connection info
         static string data = File.ReadAllText("Resources/config.json");
         static JObject o = JObject.Parse(data);
