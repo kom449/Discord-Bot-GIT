@@ -10,15 +10,30 @@ namespace NewTestBot.Modules
 {
     public class Createroles : ModuleBase<SocketCommandContext>
     {
-        readonly string IconURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
-        readonly string thumbnail = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
 
         [Command("create", RunMode = RunMode.Async),RequireOwner]
         public async Task Rolecreation()
         {
+                    var embed = new EmbedBuilder();
+                    embed.AddField("Creating roles for you now...",
+                    "please hold on while i create roles and channel for you!")
+                    .WithAuthor(author => { author
+                    .WithName("Birdie Bot")
+                    .WithIconUrl(Global.Birdieicon);})
+                    .WithThumbnailUrl(Global.Birdiethumbnail)
+                    .WithColor(new Color(255, 0, 0))
+                    .WithTitle("Birdie Bot notification")
+                    .WithFooter(footer => { footer
+                    .WithText("Need help? Contact Birdie Zukira#3950")
+                    .WithIconUrl(Global.Birdieicon);})
+                    .WithCurrentTimestamp()
+                    .Build();                
+                    var message = await Context.Channel.SendMessageAsync("", false, embed);
+
+
             try
             { 
-                    var allRanks = new[] { "challenger", "grandMaster", "master", "diamond", "platinum", "gold", "silver", "bronze", "iron","unranked", "new ones :)" };
+                    var allRanks = new[] { "Challenger", "GrandMaster", "Master", "Diamond", "Platinum", "Gold", "Silver", "Bronze", "Iron","Unranked", "New Ones :)" };
                     var TFTRanks = new[] {"TFT-Challenger","TFT-Grandmaster","TFT-Master","TFT-Diamond","TFT-Platinum","TFT-Gold","TFT-Bronze","TFT-Iron","TFT-Unranked" };
                     var allrankcolors = new[] { new Color(240,140,15), new Color(253,7,7), new Color(192,7,146),new Color(32,102,148),new Color(46,204,113),new Color(241,196,15),new Color(151,156,159),new Color(187,121,68),new Color(255,255,255),new Color(124, 136, 120),new Color(188, 157, 154)};
                     var TFTcolors = new[] { new Color(240, 140, 15), new Color(253, 7, 7), new Color(192, 7, 146), new Color(32, 102, 148), new Color(46, 204, 113), new Color(241, 196, 15), new Color(151, 156, 159), new Color(187, 121, 68), new Color(255, 255, 255), new Color(124, 136, 120)};
@@ -36,7 +51,7 @@ namespace NewTestBot.Modules
                     for (int x = 0; x < allRanks.GetLength(0); x++, y++)
                     {
                             //checking if the role from allranks array can be found on the server
-                            var role = Context.Guild.Roles.FirstOrDefault(z => z.Name.ToLower() == allRanks[x]);                           
+                            var role = Context.Guild.Roles.FirstOrDefault(z => z.Name.ToLower() == allRanks[x].ToLower());                           
                             if (role == null)
                             {
                                 GuildPermissions permissions = default;
@@ -57,7 +72,7 @@ namespace NewTestBot.Modules
 
                     for (int xx = 0; xx <TFTRanks.GetLength(0); xx++, yy++)
                     {
-                        var TFTRole = Context.Guild.Roles.FirstOrDefault(zz => zz.Name == TFTRanks[xx]);
+                        var TFTRole = Context.Guild.Roles.FirstOrDefault(zz => zz.Name.ToLower() == TFTRanks[xx].ToLower());
                         if (TFTRole == null)
                         {
                             GuildPermissions permissions = default;
@@ -68,7 +83,7 @@ namespace NewTestBot.Modules
                         }
                         else if (TFTRole != null)
                         {
-                            Console.WriteLine(allRanks[xx] + " Already exists on the the server " + Context.Guild.Name+"!");
+                            Console.WriteLine(TFTRanks[xx] + " Already exists on the the server " + Context.Guild.Name+"!");
                             continue;
                         }
                     }
@@ -96,24 +111,9 @@ namespace NewTestBot.Modules
                             }
                     }
 
-                    var embed = new EmbedBuilder();
-                    embed.AddField("Creating roles for you now...",
-                    "please hold on while i create roles and channel for you!")
-                    .WithAuthor(author => { author
-                    .WithName("Birdie Bot")
-                    .WithIconUrl(IconURL);})
-                    .WithThumbnailUrl(thumbnail)
-                    .WithColor(new Color(255, 0, 0))
-                    .WithTitle("Birdie Bot notification")
-                    .WithFooter(footer => { footer
-                    .WithText("Need help? Contact Birdie Zukira#3950")
-                    .WithIconUrl(IconURL);})
-                    .WithCurrentTimestamp()
-                    .Build();                
 
-                    var message = await Context.Channel.SendMessageAsync("", false, embed);
 
-                    await Task.Delay(5000);
+                    await Task.Delay(3000);
                     await message.ModifyAsync(x =>
                     {
                         x.Embed = new EmbedBuilder()
@@ -121,13 +121,13 @@ namespace NewTestBot.Modules
                         "Feel free to move the channel as you please!")
                         .WithAuthor(author => { author
                         .WithName("Birdie Bot")
-                        .WithIconUrl(IconURL);})
-                        .WithThumbnailUrl(thumbnail)
+                        .WithIconUrl(Global.Birdieicon);})
+                        .WithThumbnailUrl(Global.Birdiethumbnail)
                         .WithColor(new Color(0, 255, 0))
                         .WithTitle("Birdie Bot notification")
                         .WithFooter(footer => { footer
                         .WithText("Need help? Contact Birdie Zukira#3950")
-                        .WithIconUrl(IconURL);})
+                        .WithIconUrl(Global.Birdieicon);})
                         .WithCurrentTimestamp()
                         .Build();
                     });

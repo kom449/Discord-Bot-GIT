@@ -50,16 +50,9 @@ namespace NewTestBot
                 {
                     if (reaction.Emote.Name == "👌" && reaction.UserId.ToString() == Global.currentuserid)
                     {
-                        string data = File.ReadAllText("Resources/config.json");
-
                         //using c for webclient connections
                         WebClient c = new WebClient();
 
-                        //getting DB information
-                        JObject o = JObject.Parse(data);
-                        string apikey = (string)o["lolapi"]["apikey"];
-                        string connect = string.Format("server={0};user={1};database={2};port={3};password={4}",
-                        (string)o["database"]["dbhost"], (string)o["database"]["dbuser"], (string)o["database"]["dbname"], (string)o["database"]["dbport"], (string)o["database"]["dbpass"]);
                         string querytoken = "SELECT TOKEN FROM users_testing WHERE Discord_Id like  '%" + reaction.UserId + "%'; ";
                         string returnedtoken = null;
                         string queryid = "SELECT League_Id FROM users_testing WHERE Discord_Id like  '%" + reaction.UserId + "%'; ";
@@ -67,7 +60,7 @@ namespace NewTestBot
                         
 
                         //sql connection for League Id
-                        MySqlConnection myconn = new MySqlConnection(connect);
+                        MySqlConnection myconn = new MySqlConnection(Global.connect);
                         MySqlCommand GetId = new MySqlCommand(queryid, myconn);
                         MySqlCommand GetToken = new MySqlCommand(querytoken, myconn);
 
@@ -82,27 +75,26 @@ namespace NewTestBot
                         string Emptyreponse;
                         try
                         {
-                            string ResponseToken = c.DownloadString("https://euw1.api.riotgames.com/lol/platform/v4/third-party-code/by-summoner/" + returnedid + "?api_key=" + apikey + "");
+                            string ResponseToken = c.DownloadString("https://euw1.api.riotgames.com/lol/platform/v4/third-party-code/by-summoner/" + returnedid + "?api_key=" + Global.apikey + "");
                             ResponseToken = ResponseToken.Trim('"');
                             Emptyreponse = ResponseToken;
 
                         }
                         catch (Exception ex)
                         {
-                            string IconURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
-                            string thumbnail = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
+
                             var embed = new EmbedBuilder();
                             embed.AddField("Verifying your account...",
                             "No token was detected!")
                             .WithAuthor(author =>{ author
                             .WithName("Birdie Bot")
-                            .WithIconUrl(IconURL);})
-                            .WithThumbnailUrl(thumbnail)
+                            .WithIconUrl(Global.Birdieicon);})
+                            .WithThumbnailUrl(Global.Birdiethumbnail)
                             .WithColor(new Color(255, 83, 13))
                             .WithTitle("Birdie Bot notification")
                             .WithFooter(footer =>{ footer
                             .WithText("Need help? Contact Birdie Zukira#3950")
-                            .WithIconUrl(IconURL);})
+                            .WithIconUrl(Global.Birdieicon);})
                             .WithCurrentTimestamp()
                             .Build();
 
@@ -119,7 +111,7 @@ namespace NewTestBot
                             //add their account to DB
                             //getting league rank from ID
                             //using "r" for rank
-                            string responserank = c.DownloadString("https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/" + returnedid + "?api_key=" + apikey + "");
+                            string responserank = c.DownloadString("https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/" + returnedid + "?api_key=" + Global.apikey + "");
                             JArray r = JArray.Parse(responserank);
                             string ranksolo = null;
                             string rankflex5 = null;
@@ -175,20 +167,19 @@ namespace NewTestBot
                             myreader = postdata.ExecuteReader();
                             myconn.Close();
 
-                            string IconURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
-                            string thumbnail = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
+
                             var embed = new EmbedBuilder();
                             embed.AddField("Verifying your account...",
                             "Your Account has been Verified!")
                             .WithAuthor(author =>{ author
                             .WithName("Birdie Bot")
-                            .WithIconUrl(IconURL);})
-                            .WithThumbnailUrl(thumbnail)
+                            .WithIconUrl(Global.Birdieicon);})
+                            .WithThumbnailUrl(Global.Birdiethumbnail)
                             .WithColor(new Color(255, 83, 13))
                             .WithTitle("Birdie Bot notification")
                             .WithFooter(footer =>{ footer
                             .WithText("Need help? Contact Birdie Zukira#3950")
-                            .WithIconUrl(IconURL);})
+                            .WithIconUrl(Global.Birdieicon);})
                             .WithCurrentTimestamp()
                             .Build();
 
@@ -201,7 +192,26 @@ namespace NewTestBot
                         }
                         else
                         {
-                            await channel.SendMessageAsync("Something went wrong - Contact Birdie Zukira#3950 ASAP");
+                            var embed = new EmbedBuilder();
+                            embed.AddField("Verifying your account...",
+                            "No token was detected!")
+                            .WithAuthor(author =>{ author
+                            .WithName("Birdie Bot")
+                            .WithIconUrl(Global.Birdieicon);})
+                            .WithThumbnailUrl(Global.Birdiethumbnail)
+                            .WithColor(new Color(255, 83, 13))
+                            .WithTitle("Birdie Bot notification")
+                            .WithFooter(footer =>{ footer
+                            .WithText("Need help? Contact Birdie Zukira#3950")
+                            .WithIconUrl(Global.Birdieicon);})
+                            .WithCurrentTimestamp()
+                            .Build();
+
+                            await channel.SendMessageAsync("", false, embed);
+                            await Task.Delay(2000);
+                            var messages = await channel.GetMessagesAsync(3).Flatten();
+                            await channel.DeleteMessagesAsync(messages);
+                            return;
                         }
                     }
                 }

@@ -16,8 +16,7 @@ namespace NewTestBot.Modules
 {
     public class Updateall : ModuleBase<SocketCommandContext>
     {
-        readonly string IconURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
-        readonly string thumbnail = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
+
         [Command("updateall", RunMode = RunMode.Async),RequireOwner]
         public async Task Updateallranks()
         {
@@ -29,31 +28,27 @@ namespace NewTestBot.Modules
                     "This might take some time!")
                     .WithAuthor(author => { author
                     .WithName("Birdie Bot")
-                    .WithIconUrl(IconURL);})
-                    .WithThumbnailUrl(thumbnail)
+                    .WithIconUrl(Global.Birdieicon);})
+                    .WithThumbnailUrl(Global.Birdiethumbnail)
                     .WithColor(new Color(255, 83, 13))
                     .WithTitle("Birdie Bot notification")
                     .WithFooter(footer => { footer
                     .WithText("Need help? Contact Birdie Zukira#3950")
-                    .WithIconUrl(IconURL);})
+                    .WithIconUrl(Global.Birdieicon);})
                     .WithCurrentTimestamp()
                     .Build();
                     var message = await Context.Channel.SendMessageAsync("", false, embed);
 
-            WebClient c = new WebClient();
-            string data = File.ReadAllText("Resources/config.json");
-            JObject o = JObject.Parse(data);
-            string apikey = (string)o["lolapi"]["apikey"];
-            string connect = string.Format("server={0};user={1};database={2};port={3};password={4}",
-            (string)o["database"]["dbhost"], (string)o["database"]["dbuser"], (string)o["database"]["dbname"], (string)o["database"]["dbport"], (string)o["database"]["dbpass"]);
-            string QueryLeagueId = "SELECT League_Id FROM users_testing";
-            List<string> results = new List<string>();
-            List<string> DiscordIdResults = new List<string>();
-            MySqlConnection myconn = new MySqlConnection(connect);
-            MySqlCommand LeagueQuery = new MySqlCommand(QueryLeagueId, myconn);
-            MySqlDataReader myreader;
-            myconn.Open();
-            myreader = LeagueQuery.ExecuteReader();
+                WebClient c = new WebClient();
+                string data;
+                string QueryLeagueId = "SELECT League_Id FROM users_testing";
+                List<string> results = new List<string>();
+                List<string> DiscordIdResults = new List<string>();
+                MySqlConnection myconn = new MySqlConnection(Global.connect);
+                MySqlCommand LeagueQuery = new MySqlCommand(QueryLeagueId, myconn);
+                MySqlDataReader myreader;
+                myconn.Open();
+                myreader = LeagueQuery.ExecuteReader();
 
                 //getting the current league id
                  while (myreader.Read())
@@ -67,14 +62,14 @@ namespace NewTestBot.Modules
                 //using b as the variable for discord id list
                 for (int x = 0; x  < results.Count; x++)
                 {
-                        string responserank = c.DownloadString("https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/" + results[x] + "?api_key=" + apikey + "");
+                        string responserank = c.DownloadString("https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/" + results[x] + "?api_key=" + Global.apikey + "");
                         JArray r = JArray.Parse(responserank);
                         string ranksolo = null;
                         string rankflex5 = null;
                         string rankflex3 = null;
                         string rankTFT = null;
                         string usedtiersolo = null;
-                        string ResponseName = c.DownloadString("https://euw1.api.riotgames.com/lol/summoner/v4/summoners/" + results[x] + "?api_key=" + apikey + "");
+                        string ResponseName = c.DownloadString("https://euw1.api.riotgames.com/lol/summoner/v4/summoners/" + results[x] + "?api_key=" + Global.apikey + "");
                         JObject i = JObject.Parse(ResponseName);
                         var lolname = i["name"];
 
@@ -155,7 +150,7 @@ namespace NewTestBot.Modules
 
                         }
 
-                        //again using the same loop to find the Flex 3v3 rank
+                        //again using the same loop to find the TFT rank
                         for (int ab = 0; ab < r.Count; ab++)
                         {
                             if (((string)r[ab]["queueType"] == "RANKED_TFT"))
@@ -219,13 +214,13 @@ namespace NewTestBot.Modules
                         "everyone should be up to date!")
                         .WithAuthor(author => { author
                         .WithName("Birdie Bot")
-                        .WithIconUrl(IconURL);})
-                        .WithThumbnailUrl(thumbnail)
+                        .WithIconUrl(Global.Birdieicon);})
+                        .WithThumbnailUrl(Global.Birdiethumbnail)
                         .WithColor(new Color(0, 255, 0))
                         .WithTitle("Birdie Bot notification")
                         .WithFooter(footer => { footer
                         .WithText("Need help? Contact Birdie Zukira#3950")
-                        .WithIconUrl(IconURL);})
+                        .WithIconUrl(Global.Birdieicon);})
                         .WithCurrentTimestamp()
                         .Build();
                     });

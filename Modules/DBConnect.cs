@@ -12,8 +12,6 @@ namespace NewTestBot.Modules
 {
     public class DBConnect : ModuleBase<SocketCommandContext>
     {
-        readonly string IconURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
-        readonly string thumbnail = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
 
         [Command("Connect", RunMode = RunMode.Async)] 
         public async Task ConnectDB(string response = null,params string[] args)
@@ -26,13 +24,13 @@ namespace NewTestBot.Modules
                     "no account name was provided!")
                     .WithAuthor(author =>{ author
                     .WithName("Birdie Bot")
-                    .WithIconUrl(IconURL);})
-                    .WithThumbnailUrl(thumbnail)
+                    .WithIconUrl(Global.Birdieicon);})
+                    .WithThumbnailUrl(Global.Birdiethumbnail)
                     .WithColor(new Color(255, 83, 13))
                     .WithTitle("Birdie Bot notification")
                     .WithFooter(footer =>{ footer
                     .WithText("Need help? Contact Birdie Zukira#3950")
-                    .WithIconUrl(IconURL);})
+                    .WithIconUrl(Global.Birdieicon);})
                     .WithCurrentTimestamp()
                     .Build();
 
@@ -46,15 +44,7 @@ namespace NewTestBot.Modules
                 string name = userMessage.Substring(userMessage.IndexOf(' ') + 1);
 
                 //replacing space with "%20"
-                string account = name.Replace(" ", "%20");
-                //reading db info and apikey from file
-                string data = File.ReadAllText("Resources/config.json");
-
-                //getting DB information
-                JObject o = JObject.Parse(data);
-                string apikey = (string)o["lolapi"]["apikey"];
-                string connect = string.Format("server={0};user={1};database={2};port={3};password={4}",
-                (string)o["database"]["dbhost"], (string)o["database"]["dbuser"], (string)o["database"]["dbname"], (string)o["database"]["dbport"], (string)o["database"]["dbpass"]);
+                string account = name.Replace(" ", "%20");;
 
                 //using c for webclient connections
                 WebClient c = new WebClient();
@@ -65,7 +55,7 @@ namespace NewTestBot.Modules
                 JObject f = null;
                 try
                 {
-                    string responsename = c.DownloadString("https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + account + "?api_key=" + apikey + "");
+                    string responsename = c.DownloadString("https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + account + "?api_key=" + Global.apikey + "");
                     JObject i = JObject.Parse(responsename);
                     f = i;
 
@@ -77,13 +67,13 @@ namespace NewTestBot.Modules
                     "Summoner account doesnt exist!")
                     .WithAuthor(author =>{ author
                     .WithName("Birdie Bot")
-                    .WithIconUrl(IconURL);})
-                    .WithThumbnailUrl(thumbnail)
+                    .WithIconUrl(Global.Birdieicon);})
+                    .WithThumbnailUrl(Global.Birdiethumbnail)
                     .WithColor(new Color(255, 83, 13))
                     .WithTitle("Birdie Bot notification")
                     .WithFooter(footer =>{ footer
                     .WithText("Need help? Contact Birdie Zukira#3950")
-                    .WithIconUrl(IconURL);})
+                    .WithIconUrl(Global.Birdieicon);})
                     .WithCurrentTimestamp()
                     .Build();
 
@@ -118,7 +108,7 @@ namespace NewTestBot.Modules
                 string Result;
 
                 //sql connection and command
-                MySqlConnection myconn = new MySqlConnection(connect);
+                MySqlConnection myconn = new MySqlConnection(Global.connect);
                 MySqlCommand command = new MySqlCommand(Query, myconn);
                 MySqlCommand SetStatus = new MySqlCommand(setstatus,myconn);
                 MySqlCommand DuplicateCommand = new MySqlCommand(Duplicate, myconn);
@@ -148,13 +138,13 @@ namespace NewTestBot.Modules
                     "Your League and Discord account already exist in the Database!")
                     .WithAuthor(author =>{ author
                     .WithName("Birdie Bot")
-                    .WithIconUrl(IconURL);})
+                    .WithIconUrl(Global.Birdieicon);})
                     .WithThumbnailUrl(thumbnailURL)
                     .WithColor(new Color(255, 83, 13))
                     .WithTitle("Birdie Bot notification")
                     .WithFooter(footer =>{ footer
                     .WithText("Need help? Contact Birdie Zukira#3950")
-                    .WithIconUrl(IconURL);})
+                    .WithIconUrl(Global.Birdieicon);})
                     .WithCurrentTimestamp()
                     .Build();
 
@@ -189,13 +179,13 @@ namespace NewTestBot.Modules
                     "Your league account " + "`" + lolname + "`"+" has been added to the Database!")
                     .WithAuthor(author =>{ author
                     .WithName("Birdie Bot")
-                    .WithIconUrl(IconURL);})
+                    .WithIconUrl(Global.Birdieicon);})
                     .WithThumbnailUrl(thumbnailURL)
                     .WithColor(new Color(255, 83, 13))
                     .WithTitle("Birdie Bot notification")
                     .WithFooter(footer =>{ footer
                     .WithText("Need help? Contact Birdie Zukira#3950")
-                    .WithIconUrl(IconURL);})
+                    .WithIconUrl(Global.Birdieicon);})
                     .WithCurrentTimestamp()
                     .Build();
                     await Context.Channel.SendMessageAsync("", false, embed);

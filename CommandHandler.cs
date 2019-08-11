@@ -35,13 +35,13 @@ namespace NewTestBot
             {
                 if (context.IsPrivate == true)
                 {
-                    string IconURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
+
                     var embed = new EmbedBuilder();
                     embed.WithTitle("Birdie Bot notification");
                     embed.WithDescription("I do not accept commands from Direct messages!");
                     embed.WithFooter(footer => { footer
                     .WithText("Need help? Contact Birdie Zukira#3950")
-                    .WithIconUrl(IconURL);
+                    .WithIconUrl(Global.Birdieicon);
                     });
                     embed.WithCurrentTimestamp();
                     embed.WithColor(new Color(255, 0, 0));

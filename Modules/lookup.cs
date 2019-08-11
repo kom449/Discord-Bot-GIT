@@ -18,16 +18,12 @@ namespace NewTestBot.Modules
         {
             var id = user.Id;
             WebClient c = new WebClient();
-            string data = File.ReadAllText("Resources/config.json");
-            JObject o = JObject.Parse(data);
-            string apikey = (string)o["lolapi"]["apikey"];
-            string connect = string.Format("server={0};user={1};database={2};port={3};password={4}",
-            (string)o["database"]["dbhost"], (string)o["database"]["dbuser"], (string)o["database"]["dbname"], (string)o["database"]["dbport"], (string)o["database"]["dbpass"]);
             string Query = "SELECT League_id FROM users_testing WHERE Discord_Id like  '%" + id + "%'; ";
             string getIcon = "SELECT Icon_id FROM users_testing WHERE Discord_Id like '%" + id + "%';";
             string lolid = null;
+            string data;
 
-            MySqlConnection myconn = new MySqlConnection(connect);
+            MySqlConnection myconn = new MySqlConnection(Global.connect);
             MySqlCommand command = new MySqlCommand(Query, myconn);
             MySqlCommand GetIcon = new MySqlCommand(getIcon, myconn);
             MySqlDataReader myreader;
@@ -60,8 +56,7 @@ namespace NewTestBot.Modules
             JArray latestlolversion = JArray.Parse(findlatestlolversion);
             var version = latestlolversion[0];
             string thumbnailURL = "http://ddragon.leagueoflegends.com/cdn/" + version + "/img/profileicon/" + iconid + ".png";
-
-            string responserank = c.DownloadString("https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/" + id + "?api_key=" + apikey + "");
+            string responserank = c.DownloadString("https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/" + id + "?api_key=" + Global.apikey + "");
             JArray r = JArray.Parse(responserank);
             string ranksolo = null;
             string rankflex5 = null;

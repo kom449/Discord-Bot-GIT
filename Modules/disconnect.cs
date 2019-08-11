@@ -12,25 +12,17 @@ namespace NewTestBot.Modules
 {
     public class Disconnect : ModuleBase<SocketCommandContext>
     {
-        readonly string IconURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
-        readonly string thumbnail = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
         [Command("disconnect", RunMode = RunMode.Async)]
         public async Task RemoveAccount()
         {
-                //creating the connect string from the config file. 
-                string data = File.ReadAllText("Resources/config.json");
-                JObject o = JObject.Parse(data);
-                string apikey = (string)o["lolapi"]["apikey"];
-                string connect = string.Format("server={0};user={1};database={2};port={3};password={4}",
-                (string)o["database"]["dbhost"], (string)o["database"]["dbuser"], (string)o["database"]["dbname"], (string)o["database"]["dbport"], (string)o["database"]["dbpass"]);
-
                 //removing the account from the DB 
                 string UserID = Context.User.Id.ToString();
                 string Query = "DELETE FROM users_testing WHERE Discord_Id like  '%" + UserID + "%'; ";
                 string getID = "SELECT League_id FROM users_testing WHERE Discord_Id like  '%" + UserID + "%'; ";
                 string id = null;
-
-                MySqlConnection myconn = new MySqlConnection(connect);
+                string data;
+                
+                MySqlConnection myconn = new MySqlConnection(Global.connect);
                 MySqlCommand command = new MySqlCommand(Query, myconn);
                 MySqlCommand fetchID = new MySqlCommand(getID, myconn);
                 MySqlDataReader myreader;
@@ -56,7 +48,7 @@ namespace NewTestBot.Modules
                 WebClient c = new WebClient();
                 try
                 {
-                    responserank = c.DownloadString("https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/" + id + "?api_key=" + apikey + "");
+                    responserank = c.DownloadString("https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/" + id + "?api_key=" + Global.apikey + "");
                 }
                 catch (Exception)
                 {
@@ -65,13 +57,13 @@ namespace NewTestBot.Modules
                     "failed to remove your account \n no accounts are linked to your discord!")
                     .WithAuthor(author =>{ author
                     .WithName("Birdie Bot")
-                    .WithIconUrl(IconURL);})
-                    .WithThumbnailUrl(thumbnail)
+                    .WithIconUrl(Global.Birdieicon);})
+                    .WithThumbnailUrl(Global.Birdiethumbnail)
                     .WithColor(new Color(255, 83, 13))
                     .WithTitle("Birdie Bot notification")
                     .WithFooter(footer =>{ footer
                     .WithText("Need help? Contact Birdie Zukira#3950")
-                    .WithIconUrl(IconURL);})
+                    .WithIconUrl(Global.Birdieicon);})
                     .WithCurrentTimestamp()
                     .Build();
                     await Context.Channel.SendMessageAsync("", false, embed2);
@@ -105,13 +97,13 @@ namespace NewTestBot.Modules
                 "Your account has been removed!")
                 .WithAuthor(author =>{ author
                 .WithName("Birdie Bot")
-                .WithIconUrl(IconURL);})
-                .WithThumbnailUrl(thumbnail)
+                .WithIconUrl(Global.Birdieicon);})
+                .WithThumbnailUrl(Global.Birdiethumbnail)
                 .WithColor(new Color(255, 83, 13))
                 .WithTitle("Birdie Bot notification")
                 .WithFooter(footer =>{ footer
                 .WithText("Need help? Contact Birdie Zukira#3950")
-                .WithIconUrl(IconURL);})
+                .WithIconUrl(Global.Birdieicon);})
                 .WithCurrentTimestamp()
                 .Build();
 

@@ -13,8 +13,6 @@ namespace NewTestBot.Modules
 {
     public class Updaterole : ModuleBase<SocketCommandContext>
     {
-        readonly string IconURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
-        readonly string thumbnail = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
         [Command("update", RunMode = RunMode.Async)]
         public async Task UpdateAccount()
         {
@@ -30,16 +28,10 @@ namespace NewTestBot.Modules
             string id = null;
             string token = null;
             string status = null;
-
-            //getting DB information
-            string data = File.ReadAllText("Resources/config.json");
-            JObject o = JObject.Parse(data);
-            string apikey = (string)o["lolapi"]["apikey"];
-            string connect = string.Format("server={0};user={1};database={2};port={3};password={4}",
-            (string)o["database"]["dbhost"], (string)o["database"]["dbuser"], (string)o["database"]["dbname"], (string)o["database"]["dbport"], (string)o["database"]["dbpass"]);
+            string data;
 
             //getting the lol id from the sender of the update command
-            MySqlConnection myconn = new MySqlConnection(connect);
+            MySqlConnection myconn = new MySqlConnection(Global.connect);
             MySqlCommand command = new MySqlCommand(getID, myconn);
             MySqlCommand geticon = new MySqlCommand(getIcon, myconn);
             MySqlCommand GetToken = new MySqlCommand(getToken, myconn);
@@ -75,13 +67,13 @@ namespace NewTestBot.Modules
                     "No account was found!")
                     .WithAuthor(author => { author
                     .WithName("Birdie Bot")
-                    .WithIconUrl(IconURL);})
-                    .WithThumbnailUrl(thumbnail)
+                    .WithIconUrl(Global.Birdieicon);})
+                    .WithThumbnailUrl(Global.Birdiethumbnail)
                     .WithColor(new Color(255, 83, 13))
                     .WithTitle("Birdie Bot notification")
                     .WithFooter(footer => { footer
                     .WithText("Need help? Contact Birdie Zukira#3950")
-                    .WithIconUrl(IconURL);})
+                    .WithIconUrl(Global.Birdieicon);})
                     .WithCurrentTimestamp()
                     .Build();
                     await Context.Channel.SendMessageAsync("", false, embed2);
@@ -98,13 +90,13 @@ namespace NewTestBot.Modules
                     "Your account is not verified!")
                     .WithAuthor(author => { author
                     .WithName("Birdie Bot")
-                    .WithIconUrl(IconURL);})
-                    .WithThumbnailUrl(thumbnail)
+                    .WithIconUrl(Global.Birdieicon);})
+                    .WithThumbnailUrl(Global.Birdiethumbnail)
                     .WithColor(new Color(255, 83, 13))
                     .WithTitle("Birdie Bot notification")
                     .WithFooter(footer => { footer
                     .WithText("Need help? Contact Birdie Zukira#3950")
-                    .WithIconUrl(IconURL);})
+                    .WithIconUrl(Global.Birdieicon);})
                     .WithCurrentTimestamp()
                     .Build();
                     await Context.Channel.SendMessageAsync("", false, embed2);
@@ -130,13 +122,13 @@ namespace NewTestBot.Modules
                     "Your account is not verified!")
                     .WithAuthor(author => { author
                     .WithName("Birdie Bot")
-                    .WithIconUrl(IconURL);})
-                    .WithThumbnailUrl(thumbnail)
+                    .WithIconUrl(Global.Birdieicon);})
+                    .WithThumbnailUrl(Global.Birdiethumbnail)
                     .WithColor(new Color(255, 83, 13))
                     .WithTitle("Birdie Bot notification")
                     .WithFooter(footer => { footer
                     .WithText("Need help? Contact Birdie Zukira#3950")
-                    .WithIconUrl(IconURL);})
+                    .WithIconUrl(Global.Birdieicon);})
                     .WithCurrentTimestamp()
                     .Build();
                     await Context.Channel.SendMessageAsync("", false, embed2);
@@ -162,11 +154,13 @@ namespace NewTestBot.Modules
 
             //getting league rank from ID
             //using "r" for rank
-            string responserank = c.DownloadString("https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/" + id + "?api_key=" + apikey + "");
+            string responserank = c.DownloadString("https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/" + id + "?api_key=" + Global.apikey + "");
 
             JArray r = JArray.Parse(responserank);
             string rank = null;
             string usedtiersolo = null;
+            string rankTFT = null;
+            string usedtierTFT = null;
 
             //getting icon for thumbnail
             string findlatestlolversion = c.DownloadString("https://ddragon.leagueoflegends.com/api/versions.json");
@@ -179,13 +173,13 @@ namespace NewTestBot.Modules
                     "Hang on while i update your rank!")
                     .WithAuthor(author => { author
                     .WithName("Birdie Bot")
-                    .WithIconUrl(IconURL);})
+                    .WithIconUrl(Global.Birdieicon);})
                     .WithThumbnailUrl(thumbnailURL)
                     .WithColor(new Color(255, 0, 0))
                     .WithTitle("Birdie Bot notification")
                     .WithFooter(footer => { footer
                     .WithText("Need help? Contact Birdie Zukira#3950")
-                    .WithIconUrl(IconURL);})
+                    .WithIconUrl(Global.Birdieicon);})
                     .WithCurrentTimestamp()
                     .Build();
                     var message = await Context.Channel.SendMessageAsync("", false, embed);
@@ -202,11 +196,29 @@ namespace NewTestBot.Modules
                     rank = soloq;
                     usedtiersolo = tiersolo.ToLower();
                 }
-                else
+                else if ((string)r[x]["queueType"] == null)
                 {
                     rank = "Unranked";
                     usedtiersolo = "unranked";
                 }
+            }
+
+            //again using the same loop to find the TFT rank
+            for (int ab = 0; ab < r.Count; ab++)
+            {
+                if ((string)r[ab]["queueType"] == "RANKED_TFT")
+                {
+                    var tierTFT = (string)r[ab]["tier"];
+                    var divisionTFT = (string)r[ab]["rank"];
+                    string internalTFT = tierTFT + " " + divisionTFT;
+                    rankTFT = internalTFT;
+                }
+                else if ((string)r[ab]["queueType"] == null)
+                {
+                    rankTFT = "Unranked";
+                    usedtierTFT = "Unranked";
+                }
+
             }
 
             myconn.Open();
@@ -215,13 +227,14 @@ namespace NewTestBot.Modules
 
             //updating the rank of the user
             string Discordname = Context.User.Username;
-            string updaterank = "UPDATE users_testing SET `SOLO_QUEUE` = '" + rank + "', `Discord_Name` = '" + Discordname + "' WHERE Discord_Id like  '%" + UserID + "%';";
+            string updaterank = "UPDATE users_testing SET `SOLO_QUEUE` = '" + rank + "', `Discord_Name` = '" + Discordname + "',`TFT` = '" + rankTFT + "' WHERE Discord_Id like  '%" + UserID + "%';";
             MySqlCommand updatecommand = new MySqlCommand(updaterank, myconn);
             myconn.Open();
             myreader = updatecommand.ExecuteReader();
             myconn.Close();
 
             var allRanks = new[] { "challenger", "grandMaster", "master", "diamond", "platinum", "gold", "silver", "bronze", "iron","unranked", "new ones :)" };
+            var TFTRanks = new[] { "TFT-Challenger", "TFT-Grandmaster", "TFT-Master", "TFT-Diamond", "TFT-Platinum", "TFT-Gold", "TFT-Bronze", "TFT-Iron", "TFT-Unranked" };
             var username = Context.User as SocketGuildUser;            
             
             //running through all the different roles
@@ -235,9 +248,30 @@ namespace NewTestBot.Modules
             }
             var role = Context.Guild.Roles.FirstOrDefault(x => x.Name.ToLower() == usedtiersolo);
             await (username as IGuildUser).AddRoleAsync(role);
-           
 
-                    await Task.Delay(2000);
+            try
+            {
+                //running through all the different TFT roles
+                for (int xx = 0; xx < TFTRanks.GetLength(0); xx++)
+                {
+                    var roles = Context.Guild.Roles.FirstOrDefault(yy => yy.Name.ToLower() == TFTRanks[xx].ToLower());
+                    if (username.Roles.Contains(roles))
+                    {
+                        await (username as IGuildUser).RemoveRoleAsync(roles);
+                    }
+                }
+                var TFTrole = Context.Guild.Roles.FirstOrDefault(xx => xx.Name.ToLower() == usedtierTFT);
+                await (username as IGuildUser).AddRoleAsync(TFTrole);
+
+            }
+            catch(Exception)
+            {
+                Console.WriteLine("there was an error with assigning TFT rank - Ignored for now");
+            }
+
+
+
+            await Task.Delay(2000);
                     await message.ModifyAsync(x =>
                     {
                         x.Embed = new EmbedBuilder()
@@ -245,13 +279,13 @@ namespace NewTestBot.Modules
                         "if it didnt update, try waiting up to an hour before trying again!")
                         .WithAuthor(author => { author
                         .WithName("Birdie Bot")
-                        .WithIconUrl(IconURL);})
-                        .WithThumbnailUrl(thumbnail)
+                        .WithIconUrl(Global.Birdieicon);})
+                        .WithThumbnailUrl(Global.Birdiethumbnail)
                         .WithColor(new Color(0, 255, 0))
                         .WithTitle("Birdie Bot notification")
                         .WithFooter(footer => { footer
                         .WithText("Need help? Contact Birdie Zukira#3950")
-                        .WithIconUrl(IconURL);})
+                        .WithIconUrl(Global.Birdieicon);})
                         .WithCurrentTimestamp()
                         .Build();
                     });
