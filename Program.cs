@@ -1,5 +1,6 @@
 ﻿using Discord.WebSocket;
 using Discord;
+using Discord.Rest;
 using System;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
@@ -52,7 +53,7 @@ namespace NewTestBot
                     {
                         //using c for webclient connections
                         WebClient c = new WebClient();
-
+                        RestUserMessage msg = Global.message;
                         string querytoken = "SELECT TOKEN FROM users_testing WHERE Discord_Id like  '%" + reaction.UserId + "%'; ";
                         string returnedtoken = null;
                         string queryid = "SELECT League_Id FROM users_testing WHERE Discord_Id like  '%" + reaction.UserId + "%'; ";
@@ -99,6 +100,8 @@ namespace NewTestBot
                             .Build();
 
                             Console.WriteLine(ex);
+
+                            await msg.RemoveAllReactionsAsync();
                             await channel.SendMessageAsync("", false, embed);
                             await Task.Delay(2000);
                             var messages = await channel.GetMessagesAsync(3).Flatten();
@@ -183,7 +186,7 @@ namespace NewTestBot
                             .WithCurrentTimestamp()
                             .Build();
 
-
+                            await msg.RemoveAllReactionsAsync();
                             await channel.SendMessageAsync("", false, embed);
                             Console.WriteLine(reaction.User +" Just verified their account!");
                             await Task.Delay(5000);
@@ -194,7 +197,8 @@ namespace NewTestBot
                         {
                             var embed = new EmbedBuilder();
                             embed.AddField("Verifying your account...",
-                            "No token was detected!")
+                            "could not verify your account at this time!\n " +
+                            "Try again later or contact Birdie Zukira#3950")
                             .WithAuthor(author =>{ author
                             .WithName("Birdie Bot")
                             .WithIconUrl(Global.Birdieicon);})
@@ -207,6 +211,7 @@ namespace NewTestBot
                             .WithCurrentTimestamp()
                             .Build();
 
+                            await msg.RemoveAllReactionsAsync();
                             await channel.SendMessageAsync("", false, embed);
                             await Task.Delay(2000);
                             var messages = await channel.GetMessagesAsync(3).Flatten();

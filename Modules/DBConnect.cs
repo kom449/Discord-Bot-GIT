@@ -44,7 +44,7 @@ namespace NewTestBot.Modules
                 string name = userMessage.Substring(userMessage.IndexOf(' ') + 1);
 
                 //replacing space with "%20"
-                string account = name.Replace(" ", "%20");;
+                string account = name.Replace(" ", "%20");
 
                 //using c for webclient connections
                 WebClient c = new WebClient();

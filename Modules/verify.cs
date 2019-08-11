@@ -87,6 +87,7 @@ namespace NewTestBot.Modules
 
                         //tracking the message ID to check if the user that started the command, reacts to the message
                         Global.MessageidToTrack = msg.Id;
+                        Global.message = msg;
                         Console.WriteLine(Context.User.Username+" Just started verification!");
                         
                     }
