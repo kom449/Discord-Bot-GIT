@@ -111,7 +111,7 @@ namespace NewTestBot.Modules
                 }
             }
 
-
+            await Context.Channel.SendMessageAsync("Feature not yet inplemented");
         }
     }
 }
