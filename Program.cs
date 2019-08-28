@@ -132,6 +132,8 @@ namespace NewTestBot
                                     ranksolo = soloq;
                                     usedtiersolo = tiersolo.ToLower();
                                 }
+                                else
+                                    usedtiersolo = "Unranked";
                             }
 
                             //using the same loop to get the Flex 5v5 rank
@@ -144,6 +146,8 @@ namespace NewTestBot
                                     string flex5v5 = tierflex5v5 + " " + divisionflex5v5;
                                     rankflex5 = flex5v5;
                                 }
+                                else
+                                    rankflex5 = "Unranked";
 
                             }
 
@@ -157,6 +161,8 @@ namespace NewTestBot
                                     string flex3v3 = tierflex3v3 + " " + divisionflex3v3;
                                     rankflex3 = flex3v3;
                                 }
+                                else
+                                    rankflex3 = "Unranked";
 
                             }
 
