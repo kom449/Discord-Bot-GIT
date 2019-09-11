@@ -10,8 +10,6 @@ namespace NewTestBot.Modules
 {
     public class restart : ModuleBase<SocketCommandContext>
     {
-        readonly string IconURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
-        readonly string thumbnailURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
         [Command("restart"), RequireOwner]
         public async Task PerformRestart()
         {
@@ -19,14 +17,14 @@ namespace NewTestBot.Modules
                     embed.AddField("Restart request has been sent!",
                     "The bot will restart in a moment.")
                     .WithAuthor(author => { author
-                    .WithName("Birdie Bot")
-                    .WithIconUrl(IconURL);})
-                    .WithThumbnailUrl(thumbnailURL)
+                    .WithName("Dingo Bot")
+                    .WithIconUrl(Global.Birdieicon);})
+                    .WithThumbnailUrl(Global.Birdiethumbnail)
                     .WithColor(new Color(255, 83, 13))
-                    .WithTitle("Birdie Bot nortification")
+                    .WithTitle("Dingo Bot nortification")
                     .WithFooter(footer => { footer
                     .WithText("Need help? Contact Birdie Zukira#3950")
-                    .WithIconUrl(IconURL);})
+                    .WithIconUrl(Global.Birdieicon);})
                     .WithCurrentTimestamp()
                     .Build();
                     await Context.Channel.SendMessageAsync("", false, embed);

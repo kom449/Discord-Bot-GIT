@@ -8,8 +8,6 @@ namespace NewTestBot.Modules
 {
     public class kick : ModuleBase<SocketCommandContext>
     {
-        readonly string IconURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
-
         [Command("kick"),RequireUserPermission(GuildPermission.KickMembers)]
         [RequireBotPermission(GuildPermission.KickMembers)]
 
@@ -37,13 +35,13 @@ namespace NewTestBot.Modules
                 user + " Has been kicked from the server!" + "\n \n Reason:" + "\n \n" + "**"+reason+"**")
                 .WithColor(new Color(255, 0, 0))
                 .WithAuthor(author => { author
-                .WithName("Birdie Bot nortification")
-                .WithIconUrl(IconURL);
+                .WithName("Dingo Bot nortification")
+                .WithIconUrl(Global.Birdieicon);
                 })
                 .WithCurrentTimestamp()
                 .WithFooter(footer => { footer
                 .WithText("Need help? Contact Birdie Zukira#3950")
-                .WithIconUrl(IconURL);
+                .WithIconUrl(Global.Birdieicon);
                 })
                 .Build();
 
@@ -81,13 +79,13 @@ namespace NewTestBot.Modules
                 user + " Has been kicked from the server!" + "\n \n Reason:" + "\n \n" + reason)
                 .WithColor(new Color(255, 0, 0))
                 .WithAuthor(author => { author
-                .WithName("Birdie Bot nortification")
-                .WithIconUrl(IconURL);
+                .WithName("Dingo Bot nortification")
+                .WithIconUrl(Global.Birdieicon);
                 })
                 .WithCurrentTimestamp()
                 .WithFooter(footer => { footer
                 .WithText("Need help? Contact Birdie Zukira#3950")
-                .WithIconUrl(IconURL);
+                .WithIconUrl(Global.Birdieicon);
                 })
                 .Build();
 

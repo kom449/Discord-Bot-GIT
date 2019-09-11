@@ -7,8 +7,6 @@ namespace NewTestBot.Modules
 {
     public class bab : ModuleBase<SocketCommandContext>
     {
-        readonly string IconURL = "https://cdn.discordapp.com/avatars/467437867065540620/083828453afa6811a853008993c51a45.png";
-
         [Command("bab"),RequireOwner]
         public async Task Bab(string message = "")
         {
@@ -36,7 +34,7 @@ namespace NewTestBot.Modules
                 .WithFooter(footer => {
                     footer
                 .WithText("Need help? Contact Birdie Zukira#3950")
-                .WithIconUrl(IconURL);
+                .WithIconUrl(Global.Birdieicon);
                 })
                 .Build();
 

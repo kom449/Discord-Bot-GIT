@@ -9,9 +9,6 @@ namespace NewTestBot.Modules
 {
     public class Prefix : ModuleBase<SocketCommandContext>
     {
-        readonly string IconURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
-        readonly string thumbnailURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
-
         [Command ("prefix"),RequireOwner]
          public async Task Prefixchange(string input = "")
          {
@@ -43,16 +40,16 @@ namespace NewTestBot.Modules
                     embed.AddField("Prefix has been changed to: " + "**"+input+"**",
                     "The old prefix was: " + visual)
                     .WithAuthor(author => { author
-                    .WithName("Birdie Bot")
-                    .WithIconUrl(IconURL);
+                    .WithName("Dingo Bot")
+                    .WithIconUrl(Global.Birdieicon);
                     })
-                    .WithThumbnailUrl(thumbnailURL)
+                    .WithThumbnailUrl(Global.Birdiethumbnail)
                     .WithColor(new Color(255, 83, 13))
-                    .WithTitle("Birdie Bot nortification")
+                    .WithTitle("Dingo Bot nortification")
 
                     .WithFooter(footer => { footer
                     .WithText("Need help? Contact Birdie Zukira#3950")
-                    .WithIconUrl(IconURL);
+                    .WithIconUrl(Global.Birdieicon);
                     })
                     .WithCurrentTimestamp()
                     .Build();

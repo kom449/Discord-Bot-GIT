@@ -11,9 +11,6 @@ namespace NewTestBot.Modules
 {
     public class help : ModuleBase<SocketCommandContext>
     {
-        readonly string IconURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
-        readonly string thumbnailURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
-
         [Command("help")]
         public async Task Help()
         {
@@ -24,20 +21,23 @@ namespace NewTestBot.Modules
 
             var embed = new EmbedBuilder();
             embed.AddField("Here is a list of my commands",
-            p+"bab\n"+p+"kick (Requires permissions)"+"\n"+p+"ban (Requires permissions)"+"\n"+p+"drink"+"\n"+p+"drinktotal"+"" +
-            "\n"+p+"drinkleader"+"\n"+p+"drinklist"+"\n"+p+"birb"+"\n"+p+"prefix"+"\n"+p+"purge"+"\n"+p+"status"+
-            "\n"+p+"calc"+"\n"+ "\n" + p + "connect" + "\n"+ "\n" + p + "disconnect" + "\n"+ "\n" + p + "update" + "\n"+ "\n" + p + "create (requires permissions)" + "\n" + "\n"+
+
+            p+"bab\n"
+            +p+"kick (Requires permissions)"
+            +"\n"+p+"ban (Requires permissions)"+
+            "\n"+p+"birb"+"\n"+p+"prefix"+"\n"+p+"purge"+"\n"+p+"status"+
+            "\n"+p+"calc"+"\n" + "\n" + "\n"+
             "Current version of Birdie bot is: "+"***"+version+"***")
             .WithAuthor(author => { author
-            .WithName("Birdie Bot")
-            .WithIconUrl(IconURL);
+            .WithName("Dingo Bot")
+            .WithIconUrl(Global.Birdieicon);
             })
-            .WithThumbnailUrl(thumbnailURL)
+            .WithThumbnailUrl(Global.Birdiethumbnail)
             .WithColor(new Color(255, 83, 13))
-            .WithTitle("Hello! my name is birdie bot and i'm here to have fun ^v^")
+            .WithTitle("Hello! my name is Birdie bot and i'm here to have fun ^v^")
             .WithFooter(footer => { footer
             .WithText("Need help? Contact Birdie Zukira#3950")
-            .WithIconUrl(IconURL);
+            .WithIconUrl(Global.Birdieicon);
             })
             .WithCurrentTimestamp()
             .Build();

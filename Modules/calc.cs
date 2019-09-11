@@ -9,8 +9,6 @@ namespace NewTestBot.Modules
 {
     public class Calc : ModuleBase<SocketCommandContext>
     {
-        readonly string IconURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
-
         [Command("calc")]
         public async Task Calculator(string input)
         {
@@ -40,7 +38,7 @@ namespace NewTestBot.Modules
                     .WithFooter(footer => {
                         footer
                     .WithText("Need help? Contact Birdie Zukira#3950")
-                    .WithIconUrl(IconURL);
+                    .WithIconUrl(Global.Birdieicon);
                     })
                     .Build();
 

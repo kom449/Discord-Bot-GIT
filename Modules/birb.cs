@@ -8,11 +8,7 @@ using System.Net;
 namespace NewTestBot.Modules
 {
     public class birb : ModuleBase<SocketCommandContext>
-    {
-        readonly string IconURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
-
-
-        
+    {      
         [Command("birb")]
         public async Task Birb()
         {
@@ -30,14 +26,14 @@ namespace NewTestBot.Modules
             url)
             .WithImageUrl(url)
             .WithAuthor(author => { author
-            .WithName("Birdie Bot")
-            .WithIconUrl(IconURL);
+            .WithName("Dingo Bot")
+            .WithIconUrl(Global.Birdieicon);
             })
             .WithColor(new Color(13, 255, 107))
             .WithTitle("Enjoy your Birb :bird:")
             .WithFooter(footer => { footer
             .WithText("Need help? Contact Birdie Zukira#3950")
-            .WithIconUrl(IconURL);
+            .WithIconUrl(Global.Birdieicon);
             })
             .WithCurrentTimestamp()
             .Build();

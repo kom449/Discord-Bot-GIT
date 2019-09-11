@@ -7,8 +7,6 @@ namespace NewTestBot.Modules
 {
     public class ban : ModuleBase<SocketCommandContext>
     {
-        readonly string IconURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
-
         [Command("ban"),RequireUserPermission(GuildPermission.Administrator),]
         [RequireBotPermission(GuildPermission.BanMembers)]
 
@@ -33,13 +31,13 @@ namespace NewTestBot.Modules
                 user + " Has been banned from the server!" + "\n \n Reason:" + "\n \n" + reason)
                 .WithColor(new Color(255, 0, 0))
                 .WithAuthor(author => { author
-                .WithName("Birdie Bot nortification")
-                .WithIconUrl(IconURL);
+                .WithName("Dingo Bot nortification")
+                .WithIconUrl(Global.Birdieicon);
                 })
                 .WithCurrentTimestamp()
                 .WithFooter(footer => { footer
                 .WithText("Need help? Contact Birdie Zukira#3950")
-                .WithIconUrl(IconURL);
+                .WithIconUrl(Global.Birdieicon);
                 })
                 .Build();
 
