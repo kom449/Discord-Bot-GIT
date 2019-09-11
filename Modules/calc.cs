@@ -5,7 +5,7 @@ using Discord.Commands;
 using System;
 using System.Diagnostics;
 
-namespace NewTestBot.Modules
+namespace DingoBot.Modules
 {
     public class Calc : ModuleBase<SocketCommandContext>
     {

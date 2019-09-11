@@ -1,8 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using MySql.Data.MySqlClient;
 using Discord;
 using Discord.Commands;
+using Newtonsoft.Json.Linq;
+using System.IO;
+using Discord.Rest;
 
 /*
 First i need to get the user ID from DB and see what things the user currently have.
@@ -27,10 +29,57 @@ namespace DingoBot.Modules
         [Command("pet")]
         public async Task Mypet()
         {
-            
-           
+            Global.Command = "pet";
             string Discord_ID = Context.User.Id.ToString();
             string GetId = "SELECT PET FROM PETDB WHERE Discord_Id like  '%" + Discord_ID + "%'; ";
+            string Duplicate = "SELECT Discord_Id FROM PETDB WHERE Discord_Id like  '%" + Discord_ID + "%'; ";
+            string Result;
+
+            MySqlConnection myconn = new MySqlConnection(Global.connect);
+            MySqlCommand DuplicateCommand = new MySqlCommand(Duplicate, myconn);
+
+            MySqlDataReader myreader;
+            myconn.Open();
+            Result = (string)DuplicateCommand.ExecuteScalar();
+            myreader = DuplicateCommand.ExecuteReader();
+            if (myreader.Read())
+                Result = myreader.GetString(myreader.GetOrdinal("Discord_Id"));      
+            myconn.Close();
+
+            if(Result == Discord_ID)
+            {
+                //user already have pet
+                
+            }
+            else
+            {
+                //user doesnt have pet - Ask if they want to create one with reactions
+                var embed = new EmbedBuilder();
+                embed.AddField("No pet was found...",
+                "Do you want to create one?")
+                .WithAuthor(author =>{
+                author.WithName("Birdie Bot")
+                .WithIconUrl(Global.Birdieicon);})
+                .WithThumbnailUrl(Global.Birdiethumbnail)
+                .WithColor(new Color(255, 83, 13))
+                .WithTitle("Birdie Bot notification")
+                .WithFooter(footer =>{ footer
+                .WithText("Need help? Contact Birdie Zukira#3950")
+                .WithIconUrl(Global.Birdieicon);})
+                .WithCurrentTimestamp()
+                .Build();
+
+                var emoji = new[] { "👌", "👌" };
+                RestUserMessage msg = await Context.Channel.SendMessageAsync("", false, embed);
+                for (int x = 0; x < emoji.GetLength(0);x++)
+                {
+                    var emote = new Emoji(emoji[x]);
+                    await msg.AddReactionAsync(emote);
+                }
+                Global.MessageidToTrack = msg.Id;
+                Global.message = msg;
+  
+            }
 
 
             await Context.Channel.SendMessageAsync("");

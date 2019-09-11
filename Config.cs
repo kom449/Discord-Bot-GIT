@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 
 
-namespace NewTestBot
+namespace DingoBot
 {
     class Config
     {

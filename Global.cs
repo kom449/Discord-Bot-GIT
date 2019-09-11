@@ -3,11 +3,12 @@ using Discord.Rest;
 using Newtonsoft.Json.Linq;
 using System.IO;
 
-namespace NewTestBot
+namespace DingoBot
 {
     internal static class Global
     {
         internal static ulong MessageidToTrack { get; set; }
+        internal static RestUserMessage message { get; set; }
         internal static string Username { get; }
         internal static string Command { get; set; }
 

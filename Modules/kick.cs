@@ -4,7 +4,7 @@ using Discord.Commands;
 
 using System.Linq;
 
-namespace NewTestBot.Modules
+namespace DingoBot.Modules
 {
     public class kick : ModuleBase<SocketCommandContext>
     {

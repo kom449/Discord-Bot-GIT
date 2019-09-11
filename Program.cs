@@ -10,7 +10,7 @@ using System.Net;
 
 
 
-namespace NewTestBot
+namespace DingoBot
 {
 
     class Program
@@ -44,7 +44,10 @@ namespace NewTestBot
         {
             if (reaction.MessageId == Global.MessageidToTrack)
             {
-                await channel.SendMessageAsync("");
+                if(Global.Command == "pet")
+                {
+
+                }
             }
         }
 

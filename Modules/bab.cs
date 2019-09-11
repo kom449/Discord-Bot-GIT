@@ -3,7 +3,7 @@ using Discord;
 using Discord.Commands;
 
 
-namespace NewTestBot.Modules
+namespace DingoBot.Modules
 {
     public class bab : ModuleBase<SocketCommandContext>
     {

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Reflection;
 using Discord;
 
-namespace NewTestBot
+namespace DingoBot
 {
     class CommandHandler
     {

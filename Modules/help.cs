@@ -7,7 +7,7 @@ using Discord.Rest;
 
 
 
-namespace NewTestBot.Modules
+namespace DingoBot.Modules
 {
     public class help : ModuleBase<SocketCommandContext>
     {

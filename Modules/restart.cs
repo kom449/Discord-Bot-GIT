@@ -6,7 +6,7 @@ using System.IO;
 using System.Diagnostics;
 
 
-namespace NewTestBot.Modules
+namespace DingoBot.Modules
 {
     public class restart : ModuleBase<SocketCommandContext>
     {

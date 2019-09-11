@@ -4,7 +4,7 @@ using Discord.Commands;
 using Discord.WebSocket;
 
 
-namespace NewTestBot.Modules
+namespace DingoBot.Modules
 {
     public class Misc : ModuleBase<SocketCommandContext>
     {    

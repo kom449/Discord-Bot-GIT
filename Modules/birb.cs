@@ -5,7 +5,7 @@ using Newtonsoft.Json.Linq;
 using System.Net;
 
 
-namespace NewTestBot.Modules
+namespace DingoBot.Modules
 {
     public class birb : ModuleBase<SocketCommandContext>
     {      
