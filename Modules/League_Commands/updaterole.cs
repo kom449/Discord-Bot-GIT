@@ -16,8 +16,7 @@ namespace NewTestBot.Modules
         [Command("update", RunMode = RunMode.Async)]
         public async Task UpdateAccount()
         {
-            try
-            {
+            try{
                 //getting id of sender and selecting lol id
                 string DiscordName = Context.User.Username;
                 string UserID = Context.User.Id.ToString();
@@ -44,8 +43,7 @@ namespace NewTestBot.Modules
                 //getting the League ID from the DB
                 myconn.Open();
                 myreader = command.ExecuteReader();
-                while (myreader.Read())
-                {
+                while (myreader.Read()){
                     data = myreader.GetString(0);
                     id = data;
                 }
@@ -54,15 +52,13 @@ namespace NewTestBot.Modules
                 //get verification status
                 myconn.Open();
                 myreader = GetStatus.ExecuteReader();
-                while (myreader.Read())
-                {
+                while (myreader.Read()){
                     data = myreader.GetString(0);
                     status = data;
                 }
                 myconn.Close();
                 
-                if(id == "")
-                {                   
+                if(id == ""){                   
                     var embed2 = new EmbedBuilder();
                     embed2.AddField("updating your account...",
                     "No account was found!")
@@ -84,8 +80,7 @@ namespace NewTestBot.Modules
                     return;
                 }
 
-                if (status == "false")
-                {                   
+                if (status == "false"){                   
                     var embed2 = new EmbedBuilder();
                     embed2.AddField("updating your account...",
                     "Your account is not verified!")
@@ -109,15 +104,13 @@ namespace NewTestBot.Modules
 
                 myconn.Open();
                 myreader = GetToken.ExecuteReader();
-                while (myreader.Read())
-                {
+                while (myreader.Read()){
                     data = myreader.GetString(0);
                     token = data;
                 }
                 myconn.Close();
 
-                if(token == "")
-                {                   
+                if(token == ""){                   
                     var embed2 = new EmbedBuilder();
                     embed2.AddField("updating your account...",
                     "Your account is not verified!")
@@ -143,8 +136,7 @@ namespace NewTestBot.Modules
                 myconn.Open();
                 string iconid = null;
                 iconreader = geticon.ExecuteReader();
-                while (iconreader.Read())
-                {
+                while (iconreader.Read()){
                     data = iconreader.GetString(0);
                     iconid = data;
                 }
@@ -184,8 +176,7 @@ namespace NewTestBot.Modules
                     .Build();
                     var message = await Context.Channel.SendMessageAsync("", false, embed);
 
-                if(responserank == "[]")
-                {
+                if(responserank == "[]"){
                     Console.WriteLine("Unranked given");
                     rank = "Unranked";
                     usedtiersolo = "unranked";
@@ -195,10 +186,8 @@ namespace NewTestBot.Modules
 
                 //using a for loop to check all the bodies of the json
                 //since each queue type is in another body
-                for (int x = 0; x < r.Count; x++)
-                {
-                    if ((string)r[x]["queueType"] == "RANKED_SOLO_5x5")
-                    {
+                for (int x = 0; x < r.Count; x++){
+                    if ((string)r[x]["queueType"] == "RANKED_SOLO_5x5"){
                         var tiersolo = (string)r[x]["tier"];
                         var division = (string)r[x]["rank"];
                         string soloq = tiersolo + " " + division;
@@ -206,18 +195,20 @@ namespace NewTestBot.Modules
                         usedtiersolo = tiersolo.ToLower();
                     }
                 }
+                if (usedtiersolo == "" || usedtiersolo == null)
+                    usedtiersolo = "Unranked";
 
                 //again using the same loop to find the TFT rank
-                for (int ab = 0; ab < r.Count; ab++)
-                {
-                    if ((string)r[ab]["queueType"] == "RANKED_TFT")
-                    {
+                for (int ab = 0; ab < r.Count; ab++){
+                    if ((string)r[ab]["queueType"] == "RANKED_TFT"){
                         var tierTFT = (string)r[ab]["tier"];
                         var divisionTFT = (string)r[ab]["rank"];
                         string internalTFT = tierTFT + " " + divisionTFT;
                         rankTFT = internalTFT;
                     }
                 }
+                if (rankTFT == "" || rankTFT == null)
+                    rankTFT = "Unranked";
 
                 myconn.Open();
                 myreader = InsertDiscordname.ExecuteReader();
@@ -236,39 +227,32 @@ namespace NewTestBot.Modules
                 var username = Context.User as SocketGuildUser;            
             
                 //running through all the different roles
-                for (int x = 0; x < allRanks.GetLength(0); x++)
-                {
+                for (int x = 0; x < allRanks.GetLength(0); x++){
                     var roles = Context.Guild.Roles.FirstOrDefault(y => y.Name.ToLower() == allRanks[x]);
                     if(username.Roles.Contains(roles))
-                    await (username as IGuildUser).RemoveRoleAsync(roles);
+                        await (username as IGuildUser).RemoveRoleAsync(roles);
                 }
-                var role = Context.Guild.Roles.FirstOrDefault(x => x.Name.ToLower() == usedtiersolo);
+                var role = Context.Guild.Roles.FirstOrDefault(x => x.Name.ToLower() == usedtiersolo.ToLower());
                 await (username as IGuildUser).AddRoleAsync(role);
                 Console.WriteLine(Context.User.Username + "Was assigned the role " + usedtiersolo +" on the server "+ Context.Guild.Name);
 
-                try
-                {
+                try{
                     //running through all the different TFT roles
                     for (int xx = 0; xx < TFTRanks.GetLength(0); xx++)
                     {
                         var roles = Context.Guild.Roles.FirstOrDefault(yy => yy.Name.ToLower() == TFTRanks[xx].ToLower());
                         if (username.Roles.Contains(roles))
-                        {
-                            await (username as IGuildUser).RemoveRoleAsync(roles);
-                        }
+                            await (username as IGuildUser).RemoveRoleAsync(roles);                       
                     }
                     var TFTrole = Context.Guild.Roles.FirstOrDefault(xx => xx.Name == usedtierTFT);
                     await (username as IGuildUser).AddRoleAsync(TFTrole);
-                    Console.WriteLine(Context.User.Username + "Was assigned the role " + usedtierTFT + " on the server " + Context.Guild.Name);
+                    Console.WriteLine(Context.User.Username + " Was assigned the role " + usedtierTFT + " on the server " + Context.Guild.Name);
                 }
-                catch(Exception)
-                {
-                    Console.WriteLine("there was an error with assigning TFT rank - Ignored for now");
-                }
+                catch(Exception){
+                    Console.WriteLine("there was an error with assigning TFT rank - Ignored for now");}
 
                 await Task.Delay(2000);
-                await message.ModifyAsync(x =>
-                {
+                await message.ModifyAsync(x =>{
                 x.Embed = new EmbedBuilder()
                 .AddField("Your rank has now been updated!",
                 "if it didnt update, try waiting up to an hour before trying again!")
@@ -288,10 +272,9 @@ namespace NewTestBot.Modules
                 var messages = await Context.Channel.GetMessagesAsync(2).Flatten();
                 await Context.Channel.DeleteMessagesAsync(messages);
             }
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
+            catch(Exception ex){
+                Console.WriteLine(ex);}
+
         }       
     }
 }

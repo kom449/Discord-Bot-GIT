@@ -22,9 +22,9 @@ namespace NewTestBot.Modules
             string p = o["cmdPrefix"].ToString();
 
             var embed = new EmbedBuilder();
-            embed.AddField("Here is a list of my commands",
+            embed.AddField("Here is a list of my commands!",
             p+"bab\n"+p+"kick (Requires permissions)"+"\n"+p+"ban (Requires permissions)"+"\n"+p+"drink"+"\n"+p+"drinktotal"+"" +
-            "\n"+p+"drinkleader"+"\n"+p+"drinklist"+"\n"+p+"birb"+"\n"+p+"prefix"+"\n"+p+"purge"+"\n"+p+"status"+
+            "\n"+p+"drinkleader"+"\n"+p+"drinklist"+"\n"+p+"birb"+"\n"+p+ "prefix (Requires permissions)" + "\n"+p+"purge"+"\n"+p+"status"+
             "\n"+p+"calc"+"\n"+ "\n" + p + "connect" + "\n"+ "\n" + p + "disconnect" + "\n"+ "\n" + p + "update" + "\n"+ "\n" + p + "create (requires permissions)" + "\n" + "\n"+
             "Current version of Birdie bot is: "+"***"+Global.version+"***")
             .WithAuthor(author => { author

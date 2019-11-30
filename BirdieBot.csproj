@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{B71B7ABB-33FF-4027-AC7B-69527FB74673}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>NewTestBot</RootNamespace>
-    <AssemblyName>NewTestBot</AssemblyName>
+    <RootNamespace>BirdieBot</RootNamespace>
+    <AssemblyName>BirdieBot</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

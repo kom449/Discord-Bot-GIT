@@ -17,7 +17,7 @@ namespace NewTestBot.Modules
     public class Updateall : ModuleBase<SocketCommandContext>
     {
 
-        [Command("updateall", RunMode = RunMode.Async), RequireOwner]
+        [Command("updateall", RunMode = RunMode.Async), RequireUserPermission(GuildPermission.Administrator)]
         public async Task Updateallranks()
         {
             try
@@ -69,6 +69,7 @@ namespace NewTestBot.Modules
                     string rankflex3 = null;
                     string rankTFT = null;
                     string usedtiersolo = null;
+                    string usedtierTFT = null;
                     string ResponseName = c.DownloadString("https://euw1.api.riotgames.com/lol/summoner/v4/summoners/" + results[x] + "?api_key=" + Global.apikey + "");
                     JObject i = JObject.Parse(ResponseName);
                     var lolname = i["name"];
@@ -173,6 +174,8 @@ namespace NewTestBot.Modules
                     try
                     {
                         var allRanks = new[] { "challenger", "grandMaster", "master", "diamond", "platinum", "gold", "silver", "bronze", "iron", "unranked", "new ones :)" };
+                        var TFTRanks = new[] { "TFT-Challenger", "TFT-Grandmaster", "TFT-Master", "TFT-Diamond", "TFT-Platinum", "TFT-Gold", "TFT-Silver", "TFT-Bronze", "TFT-Iron", "TFT-Unranked" };
+
 
                         //running through all the different roles and remove the found role
                         for (int xy = 0; xy < allRanks.GetLength(0); xy++)
@@ -191,6 +194,25 @@ namespace NewTestBot.Modules
 
                         var role = Context.Guild.Roles.FirstOrDefault(xyz => xyz.Name.ToLower() == usedtiersolo);
                         await (username as IGuildUser).AddRoleAsync(role);
+
+                        try
+                        {
+                            //running through all the different TFT roles
+                            for (int xxx = 0; xxx < TFTRanks.GetLength(0); xxx++)
+                            {
+                                var roles = Context.Guild.Roles.FirstOrDefault(yy => yy.Name.ToLower() == TFTRanks[xx].ToLower());
+                                if (username.Roles.Contains(roles))
+                                    await (username as IGuildUser).RemoveRoleAsync(roles);
+                                
+                            }
+                            var TFTrole = Context.Guild.Roles.FirstOrDefault(xxx => xxx.Name == usedtierTFT);
+                            await (username as IGuildUser).AddRoleAsync(TFTrole);
+                            Console.WriteLine(Context.User.Username + " Was assigned the role " + usedtierTFT + " on the server " + Context.Guild.Name);
+                        }
+                        catch (Exception)
+                        {
+                            Console.WriteLine("there was an error with assigning TFT rank - Ignored for now");
+                        }
                     }
                     catch (Exception)
                     {
@@ -198,6 +220,7 @@ namespace NewTestBot.Modules
                         Thread.Sleep(5000);
                         continue;
                     }
+
 
 
                     Console.WriteLine("Updated User: " + lolname + "\nDiscord name: " + GottenName + "\n");
