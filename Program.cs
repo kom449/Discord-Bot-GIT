@@ -25,7 +25,7 @@ namespace NewTestBot
             if (Config.bot.token == "" || Config.bot.token == null) return;
             _client = new DiscordSocketClient(new DiscordSocketConfig
             {
-                LogLevel = LogSeverity.Info
+                LogLevel = LogSeverity.Verbose
             });
             _client.Log += Log;
             _client.ReactionAdded += OnReactionAdded;

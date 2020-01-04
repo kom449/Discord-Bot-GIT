@@ -12,8 +12,8 @@ namespace NewTestBot
         internal static RestUserMessage message { get; set; }
 
         //icon and thumbnail images
-        internal readonly static string Birdieicon = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
-        internal readonly static string Birdiethumbnail = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
+        internal readonly static string Birdieicon = "https://i.gyazo.com/128e4e68ac991c96610dcd5d67eeed50.png";
+        internal readonly static string Birdiethumbnail = "https://i.gyazo.com/128e4e68ac991c96610dcd5d67eeed50.png";
 
         //current version of the bot - I increment the number depending on what amount of features or fixes i do
         internal readonly static string version = "0.5.4";
