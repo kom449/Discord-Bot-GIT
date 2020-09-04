@@ -29,7 +29,7 @@ namespace NewTestBot.Modules
                     .WithCurrentTimestamp()
                     .WithFooter(footer => {
                         footer
-                    .WithText("Need help? Contact Birdie Zukira#3950")
+                    .WithText(Global.Botcreatorname)
                     .WithIconUrl(IconURL);
                     })
                     .Build();

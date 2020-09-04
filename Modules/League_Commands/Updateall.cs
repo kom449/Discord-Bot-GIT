@@ -33,7 +33,7 @@ namespace NewTestBot.Modules
                 .WithColor(new Color(255, 83, 13))
                 .WithTitle("Birdie Bot notification")
                 .WithFooter(footer =>{footer
-                .WithText("Need help? Contact Birdie Zukira#3950")
+                .WithText(Global.Botcreatorname)
                 .WithIconUrl(Global.Birdieicon);})
                 .WithCurrentTimestamp()
                 .Build();
@@ -64,12 +64,10 @@ namespace NewTestBot.Modules
                 {
                     string responserank = c.DownloadString("https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/" + results[x] + "?api_key=" + Global.apikey + "");
                     JArray r = JArray.Parse(responserank);
+                    string rank = null;
                     string ranksolo = null;
                     string rankflex5 = null;
-                    string rankflex3 = null;
-                    string rankTFT = null;
                     string usedtiersolo = null;
-                    string usedtierTFT = null;
                     string ResponseName = c.DownloadString("https://euw1.api.riotgames.com/lol/summoner/v4/summoners/" + results[x] + "?api_key=" + Global.apikey + "");
                     JObject i = JObject.Parse(ResponseName);
                     var lolname = i["name"];
@@ -111,8 +109,16 @@ namespace NewTestBot.Modules
                     }
                     myconn.Close();
 
+                    if (responserank == "[]")
+                    {
+                        Console.WriteLine("Unranked given");
+                        rank = "Unranked";
+                        usedtiersolo = "unranked";
+                    }
+
                     //using a for loop to check all the bodies of the json
                     //since each queue type is in another body
+
                     for (int y = 0; y < r.Count; y++)
                     {
                         if (((string)r[y]["queueType"] == "RANKED_SOLO_5x5"))
@@ -121,9 +127,11 @@ namespace NewTestBot.Modules
                             var divisionsolo = (string)r[y]["rank"];
                             string soloq = tiersolo + " " + divisionsolo;
                             ranksolo = soloq;
+                            rank = soloq;
                             usedtiersolo = tiersolo.ToLower();
                         }
                     }
+
 
                     //using the same loop to get the Flex 5v5 rank
                     for (int z = 0; z < r.Count; z++)
@@ -138,34 +146,7 @@ namespace NewTestBot.Modules
 
                     }
 
-                    //again using the same loop to find the Flex 3v3 rank
-                    for (int a = 0; a < r.Count; a++)
-                    {
-                        if (((string)r[a]["queueType"] == "RANKED_FLEX_TT"))
-                        {
-                            var tierflex3v3 = (string)r[a]["tier"];
-                            var divisionflex3v3 = (string)r[a]["rank"];
-                            string flex3v3 = tierflex3v3 + " " + divisionflex3v3;
-                            rankflex3 = flex3v3;
-                        }
-
-                    }
-
-                    //again using the same loop to find the TFT rank
-                    for (int ab = 0; ab < r.Count; ab++)
-                    {
-                        if (((string)r[ab]["queueType"] == "RANKED_TFT"))
-                        {
-                            var tierTFT = (string)r[ab]["tier"];
-                            var divisionTFT = (string)r[ab]["rank"];
-                            string internalTFT = tierTFT + " " + divisionTFT;
-                            rankTFT = internalTFT;
-                        }
-
-                    }
-
-
-                    string QueryUpdateRank = "UPDATE users_testing SET SOLO_QUEUE = '" + ranksolo + "',FLEX_3V3 ='" + rankflex3 + "',FLEX_5V5 = '" + rankflex5 + "',TFT = '" + rankTFT + "',League_Name = '" + lolname + "' WHERE League_Id like  '%" + results[x] + "%';";
+                    string QueryUpdateRank = "UPDATE users_testing SET SOLO_QUEUE = '" + ranksolo + "',FLEX_5V5 = '" + rankflex5 + "',League_Name = '" + lolname + "' WHERE League_Id like  '%" + results[x] + "%';";
                     //sql connection and command
                     MySqlCommand postdata = new MySqlCommand(QueryUpdateRank, myconn);
                     myconn.Open();
@@ -195,24 +176,6 @@ namespace NewTestBot.Modules
                         var role = Context.Guild.Roles.FirstOrDefault(xyz => xyz.Name.ToLower() == usedtiersolo);
                         await (username as IGuildUser).AddRoleAsync(role);
 
-                        try
-                        {
-                            //running through all the different TFT roles
-                            for (int xxx = 0; xxx < TFTRanks.GetLength(0); xxx++)
-                            {
-                                var roles = Context.Guild.Roles.FirstOrDefault(yy => yy.Name.ToLower() == TFTRanks[xx].ToLower());
-                                if (username.Roles.Contains(roles))
-                                    await (username as IGuildUser).RemoveRoleAsync(roles);
-                                
-                            }
-                            var TFTrole = Context.Guild.Roles.FirstOrDefault(xxx => xxx.Name == usedtierTFT);
-                            await (username as IGuildUser).AddRoleAsync(TFTrole);
-                            Console.WriteLine(Context.User.Username + " Was assigned the role " + usedtierTFT + " on the server " + Context.Guild.Name);
-                        }
-                        catch (Exception)
-                        {
-                            Console.WriteLine("there was an error with assigning TFT rank - Ignored for now");
-                        }
                     }
                     catch (Exception)
                     {
@@ -240,7 +203,7 @@ namespace NewTestBot.Modules
                     .WithColor(new Color(0, 255, 0))
                     .WithTitle("Birdie Bot notification")
                     .WithFooter(footer =>{footer
-                    .WithText("Need help? Contact Birdie Zukira#3950")
+                    .WithText(Global.Botcreatorname)
                     .WithIconUrl(Global.Birdieicon);})
                     .WithCurrentTimestamp()
                     .Build();

@@ -29,7 +29,7 @@ namespace NewTestBot.Modules
                     .WithColor(new Color(255, 83, 13))
                     .WithTitle("Birdie Bot notification")
                     .WithFooter(footer =>{ footer
-                    .WithText("Need help? Contact Birdie Zukira#3950")
+                    .WithText(Global.Botcreatorname)
                     .WithIconUrl(Global.Birdieicon);})
                     .WithCurrentTimestamp()
                     .Build();
@@ -72,7 +72,7 @@ namespace NewTestBot.Modules
                     .WithColor(new Color(255, 83, 13))
                     .WithTitle("Birdie Bot notification")
                     .WithFooter(footer =>{ footer
-                    .WithText("Need help? Contact Birdie Zukira#3950")
+                    .WithText(Global.Botcreatorname)
                     .WithIconUrl(Global.Birdieicon);})
                     .WithCurrentTimestamp()
                     .Build();
@@ -143,7 +143,7 @@ namespace NewTestBot.Modules
                     .WithColor(new Color(255, 83, 13))
                     .WithTitle("Birdie Bot notification")
                     .WithFooter(footer =>{ footer
-                    .WithText("Need help? Contact Birdie Zukira#3950")
+                    .WithText(Global.Botcreatorname)
                     .WithIconUrl(Global.Birdieicon);})
                     .WithCurrentTimestamp()
                     .Build();
@@ -184,7 +184,7 @@ namespace NewTestBot.Modules
                     .WithColor(new Color(255, 83, 13))
                     .WithTitle("Birdie Bot notification")
                     .WithFooter(footer =>{ footer
-                    .WithText("Need help? Contact Birdie Zukira#3950")
+                    .WithText(Global.Botcreatorname)
                     .WithIconUrl(Global.Birdieicon);})
                     .WithCurrentTimestamp()
                     .Build();

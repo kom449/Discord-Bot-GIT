@@ -55,7 +55,7 @@ namespace NewTestBot.Modules
             .WithTitle("Kaffe Tracker :coffee: ")
             .WithCurrentTimestamp()
             .WithFooter(footer => { footer
-            .WithText("Need help? Contact Birdie Zukira#3950")
+            .WithText(Global.Botcreatorname)
             .WithIconUrl(IconURL);
             })
             .Build();
@@ -99,7 +99,7 @@ namespace NewTestBot.Modules
             .WithTitle("Kaffe Tracker :coffee:")
             .WithCurrentTimestamp()
             .WithFooter(footer => { footer
-            .WithText("Need help? Contact Birdie Zukira#3950")
+            .WithText(Global.Botcreatorname)
             .WithIconUrl(IconURL);
             })
             .Build();

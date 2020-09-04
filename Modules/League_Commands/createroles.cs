@@ -25,7 +25,7 @@ namespace NewTestBot.Modules
             .WithTitle("Birdie Bot notification")
             .WithFooter(footer =>
             {footer
-            .WithText("Need help? Contact Birdie Zukira#3950")
+            .WithText(Global.Botcreatorname)
             .WithIconUrl(Global.Birdieicon);})
             .WithCurrentTimestamp()
             .Build();
@@ -126,7 +126,7 @@ namespace NewTestBot.Modules
                     .WithTitle("Birdie Bot notification")
                     .WithFooter(footer =>
                     {footer
-                    .WithText("Need help? Contact Birdie Zukira#3950")
+                    .WithText(Global.Botcreatorname)
                     .WithIconUrl(Global.Birdieicon);})
                     .WithCurrentTimestamp()
                     .Build();});

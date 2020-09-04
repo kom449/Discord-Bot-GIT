@@ -25,7 +25,7 @@ namespace NewTestBot
             if (Config.bot.token == "" || Config.bot.token == null) return;
             _client = new DiscordSocketClient(new DiscordSocketConfig
             {
-                LogLevel = LogSeverity.Verbose
+                LogLevel = LogSeverity.Info
             });
             _client.Log += Log;
             _client.ReactionAdded += OnReactionAdded;
@@ -44,8 +44,6 @@ namespace NewTestBot
         {
             try
             {
-
-
                 if (reaction.MessageId == Global.MessageidToTrack)
                 {
                     if (reaction.Emote.Name == "👌" && reaction.UserId.ToString() == Global.currentuserid)
@@ -93,7 +91,7 @@ namespace NewTestBot
                             .WithColor(new Color(255, 83, 13))
                             .WithTitle("Birdie Bot notification")
                             .WithFooter(footer =>{ footer
-                            .WithText("Need help? Contact Birdie Zukira#3950")
+                            .WithText(Global.Botcreatorname)
                             .WithIconUrl(Global.Birdieicon);})
                             .WithCurrentTimestamp()
                             .Build();
@@ -117,7 +115,6 @@ namespace NewTestBot
                             JArray r = JArray.Parse(responserank);
                             string ranksolo = null;
                             string rankflex5 = null;
-                            string rankflex3 = null;
                             string usedtiersolo = null;
 
                             //using a for loop to check all the bodies of the json
@@ -151,30 +148,13 @@ namespace NewTestBot
 
                             }
 
-                            //again using the same loop to find the Flex 3v3 rank
-                            for (int z = 0; z < r.Count; z++)
-                            {
-                                if (((string)r[z]["queueType"] == "RANKED_FLEX_TT"))
-                                {
-                                    var tierflex3v3 = (string)r[z]["tier"];
-                                    var divisionflex3v3 = (string)r[z]["rank"];
-                                    string flex3v3 = tierflex3v3 + " " + divisionflex3v3;
-                                    rankflex3 = flex3v3;
-                                }
-                                else
-                                    rankflex3 = "Unranked";
-
-                            }
-
-
-                            string Query = "UPDATE users_testing SET SOLO_QUEUE = '" + ranksolo + "',FLEX_3V3 ='" + rankflex3 + "',FLEX_5V5 = '" + rankflex5 + "', Verified = '" + "true" + "' WHERE Discord_Id like  '%" + reaction.UserId + "%';";
+                            string Query = "UPDATE users_testing SET SOLO_QUEUE = '" + ranksolo + "',FLEX_5V5 = '" + rankflex5 + "', Verified = '" + "true" + "' WHERE Discord_Id like  '%" + reaction.UserId + "%';";
                             //sql connection and command
                             MySqlCommand postdata = new MySqlCommand(Query, myconn);
                             MySqlDataReader myreader;
                             myconn.Open();
                             myreader = postdata.ExecuteReader();
                             myconn.Close();
-
 
                             var embed = new EmbedBuilder();
                             embed.AddField("Verifying your account...",
@@ -186,7 +166,7 @@ namespace NewTestBot
                             .WithColor(new Color(255, 83, 13))
                             .WithTitle("Birdie Bot notification")
                             .WithFooter(footer =>{ footer
-                            .WithText("Need help? Contact Birdie Zukira#3950")
+                            .WithText(Global.Botcreatorname)
                             .WithIconUrl(Global.Birdieicon);})
                             .WithCurrentTimestamp()
                             .Build();
@@ -203,7 +183,7 @@ namespace NewTestBot
                             var embed = new EmbedBuilder();
                             embed.AddField("Verifying your account...",
                             "could not verify your account at this time!\n " +
-                            "Try again later or contact Birdie Zukira#3950")
+                            "Try again later or contact Xy'Pex Zukira#0001")
                             .WithAuthor(author =>{ author
                             .WithName("Birdie Bot")
                             .WithIconUrl(Global.Birdieicon);})
@@ -211,7 +191,7 @@ namespace NewTestBot
                             .WithColor(new Color(255, 83, 13))
                             .WithTitle("Birdie Bot notification")
                             .WithFooter(footer =>{ footer
-                            .WithText("Need help? Contact Birdie Zukira#3950")
+                            .WithText(Global.Botcreatorname)
                             .WithIconUrl(Global.Birdieicon);})
                             .WithCurrentTimestamp()
                             .Build();

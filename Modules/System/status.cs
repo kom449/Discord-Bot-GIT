@@ -2,15 +2,12 @@
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
-
+using Discord.WebSocket;
 
 namespace NewTestBot.Modules
 {
     public class Status : ModuleBase<SocketCommandContext>
     {
-        readonly string IconURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
-        readonly string thumbnailURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
-
         [Command("status"),RequireUserPermission(GuildPermission.Administrator),RequireOwner]
         public async Task Changestatus(string input = "")
         {
@@ -27,8 +24,8 @@ namespace NewTestBot.Modules
             {
                 try
                 {
-
-                    await Context.Client.SetGameAsync(input);
+                    DiscordSocketClient _client = Context.Client;
+                    await _client.SetGameAsync(input);
                     await Task.CompletedTask;
 
                  var embed = new EmbedBuilder();
@@ -36,14 +33,14 @@ namespace NewTestBot.Modules
                  "game status has been changed to: "+"**"+input+"**")
                  .WithAuthor(author => { author
                  .WithName("Birdie Bot")
-                 .WithIconUrl(IconURL);
+                 .WithIconUrl(Global.Birdieicon);
                  })
-                 .WithThumbnailUrl(thumbnailURL)
+                 .WithThumbnailUrl(Global.Birdiethumbnail)
                  .WithColor(new Color(255, 83, 13))
                  .WithTitle("Birdie Bot nortification")
                  .WithFooter(footer => { footer
-                 .WithText("Need help? Contact Birdie Zukira#3950")
-                 .WithIconUrl(IconURL);
+                 .WithText(Global.Botcreatorname)
+                 .WithIconUrl(Global.Birdieicon);
                  })
                  .WithCurrentTimestamp()
                  .Build();

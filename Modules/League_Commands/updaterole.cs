@@ -18,8 +18,11 @@ namespace NewTestBot.Modules
         {
             try{
                 //getting id of sender and selecting lol id
-                string DiscordName = Context.User.Username;
                 string UserID = Context.User.Id.ToString();
+                ulong resultid = Context.User.Id;
+                ulong xxx = Convert.ToUInt64(resultid);
+                var GottenName = Context.Guild.GetUser(xxx);
+                var DiscordName = GottenName as SocketGuildUser;
                 string getID = "SELECT League_id FROM users_testing WHERE Discord_Id like  '%" + UserID + "%'; ";
                 string getIcon = "SELECT Icon_id FROM users_testing WHERE Discord_Id like '%" + UserID + "%';";
                 string getstatus = "SELECT verified FROM users_testing WHERE Discord_ID like '%" + UserID + "%';";
@@ -69,7 +72,7 @@ namespace NewTestBot.Modules
                     .WithColor(new Color(255, 83, 13))
                     .WithTitle("Birdie Bot notification")
                     .WithFooter(footer => { footer
-                    .WithText("Need help? Contact Birdie Zukira#3950")
+                    .WithText(Global.Botcreatorname)
                     .WithIconUrl(Global.Birdieicon);})
                     .WithCurrentTimestamp()
                     .Build();
@@ -91,7 +94,7 @@ namespace NewTestBot.Modules
                     .WithColor(new Color(255, 83, 13))
                     .WithTitle("Birdie Bot notification")
                     .WithFooter(footer => { footer
-                    .WithText("Need help? Contact Birdie Zukira#3950")
+                    .WithText(Global.Botcreatorname)
                     .WithIconUrl(Global.Birdieicon);})
                     .WithCurrentTimestamp()
                     .Build();
@@ -121,7 +124,7 @@ namespace NewTestBot.Modules
                     .WithColor(new Color(255, 83, 13))
                     .WithTitle("Birdie Bot notification")
                     .WithFooter(footer => { footer
-                    .WithText("Need help? Contact Birdie Zukira#3950")
+                    .WithText(Global.Botcreatorname)
                     .WithIconUrl(Global.Birdieicon);})
                     .WithCurrentTimestamp()
                     .Build();
@@ -151,8 +154,7 @@ namespace NewTestBot.Modules
                 JArray r = JArray.Parse(responserank);
                 string rank = null;
                 string usedtiersolo = null;
-                string rankTFT = null;
-                string usedtierTFT = null;
+                string rankflex5 = null;
 
                 //getting icon for thumbnail
                 string findlatestlolversion = c.DownloadString("https://ddragon.leagueoflegends.com/api/versions.json");
@@ -170,7 +172,7 @@ namespace NewTestBot.Modules
                     .WithColor(new Color(255, 0, 0))
                     .WithTitle("Birdie Bot notification")
                     .WithFooter(footer => { footer
-                    .WithText("Need help? Contact Birdie Zukira#3950")
+                    .WithText(Global.Botcreatorname)
                     .WithIconUrl(Global.Birdieicon);})
                     .WithCurrentTimestamp()
                     .Build();
@@ -179,9 +181,7 @@ namespace NewTestBot.Modules
                 if(responserank == "[]"){
                     Console.WriteLine("Unranked given");
                     rank = "Unranked";
-                    usedtiersolo = "unranked";
-                    rankTFT = "TFT-Unranked";
-                    usedtierTFT = "TFT-Unranked";
+                    rankflex5 = "Unranked";
                 }
 
                 //using a for loop to check all the bodies of the json
@@ -198,17 +198,18 @@ namespace NewTestBot.Modules
                 if (usedtiersolo == "" || usedtiersolo == null)
                     usedtiersolo = "Unranked";
 
-                //again using the same loop to find the TFT rank
-                for (int ab = 0; ab < r.Count; ab++){
-                    if ((string)r[ab]["queueType"] == "RANKED_TFT"){
-                        var tierTFT = (string)r[ab]["tier"];
-                        var divisionTFT = (string)r[ab]["rank"];
-                        string internalTFT = tierTFT + " " + divisionTFT;
-                        rankTFT = internalTFT;
+                for (int y = 0; y < r.Count; y++)
+                {
+                    if (((string)r[y]["queueType"] == "RANKED_FLEX_SR"))
+                    {
+                        var tierflex5v5 = (string)r[y]["tier"];
+                        var divisionflex5v5 = (string)r[y]["rank"];
+                        string flex5v5 = tierflex5v5 + " " + divisionflex5v5;
+                        rankflex5 = flex5v5;
                     }
+                    else
+                        rankflex5 = "Unranked";
                 }
-                if (rankTFT == "" || rankTFT == null)
-                    rankTFT = "Unranked";
 
                 myconn.Open();
                 myreader = InsertDiscordname.ExecuteReader();
@@ -216,7 +217,7 @@ namespace NewTestBot.Modules
 
                 //updating the rank of the user
                 string Discordname = Context.User.Username;
-                string updaterank = "UPDATE users_testing SET `SOLO_QUEUE` = '" + rank + "', `Discord_Name` = '" + Discordname + "', `TFT` = '" + rankTFT + "' WHERE Discord_Id like  '%" + UserID + "%';";
+                string updaterank = "UPDATE users_testing SET `SOLO_QUEUE` = '" + rank + "', `Discord_Name` = '" + Discordname + "', `FLEX_5V5` = '" + rankflex5 + "' WHERE Discord_Id like  '%" + UserID + "%';";
                 MySqlCommand updatecommand = new MySqlCommand(updaterank, myconn);
                 myconn.Open();
                 myreader = updatecommand.ExecuteReader();
@@ -234,22 +235,8 @@ namespace NewTestBot.Modules
                 }
                 var role = Context.Guild.Roles.FirstOrDefault(x => x.Name.ToLower() == usedtiersolo.ToLower());
                 await (username as IGuildUser).AddRoleAsync(role);
-                Console.WriteLine(Context.User.Username + "Was assigned the role " + usedtiersolo +" on the server "+ Context.Guild.Name);
+                Console.WriteLine(Context.User.Username + " Was assigned the role " + usedtiersolo +" on the server "+ Context.Guild.Name);
 
-                try{
-                    //running through all the different TFT roles
-                    for (int xx = 0; xx < TFTRanks.GetLength(0); xx++)
-                    {
-                        var roles = Context.Guild.Roles.FirstOrDefault(yy => yy.Name.ToLower() == TFTRanks[xx].ToLower());
-                        if (username.Roles.Contains(roles))
-                            await (username as IGuildUser).RemoveRoleAsync(roles);                       
-                    }
-                    var TFTrole = Context.Guild.Roles.FirstOrDefault(xx => xx.Name == usedtierTFT);
-                    await (username as IGuildUser).AddRoleAsync(TFTrole);
-                    Console.WriteLine(Context.User.Username + " Was assigned the role " + usedtierTFT + " on the server " + Context.Guild.Name);
-                }
-                catch(Exception){
-                    Console.WriteLine("there was an error with assigning TFT rank - Ignored for now");}
 
                 await Task.Delay(2000);
                 await message.ModifyAsync(x =>{
@@ -263,7 +250,7 @@ namespace NewTestBot.Modules
                 .WithColor(new Color(0, 255, 0))
                 .WithTitle("Birdie Bot notification")
                 .WithFooter(footer => { footer
-                .WithText("Need help? Contact Birdie Zukira#3950")
+                .WithText(Global.Botcreatorname)
                 .WithIconUrl(Global.Birdieicon);})
                 .WithCurrentTimestamp()
                 .Build();

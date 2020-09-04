@@ -40,13 +40,13 @@ namespace NewTestBot
                     embed.WithTitle("Birdie Bot notification");
                     embed.WithDescription("I do not accept commands from Direct messages!");
                     embed.WithFooter(footer => { footer
-                    .WithText("Need help? Contact Birdie Zukira#3950")
+                    .WithText(Global.Botcreatorname)
                     .WithIconUrl(Global.Birdieicon);
                     });
                     embed.WithCurrentTimestamp();
                     embed.WithColor(new Color(255, 0, 0));
                     await context.User.SendMessageAsync("", false, embed);
-                    Console.WriteLine("Received a DM from "+context.User+ " Saying: "+context.Message+" - Ignoring it");
+                    Console.WriteLine("Received a DM from "+context.User.ToString()+ " Saying: "+context.Message+" - Ignoring it");
                     
                 }
                 else

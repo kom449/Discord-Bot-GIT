@@ -36,7 +36,7 @@ namespace NewTestBot.Modules
             .WithColor(new Color(13, 255, 107))
             .WithTitle("Enjoy your Birb :bird:")
             .WithFooter(footer => { footer
-            .WithText("Need help? Contact Birdie Zukira#3950")
+            .WithText(Global.Botcreatorname)
             .WithIconUrl(IconURL);
             })
             .WithCurrentTimestamp()
