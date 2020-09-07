@@ -22,7 +22,12 @@ namespace NewTestBot.Modules
                 ulong resultid = Context.User.Id;
                 ulong xxx = Convert.ToUInt64(resultid);
                 var GottenName = Context.Guild.GetUser(xxx);
-                var DiscordName = GottenName as SocketGuildUser;
+                var guildUser = GottenName as SocketGuildUser;
+                string DiscordName = null;
+
+                if (guildUser.ToString().Contains("'"))
+                    DiscordName = guildUser.ToString().Replace("'", "''");
+
                 string getID = "SELECT League_id FROM users_testing WHERE Discord_Id like  '%" + UserID + "%'; ";
                 string getIcon = "SELECT Icon_id FROM users_testing WHERE Discord_Id like '%" + UserID + "%';";
                 string getstatus = "SELECT verified FROM users_testing WHERE Discord_ID like '%" + UserID + "%';";
@@ -194,22 +199,24 @@ namespace NewTestBot.Modules
                         rank = soloq;
                         usedtiersolo = tiersolo.ToLower();
                     }
-                }
-                if (usedtiersolo == "" || usedtiersolo == null)
-                    usedtiersolo = "Unranked";
 
-                for (int y = 0; y < r.Count; y++)
-                {
-                    if (((string)r[y]["queueType"] == "RANKED_FLEX_SR"))
+                    if (((string)r[x]["queueType"] == "RANKED_FLEX_SR"))
                     {
-                        var tierflex5v5 = (string)r[y]["tier"];
-                        var divisionflex5v5 = (string)r[y]["rank"];
+                        var tierflex5v5 = (string)r[x]["tier"];
+                        var divisionflex5v5 = (string)r[x]["rank"];
                         string flex5v5 = tierflex5v5 + " " + divisionflex5v5;
                         rankflex5 = flex5v5;
                     }
                     else
                         rankflex5 = "Unranked";
                 }
+                if (usedtiersolo == "" || usedtiersolo == null)
+                    usedtiersolo = "Unranked";
+
+                //for (int y = 0; y < r.Count; y++)
+                //{
+
+                //}
 
                 myconn.Open();
                 myreader = InsertDiscordname.ExecuteReader();

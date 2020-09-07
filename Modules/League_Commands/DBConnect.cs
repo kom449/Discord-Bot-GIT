@@ -7,17 +7,17 @@ using Discord.Commands;
 using System.Threading.Tasks;
 using System.Net;
 using Discord.WebSocket;
+using System.Diagnostics;
 
 namespace NewTestBot.Modules
 {
     public class DBConnect : ModuleBase<SocketCommandContext>
     {
-
         [Command("Connect", RunMode = RunMode.Async)] 
         public async Task ConnectDB(string response = null,params string[] args)
         {
-                //taking the response from the user, converts it to string and removing the .connect part
-                if (response == null)
+            //taking the response from the user, converts it to string and removing the .connect part
+            if (response == null)
                 {
                     var embed = new EmbedBuilder();
                     embed.AddField("Connecting you...",
@@ -39,7 +39,7 @@ namespace NewTestBot.Modules
                     var messages = await Context.Channel.GetMessagesAsync(2).Flatten();
                     await Context.Channel.DeleteMessagesAsync(messages);
                 return;
-                }
+            }
                 string userMessage = Context.Message.ToString();
                 string name = userMessage.Substring(userMessage.IndexOf(' ') + 1);
 
@@ -80,7 +80,8 @@ namespace NewTestBot.Modules
                     await Context.Channel.SendMessageAsync("", false, embed);
                     return;
                 }
-
+            try
+            {
                 //getting id, name and icon id from response
                 var id = f["id"];
                 var lolname = f["name"];
@@ -95,12 +96,18 @@ namespace NewTestBot.Modules
                 var version = latestlolversion[0];
                 string thumbnailURL = "http://ddragon.leagueoflegends.com/cdn/" + version + "/img/profileicon/" + icon + ".png";
 
-
+                //Getting the Discord user ID and converting their ID to a readable discord name
+                //If name contains letters that is used in SQL syntax, replace that letter with something that doesn't conflict with SQL query
                 string UserID = Context.User.Id.ToString();
                 ulong resultid = Context.User.Id;
                 ulong xx = Convert.ToUInt64(resultid);
                 var GottenName = Context.Guild.GetUser(xx);
-                var DiscordName = GottenName as SocketGuildUser;
+                var guildUser = GottenName as SocketGuildUser;
+                string DiscordName = null;
+
+                if (guildUser.ToString().Contains("'"))
+                    DiscordName = guildUser.ToString().Replace("'","''");
+
                 string Query = "INSERT INTO users_testing (Discord_Id,Discord_Name,League_Id,League_Name,Icon_Id) VALUES ('" + UserID + "','" + DiscordName + "','" + id + "','" + lolname + "','" + icon + "');";
                 string Duplicate = "SELECT Discord_Id FROM users_testing WHERE Discord_Id like  '%" + UserID + "%'; ";
                 string InsertDiscordName = "UPDATE users_testing SET `Discord_Name` = '" + DiscordName + "' WHERE Discord_Id like  '%" + UserID + "%';";
@@ -193,9 +200,13 @@ namespace NewTestBot.Modules
                     await Task.Delay(5000);
                     var messages = await this.Context.Channel.GetMessagesAsync(2).Flatten();                 
                     await Context.Channel.DeleteMessagesAsync(messages);
-
-
                 }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
         }
     }
 }

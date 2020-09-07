@@ -65,10 +65,7 @@ namespace NewTestBot.Modules
 
                     //else if the rolecheck matches the current role then it must exist on server
                     else if (role != null)
-                    {
                         Console.WriteLine(allRanks[x] + " Already exists on the the server " + Context.Guild.Name + "!");
-                        continue;
-                    }
                 }
 
                 for (int xx = 0; xx < TFTRanks.GetLength(0); xx++, yy++)
@@ -83,10 +80,8 @@ namespace NewTestBot.Modules
                         await Context.Guild.CreateRoleAsync(TFTRanks[xx], permissions, allrankcolors[yy], ishoisted, options);
                     }
                     else if (TFTRole != null)
-                    {
                         Console.WriteLine(TFTRanks[xx] + " Already exists on the the server " + Context.Guild.Name + "!");
-                        continue;
-                    }
+
                 }
 
                 //check if there is a channel with the name "channelname"
