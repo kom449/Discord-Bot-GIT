@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using MySql.Data.MySqlClient;
+
 
 namespace NewTestBot.Modules
 {
@@ -11,6 +13,8 @@ namespace NewTestBot.Modules
         [Command("status"),RequireUserPermission(GuildPermission.Administrator),RequireOwner]
         public async Task Changestatus(string input = "")
         {
+            DiscordSocketClient _client = Context.Client;
+
             if (input == "")
             {
                 var embed = new EmbedBuilder();
@@ -20,11 +24,36 @@ namespace NewTestBot.Modules
 
                 await Context.Channel.SendMessageAsync("", false, embed);
             }
+
+            if(input == "count")
+            {
+                try
+                {
+                    MySqlConnection myconn = new MySqlConnection(Global.connect);
+                    string sqlquery = "SELECT COUNT(*) FROM users_testing";
+                    string returnedcount = null;
+                    MySqlCommand GetCount = new MySqlCommand(sqlquery, myconn);
+
+                    myconn.Open();
+                    Int64 result = (Int64)GetCount.ExecuteScalar();
+                    returnedcount = result.ToString();
+                    myconn.Close();
+
+                    await _client.SetGameAsync("Playing with "+returnedcount+" Players ^v^");
+                    Console.WriteLine("Game changed!");
+                    await Task.CompletedTask;
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+
+            }
+
             else if (input != "")
             {
                 try
                 {
-                    DiscordSocketClient _client = Context.Client;
                     await _client.SetGameAsync(input);
                     await Task.CompletedTask;
 

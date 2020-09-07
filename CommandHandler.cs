@@ -35,7 +35,6 @@ namespace NewTestBot
             {
                 if (context.IsPrivate == true)
                 {
-
                     var embed = new EmbedBuilder();
                     embed.WithTitle("Birdie Bot notification");
                     embed.WithDescription("I do not accept commands from Direct messages!");

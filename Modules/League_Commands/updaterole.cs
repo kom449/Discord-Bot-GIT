@@ -14,6 +14,7 @@ namespace NewTestBot.Modules
     public class Updaterole : ModuleBase<SocketCommandContext>
     {
         [Command("update", RunMode = RunMode.Async)]
+        [Summary("Adds the user and their LoL account to the database")]
         public async Task UpdateAccount()
         {
             try{

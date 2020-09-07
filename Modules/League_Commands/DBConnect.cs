@@ -127,10 +127,7 @@ namespace NewTestBot.Modules
                 //check for duplicate of discord Ids
                 myreader = DuplicateCommand.ExecuteReader();
                 if (myreader.Read())
-                {
                     Result = myreader.GetString(myreader.GetOrdinal("Discord_Id"));
-                }
-
                 myconn.Close();
 
                 //if the user already exists in the DB - just tell them and do nothing.
@@ -175,11 +172,8 @@ namespace NewTestBot.Modules
                     myreader = SetStatus.ExecuteReader();
                     myconn.Close();
                 }
-                catch(Exception ex)
-                {
-                    Console.WriteLine(ex);
-                }
-
+                catch(Exception ex){
+                    Console.WriteLine(ex);}
 
                     var embed = new EmbedBuilder();
                     embed.AddField("Connecting you...",
@@ -202,10 +196,8 @@ namespace NewTestBot.Modules
                     await Context.Channel.DeleteMessagesAsync(messages);
                 }
             }
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
+            catch(Exception ex){
+                Console.WriteLine(ex);}
 
         }
     }

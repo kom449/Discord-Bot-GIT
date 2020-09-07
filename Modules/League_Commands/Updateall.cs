@@ -1,12 +1,10 @@
 ﻿using System;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json.Linq;
-using System.IO;
 using Discord;
 using Discord.Commands;
 using System.Threading.Tasks;
 using System.Net;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using Discord.WebSocket;

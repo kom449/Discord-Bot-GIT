@@ -11,8 +11,6 @@ namespace NewTestBot.Modules
 {
     public class help : ModuleBase<SocketCommandContext>
     {
-        readonly string IconURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
-
         [Command("help")]
         public async Task Help()
         {
@@ -28,14 +26,14 @@ namespace NewTestBot.Modules
             "Current version of Birdie bot is: "+"***"+Global.version+"***")
             .WithAuthor(author => { author
             .WithName("Birdie Bot")
-            .WithIconUrl(IconURL);
+            .WithIconUrl(Global.Birdieicon);
             })
             .WithThumbnailUrl(Global.Birdiethumbnail)
             .WithColor(new Color(255, 83, 13))
             .WithTitle("Hello! my name is birdie bot and i'm here to have fun ^v^")
             .WithFooter(footer => { footer
             .WithText(Global.Botcreatorname)
-            .WithIconUrl(IconURL);
+            .WithIconUrl(Global.Birdieicon);
             })
             .WithCurrentTimestamp()
             .Build();
