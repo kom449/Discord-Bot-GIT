@@ -37,7 +37,6 @@ namespace NewTestBot.Modules
             })
             .WithCurrentTimestamp()
             .Build();
-            //RestUserMessage msg = Context.Channel.SendMessageAsync("",false,embed);
             await Context.Channel.SendMessageAsync("", false, embed);
         }
     }

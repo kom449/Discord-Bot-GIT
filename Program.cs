@@ -35,9 +35,7 @@ namespace NewTestBot
             _handler = new CommandHandler();
             await _handler.InitializeAsync(_client);
             await Task.Delay(-1);
-
         }     
-
 
           [RequireBotPermission(ChannelPermission.ManageMessages)]
         public async Task OnReactionAdded(Cacheable<IUserMessage, ulong> cache, ISocketMessageChannel channel, SocketReaction reaction) 
@@ -202,10 +200,7 @@ namespace NewTestBot
                             var messages = await channel.GetMessagesAsync(3).Flatten();
                             await channel.DeleteMessagesAsync(messages);
                             var DMchannel = _client.GetPrivateChannelAsync(Global.ownerID) as IMessageChannel;
-                            await DMchannel.SendMessageAsync("There was an error with the bot!");
-                            
-                            
-
+                            await DMchannel.SendMessageAsync("There was an error with the bot!");                  
                             return;
                         }
                     }
@@ -215,10 +210,7 @@ namespace NewTestBot
             {
                 Console.WriteLine(ex);
             }
-
         }
-
-
         private async Task Log(LogMessage msg)
         {
             await Task.Delay(100);

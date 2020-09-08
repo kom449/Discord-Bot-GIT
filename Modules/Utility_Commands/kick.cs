@@ -8,14 +8,12 @@ namespace NewTestBot.Modules
 {
     public class kick : ModuleBase<SocketCommandContext>
     {
-        readonly string IconURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
-
         [Command("kick"),RequireUserPermission(GuildPermission.KickMembers)]
         [RequireBotPermission(GuildPermission.KickMembers)]
 
-        public async Task KickUser(IGuildUser user, string reason = "")
+        public async Task KickUser(IGuildUser user, string reason)
         {
-            if (reason == "")
+            if (reason == null)
             {
                 var embed = new EmbedBuilder();
                 embed.WithTitle("Syntax Error");
@@ -25,12 +23,11 @@ namespace NewTestBot.Modules
                 await Context.Channel.SendMessageAsync("", false, embed);
             }
          
-            else if (reason != "")
+            else if (reason != null)
             {
                 var invite = await Context.Guild.GetInvitesAsync();
                 await user.SendMessageAsync(invite.Select(x => x.Url).FirstOrDefault());
                 await user.KickAsync();
-
 
                 var embed = new EmbedBuilder();
                 embed.AddField("User kicked!",
@@ -38,12 +35,12 @@ namespace NewTestBot.Modules
                 .WithColor(new Color(255, 0, 0))
                 .WithAuthor(author => { author
                 .WithName("Birdie Bot nortification")
-                .WithIconUrl(IconURL);
+                .WithIconUrl(Global.Birdieicon);
                 })
                 .WithCurrentTimestamp()
                 .WithFooter(footer => { footer
                 .WithText(Global.Botcreatorname)
-                .WithIconUrl(IconURL);
+                .WithIconUrl(Global.Birdieicon);
                 })
                 .Build();
 
@@ -52,14 +49,13 @@ namespace NewTestBot.Modules
 
         }
 //---------------------------------------------------------------------------------------------------------
-
-               [RequireOwner]
-        [Command("kickoverride")]
+               
+        [RequireOwner][Command("kickoverride")]
         [RequireBotPermission(GuildPermission.KickMembers)]
 
         public async Task KickUserbyowner(IGuildUser user, string reason = "")
         {
-            if (reason == "")
+            if (reason == null)
             {
                 var embed = new EmbedBuilder();
                 embed.WithTitle("Syntax Error");
@@ -69,12 +65,11 @@ namespace NewTestBot.Modules
                 await Context.Channel.SendMessageAsync("", false, embed);
             }
          
-            else if (reason != "")
+            else if (reason != null)
             {
                 var invite = await Context.Guild.GetInvitesAsync();
                 await user.SendMessageAsync(invite.Select(x => x.Url).FirstOrDefault());
                 await user.KickAsync();
-
 
                 var embed = new EmbedBuilder();
                 embed.AddField("User kicked!",
@@ -82,12 +77,12 @@ namespace NewTestBot.Modules
                 .WithColor(new Color(255, 0, 0))
                 .WithAuthor(author => { author
                 .WithName("Birdie Bot nortification")
-                .WithIconUrl(IconURL);
+                .WithIconUrl(Global.Birdieicon);
                 })
                 .WithCurrentTimestamp()
                 .WithFooter(footer => { footer
                 .WithText(Global.Botcreatorname)
-                .WithIconUrl(IconURL);
+                .WithIconUrl(Global.Birdieicon);
                 })
                 .Build();
 

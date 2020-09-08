@@ -4,7 +4,7 @@ using System.IO;
 
 namespace NewTestBot
 {
-    class Utilities
+    public static class Utilities
     {
         private static Dictionary<string, string> alerts;
 
