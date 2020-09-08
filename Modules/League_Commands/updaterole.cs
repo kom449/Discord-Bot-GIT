@@ -27,7 +27,9 @@ namespace NewTestBot.Modules
                 string DiscordName = null;
 
                 if (guildUser.ToString().Contains("'"))
+                {
                     DiscordName = guildUser.ToString().Replace("'", "''");
+                }
 
                 string getID = "SELECT League_id FROM users_testing WHERE Discord_Id like  '%" + UserID + "%'; ";
                 string getIcon = "SELECT Icon_id FROM users_testing WHERE Discord_Id like '%" + UserID + "%';";

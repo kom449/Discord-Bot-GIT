@@ -106,7 +106,9 @@ namespace NewTestBot.Modules
                 string DiscordName = null;
 
                 if (guildUser.ToString().Contains("'"))
-                    DiscordName = guildUser.ToString().Replace("'","''");
+                {
+                    DiscordName = guildUser.ToString().Replace("'", "''");
+                }
 
                 string Query = "INSERT INTO users_testing (Discord_Id,Discord_Name,League_Id,League_Name,Icon_Id) VALUES ('" + UserID + "','" + DiscordName + "','" + id + "','" + lolname + "','" + icon + "');";
                 string Duplicate = "SELECT Discord_Id FROM users_testing WHERE Discord_Id like  '%" + UserID + "%'; ";

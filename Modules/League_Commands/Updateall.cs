@@ -153,8 +153,6 @@ namespace NewTestBot.Modules
                     try
                     {
                         var allRanks = new[] { "challenger", "grandMaster", "master", "diamond", "platinum", "gold", "silver", "bronze", "iron", "unranked", "new ones :)" };
-                        var TFTRanks = new[] { "TFT-Challenger", "TFT-Grandmaster", "TFT-Master", "TFT-Diamond", "TFT-Platinum", "TFT-Gold", "TFT-Silver", "TFT-Bronze", "TFT-Iron", "TFT-Unranked" };
-
 
                         //running through all the different roles and remove the found role
                         for (int xy = 0; xy < allRanks.GetLength(0); xy++)
