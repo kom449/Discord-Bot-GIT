@@ -201,6 +201,11 @@ namespace NewTestBot
                             await Task.Delay(2000);
                             var messages = await channel.GetMessagesAsync(3).Flatten();
                             await channel.DeleteMessagesAsync(messages);
+                            var DMchannel = _client.GetPrivateChannelAsync(Global.ownerID) as IMessageChannel;
+                            await DMchannel.SendMessageAsync("There was an error with the bot!");
+                            
+                            
+
                             return;
                         }
                     }

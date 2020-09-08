@@ -214,18 +214,12 @@ namespace NewTestBot.Modules
                 if (usedtiersolo == "" || usedtiersolo == null)
                     usedtiersolo = "Unranked";
 
-                //for (int y = 0; y < r.Count; y++)
-                //{
-
-                //}
-
                 myconn.Open();
                 myreader = InsertDiscordname.ExecuteReader();
                 myconn.Close();
 
                 //updating the rank of the user
-                string Discordname = Context.User.Username;
-                string updaterank = "UPDATE users_testing SET `SOLO_QUEUE` = '" + rank + "', `Discord_Name` = '" + Discordname + "', `FLEX_5V5` = '" + rankflex5 + "' WHERE Discord_Id like  '%" + UserID + "%';";
+                string updaterank = "UPDATE users_testing SET `SOLO_QUEUE` = '" + rank + "', `Discord_Name` = '" + DiscordName + "', `FLEX_5V5` = '" + rankflex5 + "' WHERE Discord_Id like  '%" + UserID + "%';";
                 MySqlCommand updatecommand = new MySqlCommand(updaterank, myconn);
                 myconn.Open();
                 myreader = updatecommand.ExecuteReader();

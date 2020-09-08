@@ -16,9 +16,10 @@ namespace NewTestBot
         internal readonly static string Birdieicon = "https://i.gyazo.com/128e4e68ac991c96610dcd5d67eeed50.png";
         internal readonly static string Birdiethumbnail = "https://i.gyazo.com/128e4e68ac991c96610dcd5d67eeed50.png";
         internal readonly static string Botcreatorname = "Need help? Contact: Xy'Pex Zukira#0001";
+        internal readonly static ulong ownerID = 149665864520695808;
 
         //current version of the bot - I increment the number depending on what amount of features or fixes i do
-        internal readonly static string version = "0.5.4";
+        internal readonly static string version = "0.5.6";
 
         //db Connection info
         static string data = File.ReadAllText("Resources/config.json");

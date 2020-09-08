@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
@@ -39,15 +40,14 @@ namespace NewTestBot.Modules
                     returnedcount = result.ToString();
                     myconn.Close();
 
-                    await _client.SetGameAsync("Playing with "+returnedcount+" Players ^v^");
+                    await _client.SetGameAsync("Playing with " + returnedcount + " Players ^v^");
                     Console.WriteLine("Game changed!");
                     await Task.CompletedTask;
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Console.WriteLine(ex);
                 }
-
             }
 
             else if (input != "")
@@ -80,7 +80,6 @@ namespace NewTestBot.Modules
                 {
                     Console.WriteLine(e);
                 }
-                   
             }
         }
     }
