@@ -7,7 +7,7 @@ using MySql.Data.MySqlClient;
 using Newtonsoft.Json.Linq;
 using Discord.Commands;
 using System.Net;
-
+using NewTestBot.Modules;
 
 namespace NewTestBot
 {
@@ -54,7 +54,6 @@ namespace NewTestBot
                         string queryid = "SELECT League_Id FROM users_testing WHERE Discord_Id like  '%" + reaction.UserId + "%'; ";
                         string returnedid = null;
                         
-
                         //sql connection for League Id
                         MySqlConnection myconn = new MySqlConnection(Global.connect);
                         MySqlCommand GetId = new MySqlCommand(queryid, myconn);

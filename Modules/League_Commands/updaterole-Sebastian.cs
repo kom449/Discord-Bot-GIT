@@ -27,9 +27,7 @@ namespace NewTestBot.Modules
                 string DiscordName = null;
 
                 if (guildUser.ToString().Contains("'"))
-                {
                     DiscordName = guildUser.ToString().Replace("'", "''");
-                }
 
                 string getID = "SELECT League_id FROM users_testing WHERE Discord_Id like  '%" + UserID + "%'; ";
                 string getIcon = "SELECT Icon_id FROM users_testing WHERE Discord_Id like '%" + UserID + "%';";
@@ -216,6 +214,11 @@ namespace NewTestBot.Modules
                 if (usedtiersolo == "" || usedtiersolo == null)
                     usedtiersolo = "Unranked";
 
+                //for (int y = 0; y < r.Count; y++)
+                //{
+
+                //}
+
                 myconn.Open();
                 myreader = InsertDiscordname.ExecuteReader();
                 myconn.Close();
@@ -228,6 +231,7 @@ namespace NewTestBot.Modules
                 myconn.Close();
             
                 var allRanks = new[] { "challenger", "grandMaster", "master", "diamond", "platinum", "gold", "silver", "bronze", "iron","unranked", "new ones :)" };
+                var TFTRanks = new[] { "TFT-Challenger", "TFT-Grandmaster", "TFT-Master", "TFT-Diamond", "TFT-Platinum", "TFT-Gold","TFT-Silver", "TFT-Bronze", "TFT-Iron", "TFT-Unranked" };
                 var username = Context.User as SocketGuildUser;            
             
                 //running through all the different roles

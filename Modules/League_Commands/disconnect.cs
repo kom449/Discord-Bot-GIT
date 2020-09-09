@@ -68,12 +68,12 @@ namespace NewTestBot.Modules
 
             //removing their role and giving them unranked
             var username = Context.User;
-            var role = Context.Guild.Roles.FirstOrDefault(x => x.Name.ToLower() == rankarray[0]);
+            var role = Context.Guild.Roles.FirstOrDefault(x => x.Name.ToLower() == rankarray[0].ToLower());                
             var UnrankedRole = Context.Guild.Roles.FirstOrDefault(x => x.Name.ToLower() == "unranked");
             await (username as IGuildUser).RemoveRoleAsync(role);
             await (username as IGuildUser).AddRoleAsync(UnrankedRole);
             await Context.Channel.SendMessageAsync("", false, embed);
-            Console.WriteLine("Removed role from " + Context.User.Username);
+            Console.WriteLine("Removed role and data from " + Context.User.Username);
             await Task.Delay(5000);
             var messages = await Context.Channel.GetMessagesAsync(2).Flatten();
             await Context.Channel.DeleteMessagesAsync(messages);

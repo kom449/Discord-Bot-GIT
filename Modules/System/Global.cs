@@ -1,7 +1,9 @@
 ﻿using Discord;
 using Discord.Rest;
+using Discord.WebSocket;
 using Newtonsoft.Json.Linq;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace NewTestBot
 {
@@ -11,6 +13,7 @@ namespace NewTestBot
         internal static string Username { get; }
         internal static string currentuserid { get; set; }
         internal static RestUserMessage message { get; set; }
+        internal static SocketGuild GID { get; set; }
 
         //icon and thumbnail images
         internal readonly static string Birdieicon = "https://i.gyazo.com/128e4e68ac991c96610dcd5d67eeed50.png";

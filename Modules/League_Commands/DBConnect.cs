@@ -1,85 +1,83 @@
-﻿using System;
+﻿using Discord;
+using Discord.Commands;
+using Discord.WebSocket;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json.Linq;
-using System.IO;
-using Discord;
-using Discord.Commands;
-using System.Threading.Tasks;
+using System;
 using System.Net;
-using Discord.WebSocket;
-using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace NewTestBot.Modules
 {
     public class DBConnect : ModuleBase<SocketCommandContext>
     {
-        [Command("Connect", RunMode = RunMode.Async)] 
-        public async Task ConnectDB(string response = null,params string[] args)
+        [Command("Connect", RunMode = RunMode.Async)]
+        public async Task ConnectDB(string response = null, params string[] args)
         {
             //taking the response from the user, converts it to string and removing the .connect part
             if (response == null)
-                {
-                    var embed = new EmbedBuilder();
-                    embed.AddField("Connecting you...",
-                    "no account name was provided!")
-                    .WithAuthor(author =>{ author
-                    .WithName("Birdie Bot")
-                    .WithIconUrl(Global.Birdieicon);})
-                    .WithThumbnailUrl(Global.Birdiethumbnail)
-                    .WithColor(new Color(255, 83, 13))
-                    .WithTitle("Birdie Bot notification")
-                    .WithFooter(footer =>{ footer
-                    .WithText(Global.Botcreatorname)
-                    .WithIconUrl(Global.Birdieicon);})
-                    .WithCurrentTimestamp()
-                    .Build();
+            {
+                var embed = new EmbedBuilder();
+                embed.AddField("Connecting you...",
+                "no account name was provided!")
+                .WithAuthor(author => {author
+                .WithName("Birdie Bot")
+                .WithIconUrl(Global.Birdieicon);})
+                .WithThumbnailUrl(Global.Birdiethumbnail)
+                .WithColor(new Color(255, 83, 13))
+                .WithTitle("Birdie Bot notification")
+                .WithFooter(footer => {footer
+                .WithText(Global.Botcreatorname)
+                .WithIconUrl(Global.Birdieicon);})
+                .WithCurrentTimestamp()
+                .Build();
 
-                    await Context.Channel.SendMessageAsync("", false, embed);
-                    await Task.Delay(5000);
-                    var messages = await Context.Channel.GetMessagesAsync(2).Flatten();
-                    await Context.Channel.DeleteMessagesAsync(messages);
+                await Context.Channel.SendMessageAsync("", false, embed);
+                await Task.Delay(5000);
+                var messages = await Context.Channel.GetMessagesAsync(2).Flatten();
+                await Context.Channel.DeleteMessagesAsync(messages);
                 return;
             }
-                string userMessage = Context.Message.ToString();
-                string name = userMessage.Substring(userMessage.IndexOf(' ') + 1);
+            string userMessage = Context.Message.ToString();
+            string name = userMessage.Substring(userMessage.IndexOf(' ') + 1);
 
-                //replacing space with "%20"
-                string account = name.Replace(" ", "%20");
+            //replacing space with "%20"
+            string account = name.Replace(" ", "%20");
 
-                //using c for webclient connections
-                WebClient c = new WebClient();
+            //using c for webclient connections
+            WebClient c = new WebClient();
 
-                //getting league account ID
-                //using "i" and "f" for id
-                //if account doesnt exist - throw error and end
-                JObject f = null;
-                try
-                {
-                    string responsename = c.DownloadString("https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + account + "?api_key=" + Global.apikey + "");
-                    JObject i = JObject.Parse(responsename);
-                    f = i;
+            //getting league account ID
+            //using "i" and "f" for id
+            //if account doesnt exist - throw error and end
+            JObject f = null;
+            try
+            {
+                string responsename = c.DownloadString("https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + account + "?api_key=" + Global.apikey + "");
+                JObject i = JObject.Parse(responsename);
+                f = i;
 
-                }
-                catch (Exception)
-                {
-                    var embed = new EmbedBuilder();
-                    embed.AddField("Connecting you...",
-                    "Summoner account doesnt exist!")
-                    .WithAuthor(author =>{ author
-                    .WithName("Birdie Bot")
-                    .WithIconUrl(Global.Birdieicon);})
-                    .WithThumbnailUrl(Global.Birdiethumbnail)
-                    .WithColor(new Color(255, 83, 13))
-                    .WithTitle("Birdie Bot notification")
-                    .WithFooter(footer =>{ footer
-                    .WithText(Global.Botcreatorname)
-                    .WithIconUrl(Global.Birdieicon);})
-                    .WithCurrentTimestamp()
-                    .Build();
+            }
+            catch (Exception)
+            {
+                var embed = new EmbedBuilder();
+                embed.AddField("Connecting you...",
+                "Summoner account doesnt exist!")
+                .WithAuthor(author => {author
+                .WithName("Birdie Bot")
+                .WithIconUrl(Global.Birdieicon);})
+                .WithThumbnailUrl(Global.Birdiethumbnail)
+                .WithColor(new Color(255, 83, 13))
+                .WithTitle("Birdie Bot notification")
+                .WithFooter(footer => {footer
+                .WithText(Global.Botcreatorname)
+                .WithIconUrl(Global.Birdieicon);})
+                .WithCurrentTimestamp()
+                .Build();
 
-                    await Context.Channel.SendMessageAsync("", false, embed);
-                    return;
-                }
+                await Context.Channel.SendMessageAsync("", false, embed);
+                return;
+            }
             try
             {
                 //getting id, name and icon id from response
@@ -104,24 +102,28 @@ namespace NewTestBot.Modules
                 var GottenName = Context.Guild.GetUser(xx);
                 var guildUser = GottenName as SocketGuildUser;
                 string DiscordName = null;
+                var guildID = Context.Guild.Id;
 
                 if (guildUser.ToString().Contains("'"))
                 {
                     DiscordName = guildUser.ToString().Replace("'", "''");
                 }
 
-                string Query = "INSERT INTO users_testing (Discord_Id,Discord_Name,League_Id,League_Name,Icon_Id) VALUES ('" + UserID + "','" + DiscordName + "','" + id + "','" + lolname + "','" + icon + "');";
+                //SQL QUERY String used for commands
+                string Query = "INSERT INTO users_testing (Discord_Id,Discord_Name,League_Id,League_Name,Icon_Id,SOLO_QUEUE) VALUES ('" + UserID + "','" + DiscordName + "','" + id + "','" + lolname + "','" + icon + "','"+"Unranked"+"');";
                 string Duplicate = "SELECT Discord_Id FROM users_testing WHERE Discord_Id like  '%" + UserID + "%'; ";
                 string InsertDiscordName = "UPDATE users_testing SET `Discord_Name` = '" + DiscordName + "' WHERE Discord_Id like  '%" + UserID + "%';";
                 string setstatus = "UPDATE users_testing SET Verified = '" + "false" + "' WHERE Discord_Id like  '%" + UserID + "%';";
+                string InsertGuildID = "UPDATE users_testing SET Guild_ID = '" + guildID.ToString() + "' WHERE Discord_Id like '%" + UserID + "%';";
                 string Result;
 
                 //sql connection and command
                 MySqlConnection myconn = new MySqlConnection(Global.connect);
                 MySqlCommand command = new MySqlCommand(Query, myconn);
-                MySqlCommand SetStatus = new MySqlCommand(setstatus,myconn);
+                MySqlCommand insertGID = new MySqlCommand(InsertGuildID, myconn);
+                MySqlCommand SetStatus = new MySqlCommand(setstatus, myconn);
                 MySqlCommand DuplicateCommand = new MySqlCommand(Duplicate, myconn);
-                MySqlCommand InsertDiscordname = new MySqlCommand(InsertDiscordName,myconn);
+                MySqlCommand InsertDiscordname = new MySqlCommand(InsertDiscordName, myconn);
                 MySqlDataReader myreader;
                 myconn.Open();
                 Result = (string)DuplicateCommand.ExecuteScalar();
@@ -138,17 +140,17 @@ namespace NewTestBot.Modules
                     myconn.Open();
                     myreader = InsertDiscordname.ExecuteReader();
                     myconn.Close();
-                    
+
                     var embed = new EmbedBuilder();
                     embed.AddField("Connecting you...",
                     "Your League and Discord account already exist in the Database!")
-                    .WithAuthor(author =>{ author
+                    .WithAuthor(author => {author
                     .WithName("Birdie Bot")
                     .WithIconUrl(Global.Birdieicon);})
                     .WithThumbnailUrl(thumbnailURL)
                     .WithColor(new Color(255, 83, 13))
                     .WithTitle("Birdie Bot notification")
-                    .WithFooter(footer =>{ footer
+                    .WithFooter(footer =>{footer
                     .WithText(Global.Botcreatorname)
                     .WithIconUrl(Global.Birdieicon);})
                     .WithCurrentTimestamp()
@@ -167,26 +169,32 @@ namespace NewTestBot.Modules
                     myreader = command.ExecuteReader();
                     myconn.Close();
 
-                try
-                {
-                    //sets the user verification status to false
-                    myconn.Open();
-                    myreader = SetStatus.ExecuteReader();
-                    myconn.Close();
-                }
-                catch(Exception ex){
-                    Console.WriteLine(ex);}
+                    try
+                    {
+                        //sets the user verification status to false and post the guild ID of the user to SQL
+                        myconn.Open();
+                        myreader = SetStatus.ExecuteReader();
+                        myconn.Close();
+
+                        myconn.Open();
+                        myreader = insertGID.ExecuteReader();
+                        myconn.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex);
+                    }
 
                     var embed = new EmbedBuilder();
                     embed.AddField("Connecting you...",
-                    "Your league account " + "`" + lolname + "`"+" has been added to the Database!")
-                    .WithAuthor(author =>{ author
+                    "Your league account " + "`" + lolname + "`" + " has been added to the Database!")
+                    .WithAuthor(author => {author
                     .WithName("Birdie Bot")
                     .WithIconUrl(Global.Birdieicon);})
                     .WithThumbnailUrl(thumbnailURL)
                     .WithColor(new Color(255, 83, 13))
                     .WithTitle("Birdie Bot notification")
-                    .WithFooter(footer =>{ footer
+                    .WithFooter(footer =>{footer
                     .WithText(Global.Botcreatorname)
                     .WithIconUrl(Global.Birdieicon);})
                     .WithCurrentTimestamp()
@@ -194,13 +202,14 @@ namespace NewTestBot.Modules
                     await Context.Channel.SendMessageAsync("", false, embed);
                     Console.WriteLine(Context.User.Username + " Just added their lol account: " + lolname + " To the Database!");
                     await Task.Delay(5000);
-                    var messages = await this.Context.Channel.GetMessagesAsync(2).Flatten();                 
+                    var messages = await this.Context.Channel.GetMessagesAsync(2).Flatten();
                     await Context.Channel.DeleteMessagesAsync(messages);
                 }
             }
-            catch(Exception ex){
-                Console.WriteLine(ex);}
-
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
     }
 }
