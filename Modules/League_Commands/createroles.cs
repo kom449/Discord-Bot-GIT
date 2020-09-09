@@ -65,12 +65,14 @@ namespace NewTestBot.Modules
 
                     //else if the rolecheck matches the current role then it must exist on server
                     else if (role != null)
+                    {
                         Console.WriteLine(allRanks[x] + " Already exists on the the server " + Context.Guild.Name + "!");
+                    }
                 }
 
                 for (int xx = 0; xx < TFTRanks.GetLength(0); xx++, yy++)
                 {
-                    var TFTRole = Context.Guild.Roles.FirstOrDefault(zz => zz.Name.ToLower() == TFTRanks[xx].ToLower());
+                    var TFTRole = Context.Guild.Roles.FirstOrDefault(zz => zz.Name.ToLower() == TFTRanks[xx].ToLowerInvariant());
                     if (TFTRole == null)
                     {
                         GuildPermissions permissions = default;
@@ -92,7 +94,7 @@ namespace NewTestBot.Modules
                 {
                     counter++;
                     //if channel is found - notify in console
-                    if (channelname.ToLower() == channel.Name)
+                    if (channelname.ToLowerInvariant() == channel.Name)
                     {
                         Console.WriteLine(channelname + " Already exists on the the server " + Context.Guild.Name + "!");
                         exist = true;

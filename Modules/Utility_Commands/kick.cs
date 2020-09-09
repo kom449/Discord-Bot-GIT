@@ -53,7 +53,7 @@ namespace NewTestBot.Modules
         [RequireOwner][Command("kickoverride")]
         [RequireBotPermission(GuildPermission.KickMembers)]
 
-        public async Task KickUserbyowner(IGuildUser user, string reason = "")
+        public async Task KickUserbyowner(IGuildUser user, string reason)
         {
             if (reason == null)
             {

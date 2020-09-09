@@ -13,9 +13,9 @@ namespace NewTestBot.Modules
         readonly string thumbnailURL = "https://i.gyazo.com/e05bec8ae83bbd60f5ff55f48c3c30f1.png";
 
         [Command ("prefix"),RequireOwner]
-         public async Task Prefixchange(string input = "")
+         public async Task Prefixchange(string input)
          {
-            if (input == "")
+            if (input == null)
             {
                 var embed = new EmbedBuilder();
                 embed.WithTitle("Syntax Error");
@@ -23,7 +23,7 @@ namespace NewTestBot.Modules
                 embed.WithColor(new Color(255, 0, 0));
             }
 
-            else if (input != "")
+            else if (input != null)
             {
                  try
                  {

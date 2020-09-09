@@ -127,7 +127,9 @@ namespace NewTestBot
                                     usedtiersolo = tiersolo.ToLower();
                                 }
                                 else
+                                {
                                     usedtiersolo = "Unranked";
+                                }
                             }
 
                             //using the same loop to get the Flex 5v5 rank

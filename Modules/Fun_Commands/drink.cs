@@ -31,7 +31,7 @@ namespace NewTestBot.Modules
                     return;
                 }
 
-                if (amount == 0)
+                if (amount <= 0)
                 {
                     var errorEmbed = new EmbedBuilder();
                     errorEmbed.WithTitle("Syntax Error");

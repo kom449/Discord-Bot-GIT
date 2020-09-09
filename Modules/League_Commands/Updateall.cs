@@ -73,7 +73,6 @@ namespace NewTestBot.Modules
                     string QueryDiscordName = "SELECT Discord_Name FROM users_testing WHERE League_Id like  '%" + results[x] + "%';";
                     string QueryDiscordId = "SELECT Discord_Id FROM users_testing WHERE League_Id like  '%" + results[x] + "%';";
                     string resultid = null;
-                    string resultname;
 
                     //gettting ID from of the entry that is being updated
                     MySqlCommand GetID = new MySqlCommand(QueryDiscordId, myconn);
@@ -97,14 +96,9 @@ namespace NewTestBot.Modules
                     myconn.Close();
 
                     //getting the user name of the entry being updated
-                    MySqlCommand GetName = new MySqlCommand(QueryDiscordName, myconn);
+                    MySqlCommand SetName = new MySqlCommand(QueryDiscordName, myconn);
                     myconn.Open();
-                    myreader = GetName.ExecuteReader();
-                    while (myreader.Read())
-                    {
-                        data = myreader.GetString(0);
-                        resultname = data;
-                    }
+                    myreader = SetName.ExecuteReader();
                     myconn.Close();
 
                     if (responserank == "[]")

@@ -12,7 +12,7 @@ namespace NewTestBot.Modules
         [Command("ban"),RequireUserPermission(GuildPermission.Administrator),]
         [RequireBotPermission(GuildPermission.BanMembers)]
 
-        public async Task Banuser(IGuildUser user, string reason = "")   
+        public async Task Banuser(IGuildUser user, string reason)   
         {
             if (reason == "")
             {

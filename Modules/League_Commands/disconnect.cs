@@ -68,7 +68,7 @@ namespace NewTestBot.Modules
 
             //removing their role and giving them unranked
             var username = Context.User;
-            var role = Context.Guild.Roles.FirstOrDefault(x => x.Name.ToLower() == rankarray[0].ToLower());                
+            var role = Context.Guild.Roles.FirstOrDefault(x => x.Name.ToLower() == rankarray[0].ToLowerInvariant());                
             var UnrankedRole = Context.Guild.Roles.FirstOrDefault(x => x.Name.ToLower() == "unranked");
             await (username as IGuildUser).RemoveRoleAsync(role);
             await (username as IGuildUser).AddRoleAsync(UnrankedRole);
