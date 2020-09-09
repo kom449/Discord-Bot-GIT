@@ -153,7 +153,7 @@ namespace NewTestBot.Modules
                         {
                             try
                             {
-                                var roles = Context.Guild.Roles.FirstOrDefault(yy => yy.Name.ToLower() == allRanks[xy]);
+                                var roles = Context.Guild.Roles.FirstOrDefault(yy => yy.Name.ToLowerInvariant() == allRanks[xy]);
                                 if (username.Roles.Contains(roles))
                                     await (username as IGuildUser).RemoveRoleAsync(roles);
                             }
@@ -162,10 +162,8 @@ namespace NewTestBot.Modules
                                 //nothing 
                             }
                         }
-
                         var role = Context.Guild.Roles.FirstOrDefault(xyz => xyz.Name.ToLower() == usedtiersolo);
                         await (username as IGuildUser).AddRoleAsync(role);
-
                     }
                     catch (Exception)
                     {
@@ -174,11 +172,8 @@ namespace NewTestBot.Modules
                         continue;
                     }
 
-
-
                     Console.WriteLine("Updated User: " + lolname + "\nDiscord name: " + GottenName + "\n");
                     Thread.Sleep(5000);
-
                 }
 
                 await message.ModifyAsync(x =>
