@@ -92,13 +92,13 @@ namespace NewTestBot.Modules
                     string QueryUpdateDiscordName = "UPDATE users_testing SET Discord_Name ='" + username + "'WHERE League_Id like  '%" + results[x] + "%';";
                     MySqlCommand Updatename = new MySqlCommand(QueryUpdateDiscordName, myconn);
                     myconn.Open();
-                    myreader = Updatename.ExecuteReader();
+                    Updatename.ExecuteReader();
                     myconn.Close();
 
                     //getting the user name of the entry being updated
                     MySqlCommand SetName = new MySqlCommand(QueryDiscordName, myconn);
                     myconn.Open();
-                    myreader = SetName.ExecuteReader();
+                    SetName.ExecuteReader();
                     myconn.Close();
 
                     if (responserank == "[]")
@@ -142,7 +142,7 @@ namespace NewTestBot.Modules
                     //sql connection and command
                     MySqlCommand postdata = new MySqlCommand(QueryUpdateRank, myconn);
                     myconn.Open();
-                    myreader = postdata.ExecuteReader();
+                    postdata.ExecuteReader();
                     myconn.Close();
                     try
                     {

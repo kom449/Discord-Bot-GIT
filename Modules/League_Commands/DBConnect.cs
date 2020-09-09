@@ -113,15 +113,13 @@ namespace NewTestBot.Modules
                 string Query = "INSERT INTO users_testing (Discord_Id,Discord_Name,League_Id,League_Name,Icon_Id,SOLO_QUEUE) VALUES ('" + UserID + "','" + DiscordName + "','" + id + "','" + lolname + "','" + icon + "','"+"Unranked"+"');";
                 string Duplicate = "SELECT Discord_Id FROM users_testing WHERE Discord_Id like  '%" + UserID + "%'; ";
                 string InsertDiscordName = "UPDATE users_testing SET `Discord_Name` = '" + DiscordName + "' WHERE Discord_Id like  '%" + UserID + "%';";
-                string setstatus = "UPDATE users_testing SET Verified = '" + "false" + "' WHERE Discord_Id like  '%" + UserID + "%';";
-                string InsertGuildID = "UPDATE users_testing SET Guild_ID = '" + guildID.ToString() + "' WHERE Discord_Id like '%" + UserID + "%';";
+                string UpdatestatusandID = "UPDATE users_testing SET Verified = '" + "false" + "',Guild_ID = '" + guildID.ToString() + "' WHERE Discord_Id like  '%" + UserID + "%';";
                 string Result;
 
                 //sql connection and command
                 MySqlConnection myconn = new MySqlConnection(Global.connect);
                 MySqlCommand command = new MySqlCommand(Query, myconn);
-                MySqlCommand insertGID = new MySqlCommand(InsertGuildID, myconn);
-                MySqlCommand SetStatus = new MySqlCommand(setstatus, myconn);
+                MySqlCommand SetIDandStatus = new MySqlCommand(UpdatestatusandID, myconn);
                 MySqlCommand DuplicateCommand = new MySqlCommand(Duplicate, myconn);
                 MySqlCommand InsertDiscordname = new MySqlCommand(InsertDiscordName, myconn);
                 MySqlDataReader myreader;
@@ -131,7 +129,9 @@ namespace NewTestBot.Modules
                 //check for duplicate of discord Ids
                 myreader = DuplicateCommand.ExecuteReader();
                 if (myreader.Read())
+                {
                     Result = myreader.GetString(myreader.GetOrdinal("Discord_Id"));
+                }
                 myconn.Close();
 
                 //if the user already exists in the DB - just tell them and do nothing.
@@ -173,11 +173,7 @@ namespace NewTestBot.Modules
                     {
                         //sets the user verification status to false and post the guild ID of the user to SQL
                         myconn.Open();
-                        myreader = SetStatus.ExecuteReader();
-                        myconn.Close();
-
-                        myconn.Open();
-                        myreader = insertGID.ExecuteReader();
+                        SetIDandStatus.ExecuteReader();
                         myconn.Close();
                     }
                     catch (Exception ex)
