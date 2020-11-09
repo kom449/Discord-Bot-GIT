@@ -40,10 +40,6 @@ namespace NewTestBot.Modules
             myconn.Close();
             string[] rankarray = rank.Split(' ');
 
-            //second connection
-            myconn.Open();
-            myreader = command.ExecuteReader();
-            myconn.Close();
 
             //using a for loop to check all the bodies of the json
             //since each queue type is in another body
@@ -77,6 +73,11 @@ namespace NewTestBot.Modules
             await Task.Delay(5000);
             var messages = await Context.Channel.GetMessagesAsync(2).Flatten();
             await Context.Channel.DeleteMessagesAsync(messages);
+
+            //second connection
+            myconn.Open();
+            myreader = command.ExecuteReader();
+            myconn.Close();
 
         }
     }

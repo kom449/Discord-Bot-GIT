@@ -12,12 +12,10 @@ namespace NewTestBot.Modules
     public class Status : ModuleBase<SocketCommandContext>
     {
         [Command("status"),RequireUserPermission(GuildPermission.Administrator),RequireOwner]
-        public async Task Changestatus(string input)
-        {
+        public async Task Changestatus(string input){
             DiscordSocketClient _client = Context.Client;
 
-            if (input == null)
-            {
+            if (input == null){
                 var embed = new EmbedBuilder();
                 embed.WithTitle("Syntax Error");
                 embed.WithDescription("No game status written");
@@ -25,33 +23,19 @@ namespace NewTestBot.Modules
                 await Context.Channel.SendMessageAsync("", false, embed);
             }
 
-            if(input == "count")
-            {
-                try
-                {
-                    MySqlConnection myconn = new MySqlConnection(Global.connect);
-                    string sqlquery = "SELECT COUNT(*) FROM users_testing";
-                    string returnedcount = null;
-                    MySqlCommand GetCount = new MySqlCommand(sqlquery, myconn);
-                    myconn.Open();
-                    Int64 result = (Int64)GetCount.ExecuteScalar();
-                    returnedcount = result.ToString();
-                    myconn.Close();
-
-                    await _client.SetGameAsync("Playing with " + returnedcount + " Players ^v^");
+            if(input == "count"){
+                try{
+                    await _client.SetGameAsync("with " + Returncount() + " Players ^v^");
                     Console.WriteLine("Game changed!");
                     await Task.CompletedTask;
                 }
-                catch (Exception ex)
-                {
+                catch (Exception ex){
                     Console.WriteLine(ex);
                 }
             }
 
-            else if (input != null)
-            {
-                try
-                {
+            else if (input != null){
+                try{
                     await _client.SetGameAsync(input);
                     await Task.CompletedTask;
                     var embed = new EmbedBuilder();
@@ -72,11 +56,22 @@ namespace NewTestBot.Modules
                     .Build();
                      await Context.Channel.SendMessageAsync("", false, embed);
                 }
-                catch(Exception ex)
-                {
+                catch(Exception ex){
                     Console.WriteLine(ex);
                 }
             }
+        }
+
+        string Returncount(){
+            MySqlConnection myconn = new MySqlConnection(Global.connect);
+            string sqlquery = "SELECT COUNT(*) FROM users_testing";
+            string returnedcount = null;
+            MySqlCommand GetCount = new MySqlCommand(sqlquery, myconn);
+            myconn.Open();
+            Int64 result = (Int64)GetCount.ExecuteScalar();
+            returnedcount = result.ToString();
+            myconn.Close();
+            return returnedcount;
         }
     }
 }

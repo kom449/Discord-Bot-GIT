@@ -249,7 +249,7 @@ namespace NewTestBot.Modules
                 .WithAuthor(author => { author
                 .WithName("Birdie Bot")
                 .WithIconUrl(Global.Birdieicon);})
-                .WithThumbnailUrl(Global.Birdiethumbnail)
+                .WithThumbnailUrl(thumbnailURL)
                 .WithColor(new Color(0, 255, 0))
                 .WithTitle("Birdie Bot notification")
                 .WithFooter(footer => { footer

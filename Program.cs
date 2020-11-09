@@ -23,8 +23,7 @@ namespace NewTestBot
         public async Task StartAsync()
         {
             if (Config.bot.token == "" || Config.bot.token == null) return;
-            _client = new DiscordSocketClient(new DiscordSocketConfig
-            {
+            _client = new DiscordSocketClient(new DiscordSocketConfig{
                 LogLevel = LogSeverity.Info
             });
             _client.Log += Log;
@@ -35,6 +34,10 @@ namespace NewTestBot
             _handler = new CommandHandler();
             await _handler.InitializeAsync(_client);
             await Task.Delay(-1);
+            _client.Ready += () =>{
+                Global.Botisstarted = true;
+                return Task.CompletedTask;
+            };
         }     
 
           [RequireBotPermission(ChannelPermission.ManageMessages)]

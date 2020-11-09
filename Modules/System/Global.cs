@@ -14,6 +14,7 @@ namespace NewTestBot
         internal static string currentuserid { get; set; }
         internal static RestUserMessage message { get; set; }
         internal static SocketGuild GID { get; set; }
+        internal static bool Botisstarted { get; set; }
 
         //icon and thumbnail images
         internal readonly static string Birdieicon = "https://i.gyazo.com/128e4e68ac991c96610dcd5d67eeed50.png";
